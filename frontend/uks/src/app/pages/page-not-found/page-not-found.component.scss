@@ -1,0 +1,53 @@
+@import "../../../styles.scss";
+
+.position {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: $background-color;
+  height: 100vh;
+}
+
+h1, h3 {
+  color: $text-color;
+  margin: 10px;
+  text-align: center;
+  font-family: $font;
+}
+
+.homeButton {
+  display: flex;
+  justify-content: center;
+  padding: 10px 10px;
+}
+
+.image {
+  width: 60vw;
+  height: 60vh;
+  margin: 10px auto;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button {
+    background-color: $github-green-color;
+    color: $white-color;
+    border-radius: 5px;
+    width: 180px;
+    height: 40px;
+    text-decoration: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .label {
+    font-family: $font;
+    font-size: 16px;
+    text-align: center;
+    display: contents;
+  }
