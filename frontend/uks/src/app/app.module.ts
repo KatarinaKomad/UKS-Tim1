@@ -6,18 +6,24 @@ import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './components/molecules/navbar/navbar.component';
 import { PageTemplateComponent } from './components/organisms/page-template/page-template.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { LoginPageComponent } from './pages/authentication/login-page/login-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { SidebarComponent } from './components/molecules/sidebar/sidebar.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar'; 
-import { MatIconModule } from '@angular/material/icon'; 
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { TabsComponent } from './components/molecules/tabs/tabs.component';
 import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
+import { ButtonComponent } from './components/molecules/button/button.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputComponent } from './components/molecules/input/input.component';
+import { SignUpPageComponent } from './pages/authentication/sign-up-page/sign-up-page.component';
+import { ForgotPasswordPageComponent } from './pages/authentication/forgot-password-page/forgot-password-page.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +36,13 @@ import { ProjectIssuesComponent } from './components/organisms/project-issues/pr
     SidebarComponent,
     PageNotFoundComponent,
     TabsComponent,
-    ProjectIssuesComponent  
+    ProjectIssuesComponent,
+    ButtonComponent,
+    InputComponent,
+    SignUpPageComponent,
+    ForgotPasswordPageComponent,
   ],
-  exports: [
-    MatSidenavModule,
-    SidebarComponent,
-    NavbarComponent
-  ],
+  exports: [MatSidenavModule, SidebarComponent, NavbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -45,9 +51,12 @@ import { ProjectIssuesComponent } from './components/organisms/project-issues/pr
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,33 @@
+<div
+  class="flex flex-row w-full h-full bg-gray-950 items-center justify-center text-white"
+>
+  <div class="flex flex-col bg-gray-800 w-[30%] px-8 py-4 rounded-xl">
+    <h2 class="!text-2xl !mb-[5vh]">Welcome to GitHub</h2>
+
+    <app-input
+      *ngFor="let formConfig of loginForm"
+      [label]="formConfig.label"
+      [id]="formConfig.id"
+      [control]="formConfig.control"
+      [placeholder]="formConfig.placeholder"
+      [required]="formConfig.required"
+      [invalid]="formConfig.control.invalid && formConfig.control.dirty"
+      [errorMessage]="formConfig.errorMessage"
+      [type]="formConfig.type"
+    ></app-input>
+
+    <a [routerLink]="'/signUp'" class="underline text-blue-500">
+      Don't have an account? Sign up here.
+    </a>
+
+    <a [routerLink]="'/forgotPassword'" class="underline text-blue-500 mt-2">
+      Forgot your password? Reset here,
+    </a>
+
+    <app-button
+      [text]="'Log in'"
+      class="ml-auto"
+      (buttonClick)="handeLoginButtonClick()"
+    ></app-button>
+  </div>
+</div>
