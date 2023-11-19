@@ -22,7 +22,7 @@ services:
   web:
     image: 'uks_web:latest'
     build: 
-      context: ./uks
+      context: ./backenikd/uks
     container_name: web
     depends_on:
       - db
@@ -37,21 +37,28 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - TOKEN_SECRET=2aafbe15fde010e3a6de59e99c0adfd13bd40b60e3e5fdf351b263c3c7f72b35
     ports:
-      - "8881:8881"
+      - "8080:8080"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  front:
+    image: angular-app
+    container_name: front
+    ports:
+      - "4200:80"  # only for test purpouses
+
   # Nginx as a web server and reverse proxy
-  # nginx:
-  #   image: nginx
-  #   container_name: uks_nginx
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - ./config/nginx:/etc/nginx/conf.d
-  #     - ./static:/code/app/static #must be same as web!
-  #   depends_on:
-  #     - web
+  nginx:
+    image: nginx
+    container_name: uks_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d
+      - ./static:/code/app/static #must be same as web!
+    depends_on:
+      - web
+      # - front
 
   # # redis as a cache store
   # redis:
