@@ -13,7 +13,7 @@ export class PageTemplateComponent implements AfterViewInit, OnInit {
   constructor() { }
 
   ngAfterViewInit(): void {
-    
+
   }
   ngOnInit(): void {
   }
