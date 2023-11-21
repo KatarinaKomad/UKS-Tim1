@@ -13,10 +13,8 @@ services:
       - "5432:5432"
     expose:
       - 5432
-    environment:
-      - POSTGRES_DB=uks
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_USER=postgres
+    env_file:
+      - db.env
 
 
   web:
@@ -29,13 +27,8 @@ services:
     # links:
     #   - db:db
       #- redis
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/uks
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
-      - SPRING_PROFILES_ACTIVE=dev
-      - TOKEN_SECRET=2aafbe15fde010e3a6de59e99c0adfd13bd40b60e3e5fdf351b263c3c7f72b35
+    env_file:
+      - app.env     
     ports:
       - "8881:8881"
     volumes:
