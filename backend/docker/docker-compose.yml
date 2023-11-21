@@ -1,0 +1,54 @@
+version: '3.2'
+
+services:
+
+# Postres as a main storage
+  db:
+    restart: always
+    image: postgres
+    container_name: db
+    # volumes:
+    #   - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    env_file:
+      - db.env
+
+
+  web:
+    image: 'uks_web:latest'
+    build: 
+      context: ./uks
+    container_name: web
+    depends_on:
+      - db
+    # links:
+    #   - db:db
+      #- redis
+    env_file:
+      - app.env     
+    ports:
+      - "8881:8881"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Nginx as a web server and reverse proxy
+  # nginx:
+  #   image: nginx
+  #   container_name: uks_nginx
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./config/nginx:/etc/nginx/conf.d
+  #     - ./static:/code/app/static #must be same as web!
+  #   depends_on:
+  #     - web
+
+  # # redis as a cache store
+  # redis:
+  #   image: redis
+  #   container_name: uks_redis
+  #   expose:
+  #     - '6379'
