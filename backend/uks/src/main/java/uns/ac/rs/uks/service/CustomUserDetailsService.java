@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.repository.UserRepository;
 
-import java.util.UUID;
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -23,10 +21,5 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         logger.info("Try to get user with email {}", email);
         return userRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("User not found!"));
-    }
-
-    public UserDetails loadUserById(UUID id) {
-        logger.info("Try to get user by id");
-        return userRepository.findById(id).orElseThrow(()-> new NotFoundException("User not found!"));
     }
 }

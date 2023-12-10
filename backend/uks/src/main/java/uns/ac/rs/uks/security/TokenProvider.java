@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import uns.ac.rs.uks.exception.InvalidAccessTokenException;
+import uns.ac.rs.uks.model.Member;
 import uns.ac.rs.uks.model.User;
 
 import java.nio.charset.StandardCharsets;
@@ -42,11 +43,10 @@ public class TokenProvider {
 
         return Jwts.builder()
                 .setIssuer(appName)
-                .setSubject(user.getEmail())
+                .setSubject(user.getUsername())
                 .setAudience("web")
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(expiresAt))
-                .claim("role", user.getRoleNames())
                 .signWith(getKey())
                 .compact();
     }

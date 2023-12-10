@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import uns.ac.rs.uks.exception.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +46,11 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> notFoundException(Exception e) {
+        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.NOT_FOUND);
+    }
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> unknownError(Exception e) {

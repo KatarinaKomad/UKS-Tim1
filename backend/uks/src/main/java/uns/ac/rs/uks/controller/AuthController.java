@@ -14,6 +14,8 @@ import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.service.AuthService;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping(value = "/auth")
 @Slf4j
@@ -37,20 +39,27 @@ public class AuthController {
     }
 
     @GetMapping("/testAdmin")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<?> testAdmin( HttpServletResponse response, HttpServletRequest request) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> testAdmin(HttpServletRequest request) {
         log.info("testAdmin success");
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/testOwner")
-    @PreAuthorize("hasAuthority('ROLE_OWNER')")
-    public ResponseEntity<?> testOwner(HttpServletResponse response, HttpServletRequest request) {
+    @GetMapping("/testUser")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<?> testUser(HttpServletRequest request) {
+        log.info("testAdmin success");
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/testOwner/{repositoryId}")
+    @PreAuthorize("hasPermission(#repositoryId, 'OWNER')")
+    public ResponseEntity<?> testOwner(HttpServletRequest request, @PathVariable UUID repositoryId ) {
         log.info("testOwner success");
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/testCollaborator")
-    @PreAuthorize("hasRole('ROLE_COLLABORATOR')")
-    public ResponseEntity<?> testCollaborator(HttpServletResponse response, HttpServletRequest request) {
+    @GetMapping("/testCollaborator/{repositoryId}")
+    @PreAuthorize("hasPermission(#repositoryId, 'COLLABORATOR')")
+    public ResponseEntity<?> testCollaborator(HttpServletRequest request, @PathVariable UUID repositoryId ) {
         log.info("testCollaborator success");
         return ResponseEntity.ok().build();
     }
