@@ -19,11 +19,13 @@ export class AuthService {
     private httpRequestService: HttpRequestService,
     private router: Router
   ) {
-    this.getCurrentUser().subscribe({
-      next: (user: LoggedUser) => {
-        this.onNewUserReceived(user);
-      }
-    });
+    if (this.loggedUserSubject.value === undefined) {
+      this.getCurrentUser().subscribe({
+        next: (user: LoggedUser) => {
+          this.onNewUserReceived(user);
+        }
+      });
+    }
   }
 
 
