@@ -13,6 +13,8 @@ import uns.ac.rs.uks.dto.request.LoginRequest;
 import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.security.TokenProvider;
 
+import java.util.Base64;
+
 
 @Service
 public class AuthService {
@@ -26,21 +28,15 @@ public class AuthService {
 
     public TokenResponse login(LoginRequest loginRequest) {
         logger.info("Try to login user with email {}", loginRequest.getEmail());
-        try {
-            TokenResponse token = authenticateRequest(loginRequest);
-            logger.info("Successfully created token");
-            return token;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        TokenResponse token = authenticateRequest(loginRequest);
+        logger.info("Successfully created token");
+        return token;
     }
 
     private TokenResponse authenticateRequest(LoginRequest loginRequest) throws BadCredentialsException {
-
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getEmail(),
-                loginRequest.getPassword()
+                new String(Base64.getDecoder().decode(loginRequest.getPassword()))
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

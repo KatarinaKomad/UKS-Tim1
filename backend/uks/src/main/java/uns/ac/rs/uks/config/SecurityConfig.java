@@ -79,7 +79,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(x-> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(x-> x.authenticationEntryPoint(new RestAuthenticationEntryPoint())

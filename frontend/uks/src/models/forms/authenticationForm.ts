@@ -1,5 +1,6 @@
 import { FormControl, Validators } from '@angular/forms';
 import { FormInput } from './input';
+import { LoginRequest } from '../authentication/login';
 
 export const loginForm: FormInput[] = [
   {
@@ -21,6 +22,13 @@ export const loginForm: FormInput[] = [
     type: 'password',
   },
 ];
+
+export const getLoginRequest = (loginForm: FormInput[]): LoginRequest => {
+  return {
+    email: loginForm.filter(input => input.id === 'email').at(0)?.control.value,
+    password: btoa(loginForm.filter(input => input.id === 'password').at(0)?.control.value)
+  }
+}
 
 export const signUpForm: FormInput[] = [
   {
