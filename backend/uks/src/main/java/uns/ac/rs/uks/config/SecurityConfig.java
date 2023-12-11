@@ -59,7 +59,7 @@ public class SecurityConfig {
             "/websocket/**",
             "/auth/login",
             "/auth/logout/**",
-            "/user/register"
+            "/auth/register"
     };
     @Bean
     public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {

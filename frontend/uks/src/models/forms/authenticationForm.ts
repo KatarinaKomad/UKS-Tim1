@@ -1,6 +1,8 @@
 import { FormControl, Validators } from '@angular/forms';
 import { FormInput } from './input';
 import { LoginRequest } from '../authentication/login';
+import { RegistrationRequest } from '../authentication/registration';
+import { formFilter } from 'src/utils/custom-filters';
 
 export const loginForm: FormInput[] = [
   {
@@ -25,8 +27,8 @@ export const loginForm: FormInput[] = [
 
 export const getLoginRequest = (loginForm: FormInput[]): LoginRequest => {
   return {
-    email: loginForm.filter(input => input.id === 'email').at(0)?.control.value,
-    password: btoa(loginForm.filter(input => input.id === 'password').at(0)?.control.value)
+    email: formFilter(loginForm, 'email'),
+    password: btoa(formFilter(loginForm, 'password')),
   }
 }
 
@@ -68,7 +70,7 @@ export const signUpForm: FormInput[] = [
     type: 'password',
   },
   {
-    id: 'confirmPassword',
+    id: 'passwordConfirmation',
     control: new FormControl('', [Validators.required]),
     placeholder: 'Enter confirm password',
     label: 'Confirm password',
@@ -77,3 +79,13 @@ export const signUpForm: FormInput[] = [
     type: 'password',
   },
 ];
+
+export const getRegistrationRequest = (signUpForm: FormInput[]): RegistrationRequest => {
+  return {
+    email: formFilter(signUpForm, 'email'),
+    password: btoa(formFilter(signUpForm, 'password')),
+    passwordConfirmation: btoa(formFilter(signUpForm, 'passwordConfirmation')),
+    firstName: formFilter(signUpForm, 'firstName'),
+    lastName: formFilter(signUpForm, 'lastName')
+  }
+}

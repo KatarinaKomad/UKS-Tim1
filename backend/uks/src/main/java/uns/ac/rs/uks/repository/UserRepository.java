@@ -16,5 +16,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     List<User> findByIdIn(List<UUID> id);
     @Query("SELECT u FROM User u WHERE u.deleted = false")
     List<User> findAllActiveUsers();
+    Boolean existsByEmail(String email);
 
 }

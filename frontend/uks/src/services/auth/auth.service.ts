@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginRequest, TokenResponse } from 'src/models/authentication/login';
+import { RegistrationRequest } from 'src/models/authentication/registration';
 import { LoggedUser } from 'src/models/user/user';
 import { HttpRequestService } from 'src/utils/http-request.service';
 import { getTokenExpiration } from 'src/utils/jwtTokenUtils';
@@ -41,6 +42,13 @@ export class AuthService {
     localStorage.clear();
     this.onNewUserReceived(undefined);
     this.router.navigate(['/login']);
+  }
+
+  signup(signupRequest: RegistrationRequest): Observable<LoggedUser | null> {
+    const url = environment.API_BASE_URL + "/auth/register";
+    const body = JSON.stringify(signupRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<LoggedUser | null>;
   }
 
   getLoggedUser(): Observable<LoggedUser | undefined> {

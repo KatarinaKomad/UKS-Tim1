@@ -13,11 +13,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import uns.ac.rs.uks.dto.request.LoginRequest;
+import uns.ac.rs.uks.dto.request.RegistrationRequest;
 import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.User;
+import uns.ac.rs.uks.service.AccountService;
 import uns.ac.rs.uks.service.AuthService;
 
 import java.util.UUID;
@@ -29,6 +31,8 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private AccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -41,6 +45,11 @@ public class AuthController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PostMapping("/register")
+    public UserDTO register(@Valid @RequestBody RegistrationRequest registrationRequest) {
+        return accountService.registerUser(registrationRequest);
     }
 
     @GetMapping("/me")
