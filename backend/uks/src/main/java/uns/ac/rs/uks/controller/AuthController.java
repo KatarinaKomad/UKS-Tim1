@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class AuthController {
         try {
             TokenResponse token = authService.login(loginRequest);
             return ResponseEntity.ok(token);
-        } catch (NotFoundException | InternalAuthenticationServiceException e) {
+        } catch (NotFoundException | InternalAuthenticationServiceException | BadCredentialsException e) {
             return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
         } catch (Exception e){
             e.printStackTrace();
