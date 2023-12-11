@@ -10,11 +10,9 @@ import { LoginPageComponent } from './pages/authentication/login-page/login-page
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { SidebarComponent } from './components/molecules/sidebar/sidebar.component';
-import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { TabsComponent } from './components/molecules/tabs/tabs.component';
 import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
@@ -24,6 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputComponent } from './components/molecules/input/input.component';
 import { SignUpPageComponent } from './pages/authentication/sign-up-page/sign-up-page.component';
 import { ForgotPasswordPageComponent } from './pages/authentication/forgot-password-page/forgot-password-page.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -59,4 +59,4 @@ import { ForgotPasswordPageComponent } from './pages/authentication/forgot-passw
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
