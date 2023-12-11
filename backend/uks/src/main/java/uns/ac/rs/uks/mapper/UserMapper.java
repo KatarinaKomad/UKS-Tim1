@@ -1,6 +1,5 @@
 package uns.ac.rs.uks.mapper;
 
-import uns.ac.rs.uks.dto.RoleEnum;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.model.User;
 
@@ -15,7 +14,6 @@ public class UserMapper {
                 .name(user.getName())
                 .email(user.getEmail())
                 .blockedByAdmin(user.getBlockedByAdmin())
-                .roles(user.getRoleNames().stream().map(RoleEnum::valueOf).toList())
                 .build();
     }
 
