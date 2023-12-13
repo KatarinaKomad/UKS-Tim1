@@ -22,12 +22,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import uns.ac.rs.uks.security.CustomPermissionEvaluator;
 import uns.ac.rs.uks.security.RestAuthenticationEntryPoint;
 import uns.ac.rs.uks.security.TokenAuthenticationFilter;
 import uns.ac.rs.uks.security.UserForbiddenErrorHandler;
 import uns.ac.rs.uks.service.CustomUserDetailsService;
 import uns.ac.rs.uks.service.MemberService;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -56,10 +61,10 @@ public class SecurityConfig {
     private MemberService memberService;
 
     private final String[] patterns = {
-            "/websocket/**",
-            "/auth/login",
-            "/auth/logout/**",
-            "/auth/register"
+            antMatcher("/websocket/**").getPattern(),
+            antMatcher("/auth/login").getPattern(),
+            antMatcher("/auth/logout/**").getPattern(),
+            antMatcher("/auth/register").getPattern()
     };
     @Bean
     public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
@@ -74,9 +79,13 @@ public class SecurityConfig {
         return expressionHandler;
     }
 
+    @Bean
+    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
+        return new MvcRequestMatcher.Builder(introspector);
+    }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
 
         http
                 .cors(Customizer.withDefaults())
@@ -89,7 +98,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(exchange ->
-                        exchange.requestMatchers(patterns).permitAll()
+                        exchange.requestMatchers(antMatcher("/websocket/**")).permitAll()
+                                .requestMatchers(mvc.pattern("/auth/login")).permitAll()
+                                .requestMatchers(mvc.pattern("/auth/register")).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthenticationFilter(), BasicAuthenticationFilter.class);
@@ -99,16 +110,15 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(HttpMethod.GET,
-                "/",
-                "/*.html",
-                "favicon.ico",
-                "/*/*.html",
-                "/*/*.css",
-                "/*/*.js",
-                "/v2/api-docs",
-                "/webjars/*"
-        );
+        return (web) -> web.ignoring().
+                requestMatchers(new AntPathRequestMatcher("/")).
+                requestMatchers(new AntPathRequestMatcher("/*.html")).
+                requestMatchers(new AntPathRequestMatcher("favicon.ico")).
+                requestMatchers(new AntPathRequestMatcher("/*/*.html")).
+                requestMatchers(new AntPathRequestMatcher("/*/*.css")).
+                requestMatchers(new AntPathRequestMatcher("/*/*.js")).
+                requestMatchers(new AntPathRequestMatcher("/v2/api-docs")).
+                requestMatchers(new AntPathRequestMatcher("/webjars/*"));
     }
 
 }

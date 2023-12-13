@@ -10,7 +10,8 @@ import java.util.UUID;
 
 public class UserMapper {
     public static UserDTO toDTO(User user){
-        return UserDTO.builder()
+        return user == null ? null :
+            UserDTO.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -21,7 +22,8 @@ public class UserMapper {
     }
 
     public static User toUserFromRequest(RegistrationRequest request){
-        return User.builder()
+        return request == null ? null :
+             User.builder()
                 .id(UUID.randomUUID())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())

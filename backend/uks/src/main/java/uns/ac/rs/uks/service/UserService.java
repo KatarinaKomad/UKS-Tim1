@@ -10,7 +10,7 @@ import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.repository.UserRepository;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,45 +30,36 @@ public class UserService {
         logger.info("Successfully get user with email {}", email);
         return UserMapper.toDTO(user);
     }
-    public boolean doesUserExists(String email) throws NotFoundException{
-        logger.info("Check to user with email {} is exist", email);
-        return userRepository.findByEmail(email).orElse(null) != null;
+
+    public boolean existsByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        return user.isPresent();
     }
 
-    public boolean isUserAccountValid(User user) {
-        logger.info("Checking whether the user account with email {} is valid", user.getEmail());
-        return !user.getBlockedByAdmin() && !user.getDeleted();
+    public void blockUser(UUID id)  throws NotFoundException {
+        logger.info("Block user with id {}", id);
+        userRepository.updateBlockedByAdmin(id, true);
     }
 
-    public void blockUser(String email)  throws NotFoundException{
-        logger.info("Try to block user with email {}", email);
-        User user = getUserByEmail(email);
-        user.setBlockedByAdmin(true);
-        userRepository.save(user);
+    public void unblockUser(UUID id)  throws NotFoundException{
+        logger.info("Unblock user with email {}", id);
+        userRepository.updateBlockedByAdmin(id, false);
     }
 
-    public void unblockUser(String email)  throws NotFoundException{
-        logger.info("Try to unblock user with email {}", email);
-        User user = getUserByEmail(email);
-        user.setBlockedByAdmin(false);
-        userRepository.save(user);
+    public void deleteUser(UUID id)  throws NotFoundException{
+        logger.info("Delete user with email {}", id);
+        userRepository.updateDeletedByAdmin(id, true);
     }
 
-    public void deleteUser(String email)  throws NotFoundException{
-        logger.info("Try to delete user with email {}", email);
-        User user = getUserByEmail(email);
-        user.setDeleted(true);
-        userRepository.save(user);
-    }
 
-    public List<UserDTO> getAll() {
-        logger.info("Try to get all users");
-        return UserMapper.toDTOs(userRepository.findAllActiveUsers());
-    }
-
-    public List<UserDTO> getAllById(List<UUID> ids) {
-        logger.info("Try to get all users by id");
-        return UserMapper.toDTOs(userRepository.findByIdIn(ids));
+    public User save(User user){
+        try {
+            return userRepository.save(user);
+        } catch (Exception e){
+            e.printStackTrace();
+            logger.error("Error saving user {}", user.getEmail());
+            return null;
+        }
     }
 
 }

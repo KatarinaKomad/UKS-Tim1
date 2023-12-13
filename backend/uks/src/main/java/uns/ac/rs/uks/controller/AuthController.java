@@ -1,7 +1,6 @@
 package uns.ac.rs.uks.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.User;
-import uns.ac.rs.uks.service.AccountService;
 import uns.ac.rs.uks.service.AuthService;
 
 import java.util.UUID;
@@ -31,8 +29,6 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
-    @Autowired
-    private AccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -49,7 +45,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public UserDTO register(@Valid @RequestBody RegistrationRequest registrationRequest) {
-        return accountService.registerUser(registrationRequest);
+        return authService.registerUser(registrationRequest);
     }
 
     @GetMapping("/me")
