@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { SelectionOptions } from 'src/models/navigation';
+import { LoggedUser } from 'src/models/user/user';
+import { AuthService } from 'src/services/auth/auth.service';
 
 
 @Component({
@@ -14,13 +16,25 @@ export class SidebarComponent implements OnInit {
   @ViewChild('drawer') drawer: MatDrawer | undefined;
   SelectionOptions = SelectionOptions;
 
-  constructor(private router: Router) {}
+  loggedUser: LoggedUser | undefined;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
+    this.authService.getLoggedUser().subscribe({
+      next: (user: LoggedUser | undefined) => {
+        this.loggedUser = user;
+      },
+      error: (e: any) => {
+        console.log(e.error);
+      }
+    })
   }
 
-  navigate(option: SelectionOptions) : void {
-    console.log(option)
+  navigate(option: SelectionOptions): void {
     this.router.navigate([option]);
   }
 }

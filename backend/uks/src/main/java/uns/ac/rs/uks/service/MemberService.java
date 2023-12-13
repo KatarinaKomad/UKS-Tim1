@@ -14,8 +14,8 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public Optional<Member> findMemberByUserEmailAndRepositoryId(String email, UUID repositoryId){
-        return memberRepository.findMemberByUserEmailAndRepositoryId(email, repositoryId);
+    public Member findMemberByUserEmailAndRepositoryId(String email, UUID repositoryId){
+        return memberRepository.findMemberByUserEmailAndRepositoryId(email, repositoryId).orElse(null);
     }
 
 }

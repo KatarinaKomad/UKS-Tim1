@@ -23,8 +23,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         User user = (User) auth.getPrincipal();
         UUID repositoryId =  (UUID) targetDomainObject;
         RepositoryRole repositoryRole = RepositoryRole.valueOf((String) permission);
-        Optional<Member> member = memberService.findMemberByUserEmailAndRepositoryId(user.getUsername(), repositoryId);
-        return member.map(value -> value.getRepositoryRole().equals(repositoryRole)).orElse(false);
+        Member member = memberService.findMemberByUserEmailAndRepositoryId(user.getUsername(), repositoryId);
+        if(member == null){
+            return false;
+        }
+        return repositoryRole.equals(member.getRepositoryRole());
     }
 
     @Override

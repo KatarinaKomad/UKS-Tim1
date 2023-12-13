@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import uns.ac.rs.uks.exception.AlreadyExistsException;
 import uns.ac.rs.uks.exception.NotFoundException;
 
 import java.util.HashMap;
@@ -59,4 +60,9 @@ public class ControllerAdvisor {
         return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<String> alreadyExistsException(Exception e) {
+        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.CONFLICT);
+    }
 }

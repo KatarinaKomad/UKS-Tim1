@@ -31,7 +31,7 @@
 
 .menuItem {
   display: flex;
-  margin: 35px 0vw;
+  margin: 35px 15px;
   cursor: pointer;
 
   .icon {
@@ -48,26 +48,25 @@
   }
 }
 
-// .logOut {
-//   display: flex;
-//   margin: 300px 2.5vw;
-//   cursor: pointer;
+.logged-user {
+  display: flex;
+  margin: 35px 15px;
 
-//   .icon {
-//     width: 35px;
-//     height: 35px;
-//     color: $primary-color;
-//   }
+  .icon {
+    width: 35px;
+    height: 35px;
+    color: $grey-color;
+  }
 
-//   .itemTitle {
-//     font-size: 16px;
-//     font-family: $font;
-//     color: $primary-color;
-//     margin: 10px 20px;
-//   }
-// }
+  .itemTitle {
+    font-size: 16px;
+    font-family: $font;
+    color: $grey-color;
+    margin: -10px 20px;
+  }
+}
 
-.link{
+.link {
   display: flex;
   cursor: pointer;
   text-decoration: none;

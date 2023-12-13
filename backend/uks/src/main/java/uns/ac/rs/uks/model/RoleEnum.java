@@ -1,11 +1,8 @@
-package uns.ac.rs.uks.dto;
-
+package uns.ac.rs.uks.model;
 
 public enum RoleEnum {
-    ROLE_SUPER_ADMIN("ROLE_SUPER_ADMIN"),
     ROLE_ADMIN("ROLE_ADMIN"),
-    ROLE_OWNER("ROLE_OWNER"),
-    ROLE_TENANT("ROLE_TENANT");
+    ROLE_USER("ROLE_USER");
 
     private final String name;
 
@@ -16,4 +13,5 @@ public enum RoleEnum {
     public String getName() {
         return this.name;
     }
+
 }
