@@ -50,5 +50,5 @@ jobs:
           registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
           image_name: ${{ env.IMAGE }}
           image_tag: ${{ github.sha }}
-          registry_username: ${{ github.actor }}
-          registry_password: aaaa
+          registry_username: draganmirkovic2402
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
