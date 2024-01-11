@@ -19,7 +19,7 @@ env:
   SERVICE: front
   IMAGE: angular-app
   REGISTRY_HOST: ghcr.io/
-  REGISTRY_ENDPOINT: ghcr.io/KatarinaKomad/UKS-Tim1
+  REGISTRY_ENDPOINT: ghcr.io/Dragan2402/UKS-Tim1
 
 jobs:
   build:
@@ -50,5 +50,5 @@ jobs:
           registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
           image_name: ${{ env.IMAGE }}
           image_tag: ${{ github.sha }}
-          registry_username: draganmirkovic2402
+          registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
