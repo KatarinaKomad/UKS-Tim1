@@ -42,6 +42,9 @@ services:
   front:
     image: angular-app
     container_name: front
+    build:
+      context: .
+      dockerfile: frontend/uks/Dockerfile
     ports:
       - "4200:80" # only for test purpouses
 
