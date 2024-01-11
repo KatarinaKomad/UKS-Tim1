@@ -1,0 +1,126 @@
+@startuml
+class User {
+    username: String
+    email: String
+    password: String
+    firstName: String
+    lastName: String
+}
+
+class Role {
+    name: String ( admin, user)
+}
+
+class Member {
+    role: RepositoryRole
+}
+
+class Repository {}
+
+class Review {
+    status: ReviewStatus
+}
+
+class Branch {
+    name: String
+    updatedAt: DateTime
+    updatedBy: User
+}
+
+class Milestone {
+    state: State
+    name: String
+}
+
+class Project {
+    name: String
+}
+
+class Issue {}
+
+class PullRequest {}
+
+class Commit {
+    message: String
+    committedAt: DateTime
+}
+
+class IssueVersion {
+    updatedAt: DateTime
+    description: String
+}
+
+class Comment {
+    message: String
+    author: User
+    createdAt: DateTime
+    code: String | json
+}
+class Item {
+    name: String
+    createdAt: DateTime
+}
+class Label {
+    name: String
+    color: String #hex
+}
+
+enum ReviewStatus {
+    PENDING
+    APPROVED
+    REJECTED
+}
+
+enum State {
+    OPEN
+    CLOSE
+    MERGED
+}
+enum RepositoryRole {
+    OWNER
+    COLLABORATOR
+    CONTRIBUTOR
+}
+
+Member *-- User
+Member *-- Repository
+
+User *-- Role
+User "0..*" -- "0..*" Repository: watching
+User "0..*" -- "0..*" Repository: stared
+User "1" -- "0..*" Repository: owning
+User "1" -- "0..*" Branch
+
+User "0..*" -- "0..*" Issue
+User "1" -- "0..*" Commit
+
+User "1" -- "0..*" Item: author
+Item "0..*" -- "0..*" User: assignees
+
+User "1" --* "0..*" Review
+PullRequest "1" -- "0..*" Review
+
+Repository "1" *-- "0..*" Repository : fork
+Repository  "1" -- "0..*" Branch
+Repository  "1" -- "0..*" Milestone
+Repository  "1" -- "0..*" Project
+Repository  "1" *-- "0..*" Label
+
+Item <|-- IssueVersion
+Item <|-- PullRequest
+Milestone "1" -- "0..*" Item
+Item "1" *-- "0..*" Comment
+Item "1" *-- "0..*" Label
+
+Branch "1..*" -- "0..*" Commit
+Commit "1" *-- "0..*" Commit : parent
+Commit "1" *-- "0..*" Comment
+
+PullRequest *-- Branch: origin
+PullRequest *-- Branch: target
+
+Project "1" *-- "0..*" Issue
+Issue "1" *-- "1..*" IssueVersion
+
+
+@enduml

@@ -1,0 +1,39 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+$github-green-color: #1f883d;
+$github-light-gray-color: #f6f8fa;
+$github-border-color: #d0d7de;
+
+$primary-color: #252728;
+$secondary-color: #c1a8a6;
+$tertiary-color: #35373b;
+$white-color: #fff;
+$error-color: #c6706f;
+$success-color: #4a794a;
+$green-color: #324b3e;
+$grey-color: #5f6067;
+$text-color: #c9cbcf;
+$background-color: #151515;
+$light-green-color: #6BA06B;
+$shadow-color: rgba(0, 0, 0, 0.81);
+$black-color: #222222;
+$dark-text-color: #4e4e52;
+$light-gray-text: #B4B4BB;
+$radio-button-color: #d4c0c9;
+
+$font: 'Yu Gothic UI';

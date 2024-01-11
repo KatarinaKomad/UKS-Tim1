@@ -1,0 +1,73 @@
+@import "../../../../styles.scss";
+
+
+.menu {
+  width: 15vw;
+  height: 100vh;
+  background-color: $primary-color;
+}
+
+.logo {
+  display: flex;
+  border-bottom: 1px solid $github-border-color;
+
+  .logoIcon {
+    width: 90px;
+    height: 55px;
+    margin: 30px 1vw;
+  }
+
+  .logoTitle {
+    font-size: 25px;
+    font-family: $font;
+    color: $text-color;
+    margin: 50px 10px;
+  }
+}
+
+.menuItems {
+  border-bottom: 1px solid $github-border-color;
+}
+
+.menuItem {
+  display: flex;
+  margin: 35px 15px;
+  cursor: pointer;
+
+  .icon {
+    width: 35px;
+    height: 35px;
+    color: $grey-color;
+  }
+
+  .itemTitle {
+    font-size: 16px;
+    font-family: $font;
+    color: $grey-color;
+    margin: -10px 20px;
+  }
+}
+
+.logged-user {
+  display: flex;
+  margin: 35px 15px;
+
+  .icon {
+    width: 35px;
+    height: 35px;
+    color: $grey-color;
+  }
+
+  .itemTitle {
+    font-size: 16px;
+    font-family: $font;
+    color: $grey-color;
+    margin: -10px 20px;
+  }
+}
+
+.link {
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
+}

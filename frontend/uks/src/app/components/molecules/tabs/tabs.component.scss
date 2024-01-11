@@ -1,0 +1,10 @@
+@import '../../../../styles.scss';
+
+.menuItem {
+    display: flex;
+    cursor: pointer;
+}
+
+.itemTitle {
+    margin-left: 10px;
+}
