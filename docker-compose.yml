@@ -1,8 +1,7 @@
-version: '3.2'
+version: "3.2"
 
 services:
-
-# Postres as a main storage
+  # Postres as a main storage
   db:
     restart: always
     image: postgres
@@ -18,17 +17,16 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=postgres
 
-
   web:
-    image: 'uks_web:latest'
-    build: 
-      context: ./backenikd/uks
+    image: "uks_web:latest"
+    build:
+      context: ./backend/uks
     container_name: web
     depends_on:
       - db
     # links:
     #   - db:db
-      #- redis
+    #- redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/uks
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -45,7 +43,7 @@ services:
     image: angular-app
     container_name: front
     ports:
-      - "4200:80"  # only for test purpouses
+      - "4200:80" # only for test purpouses
 
   # Nginx as a web server and reverse proxy
   nginx:

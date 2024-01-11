@@ -11,12 +11,15 @@ on:
       - main
     paths:
       - frontend/uks/**
+  pull_request:
+    branches:
+      - develop
 
 env:
-  SERVICE: webapp
-  IMAGE: webapp
+  SERVICE: front
+  IMAGE: angular-app
   REGISTRY_HOST: ghcr.io/
-  REGISTRY_ENDPOINT: ghcr.io/KatarinaKomad/UKS-Tim1
+  REGISTRY_ENDPOINT: ghcr.io/Dragan2402/UKS-Tim1
 
 jobs:
   build:
@@ -39,7 +42,7 @@ jobs:
         run: |
           cd frontend/uks && npm test
 
-      - uses: ./.github/workflows/composite/push
+      - uses: ./.github/workflows/composite/build-push
         if: success()
         with:
           service: ${{ env.SERVICE }}
