@@ -1,0 +1,51 @@
+name: Angular App Push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - frontend/uks/**
+
+env:
+  SERVICE: webapp
+  IMAGE: webapp
+  REGISTRY_HOST: ghcr.io/
+  REGISTRY_ENDPOINT: ghcr.io/KatarinaKomad/UKS-Tim1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: cd frontend/uks
+          npm install
+
+      - name: Run Tests
+        run: cd frontend/uks
+          npm test
+
+      - uses: ./.github/workflows/composite/push
+        if: success()
+        with:
+          service: ${{ env.SERVICE }}
+          registry_host: ${{ env.REGISTRY_HOST }}
+          registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
+          image_name: ${{ env.IMAGE }}
+          image_tag: ${{ github.sha }}
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
