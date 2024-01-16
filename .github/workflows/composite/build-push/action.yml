@@ -6,7 +6,7 @@ inputs:
     description: "Service to build"
     required: true
   registry_host:
-    description: "Image registry"
+    description: "Image registry host"
     required: true
   registry_endpoint:
     description: "Image registry repo"
