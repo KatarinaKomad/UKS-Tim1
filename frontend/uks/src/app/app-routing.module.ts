@@ -5,7 +5,8 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { SignUpPageComponent } from './pages/authentication/sign-up-page/sign-up-page.component';
 import { ForgotPasswordPageComponent } from './pages/authentication/forgot-password-page/forgot-password-page.component';
-import { authGuard } from 'src/services/auth/guards/auth.guard';
+import { authGuard, repoGuard } from 'src/services/auth/guards/auth.guard';
+import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'signUp', component: SignUpPageComponent, data: {} },
   { path: 'forgotPassword', component: ForgotPasswordPageComponent, data: {} },
   { path: 'home', component: HomePageComponent, canMatch: [authGuard], data: {} },
+  { path: 'repository/:repoName', component: RepositoryPageComponent, canMatch: [repoGuard], data: {} },
 
   { path: '**', component: PageNotFoundComponent },
 ];

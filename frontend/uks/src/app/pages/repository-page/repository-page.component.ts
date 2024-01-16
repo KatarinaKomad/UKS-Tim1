@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 
 @Component({
   selector: 'app-repository-page',
@@ -7,7 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RepositoryPageComponent implements OnInit {
 
-  constructor() { }
+  repository: RepoBasicInfoDTO;
+
+  constructor(private router: Router) {
+    this.repository = this.router.getCurrentNavigation()?.extras?.state?.['repository'];
+    console.log(this.repository)
+  }
 
   ngOnInit(): void {
   }
