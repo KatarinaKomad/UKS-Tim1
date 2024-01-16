@@ -40,11 +40,19 @@ jobs:
         run: |
           cd frontend/uks && npm test
 
-      - uses: ./.github/workflows/composite/build-push
-        if: success()
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          service: ${{ env.SERVICE }}
-          image_name: ${{ env.IMAGE }}
-          image_tag: ${{ github.sha }}
-          registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME  }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD  }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: my-docker-hub-namespace/my-docker-hub-repository
+
+      - name: Build and push Docker image with Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml build front
+          docker-compose -f docker-compose.yml push front
