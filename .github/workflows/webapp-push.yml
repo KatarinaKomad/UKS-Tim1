@@ -55,4 +55,5 @@ jobs:
       - name: Build and push Docker image with Docker Compose
         run: |
           docker-compose -f docker-compose.yml build front
-          docker-compose -f docker-compose.yml push front
+          docker-compose -f docker-compose.yml tag front ${{ secrets.DOCKER_REGISTRY_USERNAME }}/front
+          docker-compose -f docker-compose.yml push ${{secrets.DOCKER_REGISTRY_USERNAME}}/front
