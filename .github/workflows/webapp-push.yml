@@ -13,10 +13,8 @@ on:
       - frontend/uks/**
 
 env:
-  SERVICE: webapp
-  IMAGE: webapp
-  REGISTRY_HOST: ghcr.io/
-  REGISTRY_ENDPOINT: ghcr.io/KatarinaKomad/UKS-Tim1
+  SERVICE: front
+  REGISTRY_HOST: docker.io
 
 jobs:
   build:
@@ -39,13 +37,12 @@ jobs:
         run: |
           cd frontend/uks && npm test
 
-      - uses: ./.github/workflows/composite/push
+      - uses: ./.github/workflows/composite/build-push
         if: success()
         with:
           service: ${{ env.SERVICE }}
           registry_host: ${{ env.REGISTRY_HOST }}
-          registry_endpoint: ${{ env.REGISTRY_ENDPOINT }}
-          image_name: ${{ env.IMAGE }}
+          registry_endpoint: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           image_tag: ${{ github.sha }}
-          registry_username: ${{ github.actor }}
-          registry_password: ${{ secrets.GITHUB_TOKEN }}
+          registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}

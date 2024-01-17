@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RegistrationRequest } from 'src/models/authentication/registration';
 import { getRegistrationRequest, signUpForm } from 'src/models/forms/authenticationForm';
 import { createFormGroupFromFormConfig } from 'src/models/forms/input';
-import { LoggedUser } from 'src/models/user/user';
+import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 
 @Component({
@@ -36,7 +36,7 @@ export class SignUpPageComponent implements OnInit {
   handeSignUpButtonClick(): void {
     const registrationRequest: RegistrationRequest = getRegistrationRequest(this.signUpForm);
     this.authService.signup(registrationRequest).subscribe({
-      next: (response: LoggedUser | null) => {
+      next: (response: UserBasicInfo | null) => {
         console.log(response);
         this.toastr.success("Registration success!", "Please login to continue.");
         this.router.navigate(['/login']);

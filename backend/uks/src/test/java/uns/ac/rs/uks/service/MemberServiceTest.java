@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uns.ac.rs.uks.model.Member;
-import uns.ac.rs.uks.model.Repository;
+import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.repository.MemberRepository;
 import uns.ac.rs.uks.util.Constants;
@@ -50,7 +50,8 @@ public class MemberServiceTest {
         UUID repositoryId = Constants.REPOSITORY_ID_1_UKS_TEST;
         Member memberTest = createMember(email, repositoryId);
 
-        when(memberRepository.findMemberByUserEmailAndRepositoryId(email, repositoryId)).thenReturn(Optional.of(memberTest));
+        when(memberRepository.findMemberByUserEmailAndRepositoryId(email, repositoryId))
+                .thenReturn(Optional.of(memberTest));
 
         Member member = memberService.findMemberByUserEmailAndRepositoryId(email, repositoryId);
         assertNotNull(member);
@@ -69,7 +70,7 @@ public class MemberServiceTest {
     }
 
     private Member createMember(String email, UUID repoId) {
-        Repository repository = new Repository();
+        Repo repository = new Repo();
         repository.setId(repoId);
 
         User user = new User();

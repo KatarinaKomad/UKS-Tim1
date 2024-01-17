@@ -15,7 +15,10 @@ class Member {
     role: RepositoryRole
 }
 
-class Repository {}
+class Repository {
+    name: String
+    isPublic: Boolean
+}
 
 class Review {
     status: ReviewStatus

@@ -12,12 +12,14 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Repository {
+public class Repo {
     @Id
     private UUID id;
     private String name;
     @ManyToOne
     private User owner;
+
+    private Boolean isPublic;
 
 
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -31,9 +33,9 @@ public class Repository {
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Repository forkParent;
+    private Repo forkParent;
     @OneToMany(mappedBy = "forkParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Repository> forkChildren;
+    private List<Repo> forkChildren;
 
 
     @ManyToMany

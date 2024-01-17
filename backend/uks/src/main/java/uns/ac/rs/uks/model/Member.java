@@ -16,7 +16,7 @@ public class Member {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Repository repository;
+    private Repo repository;
     @Enumerated(EnumType.STRING)
     private RepositoryRole repositoryRole;
 }
