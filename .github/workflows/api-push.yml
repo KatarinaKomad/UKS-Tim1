@@ -1,0 +1,41 @@
+name: API Push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - backend/uks/**
+
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - frontend/uks/**
+
+env:
+  SERVICE: api
+  REGISTRY_HOST: docker.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - uses: ./.github/workflows/composite/build-push
+        if: success()
+        with:
+          service: ${{ env.SERVICE }}
+          registry_host: ${{ env.REGISTRY_HOST }}
+          registry_endpoint: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          image_tag: ${{ github.sha }}
+          registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
