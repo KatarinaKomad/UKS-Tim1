@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 import { RepoItemComponent } from './repo-item.component';
 
@@ -8,10 +9,10 @@ describe('RepoItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RepoItemComponent]
-    })
-    .compileComponents();
-    
+      declarations: [RepoItemComponent],
+      imports: [HttpClientModule],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(RepoItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
