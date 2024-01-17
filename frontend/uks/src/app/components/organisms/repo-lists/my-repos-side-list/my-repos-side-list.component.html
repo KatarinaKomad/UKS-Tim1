@@ -1,0 +1,23 @@
+<h2 style="margin-top: 10px;">My repositories</h2>
+<div class="list-container">
+    <div *ngFor="let repo of myRepos">
+        <li style="cursor: pointer;">
+            <a (click)="navigateToRepo(repo)" style="display: inline-block;">
+                <h3>{{repo.name}} {{repo.isPublic ? '(public)': '(private)'}}</h3>
+            </a>
+        </li>
+    </div>
+
+    <div *ngIf="myRepos.length === 0">
+        No repositories
+    </div>
+
+    <div class="button-container">
+        <button class="!bg-green-600 rounded-lg  w-fit px-4 py-2 text-white hover:!bg-green-800 text-sm"
+            (click)="addNewRepository()">
+            <i class="fa-solid fa-book-medical"></i>
+            New Repository
+        </button>
+    </div>
+
+</div>

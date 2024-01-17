@@ -2,6 +2,8 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserBasicInfo } from 'src/models/user/user';
+import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 
 export const authGuard = () => {
 
@@ -13,3 +15,26 @@ export const authGuard = () => {
   }
   return router.parseUrl('/login');
 };
+
+export const repoGuard = async () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  const repository: RepoBasicInfoDTO = router.getCurrentNavigation()?.extras?.state?.['repository'];
+  authService.getLoggedUser().subscribe({
+    next: (user: UserBasicInfo | undefined) => {
+      if (!user || !repository) {
+        router.navigate(['/not-found'])
+        return;
+      }
+      if (repository.owner.id !== user.id && !repository.isPublic) {
+        router.navigate(['/not-found'])
+        return;
+      }
+    }
+  })
+
+
+}
+
+

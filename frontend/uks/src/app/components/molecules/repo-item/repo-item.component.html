@@ -1,0 +1,25 @@
+<div class="card-container" (click)="navigateToRepo()">
+    <div class="repo-header">
+        <h4 class="repo-title">
+            {{repository?.owner?.firstName}} {{repository?.owner?.lastName}} /
+            {{repository?.name}}
+        </h4>
+    </div>
+
+    <div class="repo-stats">
+        <span class="repo-stat">
+            <i class="fa-regular fa-star fa-sm"> </i>
+            <p>{{repository?.starCount}}</p>
+        </span>
+        <span class="repo-stat">
+            <i class="fa-regular fa-eye fa-sm"></i>
+            <p>{{repository?.watchCount}}</p>
+        </span>
+        <span class="repo-stat">
+            <i class="fa-solid fa-code-fork fa-sm"></i>
+            <p>{{repository?.forkCount}}</p>
+        </span>
+    </div>
+
+
+</div>

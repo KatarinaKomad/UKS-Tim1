@@ -4,6 +4,7 @@
 .navbar-container {
     color: $github-light-gray-color;
     border: 1px solid $github-border-color;
+    height: 20px !important;
 }
 
 .menu-button {
@@ -13,11 +14,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    width: 35px;
-    height: 35px;
+
+    width: 30px;
+    height: 30px;
+
     .icon {
-        
+
         color: $grey-color;
     }
 }
@@ -25,23 +27,23 @@
 .span-spacer {
     flex: 1 1 auto;
 }
-  
+
 .mat-tab-group {
     margin-bottom: 48px;
 }
 
 .logo {
     display: flex;
-  
+
     .logoIcon {
-      width: 70px;
-      height: 40px;
-    }  
+        width: 50px;
+        height: 30px;
+    }
 }
 
 .title {
-    font-size: 18px;
+    font-size: 16px;
     font-family: $font;
     color: $black-color;
     margin: 30px 0px;
-  }
+}
