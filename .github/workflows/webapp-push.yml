@@ -11,15 +11,10 @@ on:
       - main
     paths:
       - frontend/uks/**
-  pull_request:
-    branches:
-      - develop
 
 env:
   SERVICE: front
-  IMAGE: angular-app
   REGISTRY_HOST: docker.io
-  REGISTRY_ENDPOINT: draganmirkovic2402
 
 jobs:
   build:
@@ -47,7 +42,7 @@ jobs:
         with:
           service: ${{ env.SERVICE }}
           registry_host: ${{ env.REGISTRY_HOST }}
-          registry_endpoint: ${{ env.REGISTRY_ENDPOINT}}
+          registry_endpoint: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           image_tag: ${{ github.sha }}
           registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
