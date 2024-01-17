@@ -41,9 +41,8 @@ public class RoleServiceTest {
         closeable.close();
     }
 
-
     @ParameterizedTest(name = "Finding role by name {0}")
-    @ValueSource(strings = {"ROLE_ADMIN", "ROLE_USER"})
+    @ValueSource(strings = { "ROLE_ADMIN", "ROLE_USER" })
     void testGetRoleByNameSuccess(String name) {
         Role role = new Role();
         role.setName(name);
@@ -56,7 +55,7 @@ public class RoleServiceTest {
     }
 
     @ParameterizedTest(name = "Not finding role by name {0}")
-    @ValueSource(strings = {"ROLE_COLLABORATOR", "ROLE_TEST"})
+    @ValueSource(strings = { "ROLE_COLLABORATOR", "ROLE_TEST" })
     public void noRoleByName(String name) {
         when(roleRepository.findByName(name)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> roleService.getRoleByName(name));

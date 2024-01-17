@@ -1,6 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginRequest, TokenResponse } from 'src/models/authentication/login';
@@ -9,11 +6,17 @@ import { UserBasicInfo } from 'src/models/user/user';
 import { HttpRequestService } from 'src/utils/http-request.service';
 import { getTokenExpiration } from 'src/utils/jwtTokenUtils';
 
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private loggedUserSubject = new BehaviorSubject<UserBasicInfo | undefined>(undefined);
+  private loggedUserSubject = new BehaviorSubject<UserBasicInfo | undefined>(
+    undefined
+  );
 
   constructor(
     private httpRequestService: HttpRequestService,
@@ -23,14 +26,13 @@ export class AuthService {
       this.getCurrentUser().subscribe({
         next: (user: UserBasicInfo) => {
           this.onNewUserReceived(user);
-        }
+        },
       });
     }
   }
 
-
   login(loginRequest: LoginRequest): Observable<TokenResponse> {
-    const url = environment.API_BASE_URL + "/auth/login";
+    const url = environment.API_BASE_URL + '/auth/login';
     const body = JSON.stringify(loginRequest);
 
     return this.httpRequestService.post(url, body) as Observable<TokenResponse>;
@@ -44,10 +46,13 @@ export class AuthService {
   }
 
   signup(signupRequest: RegistrationRequest): Observable<UserBasicInfo | null> {
-    const url = environment.API_BASE_URL + "/auth/register";
+    const url = environment.API_BASE_URL + '/auth/register';
     const body = JSON.stringify(signupRequest);
 
-    return this.httpRequestService.post(url, body) as Observable<UserBasicInfo | null>;
+    return this.httpRequestService.post(
+      url,
+      body
+    ) as Observable<UserBasicInfo | null>;
   }
 
   getLoggedUser(): Observable<UserBasicInfo | undefined> {
@@ -55,15 +60,17 @@ export class AuthService {
       this.getCurrentUser().subscribe({
         next: (user: UserBasicInfo) => {
           this.onNewUserReceived(user);
-        }
+        },
       });
     }
     return this.loggedUserSubject.asObservable();
   }
 
-
   handleSuccessfulAuth(token: TokenResponse): void {
-    sessionStorage.setItem(environment.TOKEN_EXPIRATION, token.expiresAt.toString());
+    sessionStorage.setItem(
+      environment.TOKEN_EXPIRATION,
+      token.expiresAt.toString()
+    );
     sessionStorage.setItem(environment.TOKEN, token.accessToken);
 
     this.getCurrentUser().subscribe({
@@ -73,8 +80,8 @@ export class AuthService {
       },
       error: (e: HttpErrorResponse) => {
         console.log(e);
-      }
-    })
+      },
+    });
   }
 
   isAuthenticated(): boolean {
@@ -90,8 +97,7 @@ export class AuthService {
   }
 
   private getCurrentUser(): Observable<UserBasicInfo> {
-    const url = environment.API_BASE_URL + "/auth/me";
+    const url = environment.API_BASE_URL + '/auth/me';
     return this.httpRequestService.get(url) as Observable<UserBasicInfo>;
   }
-
 }

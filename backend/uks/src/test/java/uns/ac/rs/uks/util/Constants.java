@@ -12,7 +12,6 @@ public class Constants {
 	public static final String MIKA_EMAIL = "mika@gmail.com";
 	public static final String MIKA_PASSWORD = "bWlrYTEyMw==";
 
-
 	public static final UUID BLOCKED_USER_ID = UUID.fromString("8e9b90cd-5517-4375-99ae-57eb5e4870e4");
 	public static final UUID DELETED_USER_ID = UUID.fromString("ecf1c234-f25d-442f-b045-fbca70d4a86f");
 

@@ -50,7 +50,8 @@ public class MemberServiceTest {
         UUID repositoryId = Constants.REPOSITORY_ID_1_UKS_TEST;
         Member memberTest = createMember(email, repositoryId);
 
-        when(memberRepository.findMemberByUserEmailAndRepositoryId(email, repositoryId)).thenReturn(Optional.of(memberTest));
+        when(memberRepository.findMemberByUserEmailAndRepositoryId(email, repositoryId))
+                .thenReturn(Optional.of(memberTest));
 
         Member member = memberService.findMemberByUserEmailAndRepositoryId(email, repositoryId);
         assertNotNull(member);

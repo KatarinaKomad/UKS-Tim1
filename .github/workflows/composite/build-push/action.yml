@@ -32,10 +32,6 @@ runs:
         echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
         sudo service docker restart
 
-    - name: echo endpoint
-      shell: bash
-      run: echo ${{ inputs.registry_endpoint }}
-
     - name: Login to Container Registry
       uses: docker/login-action@v1
       with:

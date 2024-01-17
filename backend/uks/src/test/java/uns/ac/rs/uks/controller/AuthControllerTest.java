@@ -26,61 +26,61 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("test")
 public class AuthControllerTest {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+        @Autowired
+        private TestRestTemplate restTemplate;
 
-    @Test
-    public void testLoginSuccess() {
-        LoginRequest request = new LoginRequest();
-        request.setEmail(Constants.MIKA_EMAIL);
-        request.setPassword(Constants.MIKA_PASSWORD);
-        ResponseEntity<TokenResponse> responseEntity = restTemplate
-                .exchange("/auth/login", HttpMethod.POST, new HttpEntity<>(request), TokenResponse.class);
+        @Test
+        public void testLoginSuccess() {
+                LoginRequest request = new LoginRequest();
+                request.setEmail(Constants.MIKA_EMAIL);
+                request.setPassword(Constants.MIKA_PASSWORD);
+                ResponseEntity<TokenResponse> responseEntity = restTemplate
+                                .exchange("/auth/login", HttpMethod.POST, new HttpEntity<>(request),
+                                                TokenResponse.class);
 
-        assertNotNull(responseEntity.getBody());
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    }
+                assertNotNull(responseEntity.getBody());
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        }
 
-    @Test
-    public void testRegistrationSuccess() {
-        RegistrationRequest request = new RegistrationRequest();
-        request.setEmail("test@gmail.com");
-        request.setPassword("dGVzdHBhc3N3b3Jk"); //testpassword
-        request.setPasswordConfirmation("dGVzdHBhc3N3b3Jk");
-        request.setFirstName("testName");
-        request.setLastName("testLastName");
+        @Test
+        public void testRegistrationSuccess() {
+                RegistrationRequest request = new RegistrationRequest();
+                request.setEmail("test@gmail.com");
+                request.setPassword("dGVzdHBhc3N3b3Jk"); // testpassword
+                request.setPasswordConfirmation("dGVzdHBhc3N3b3Jk");
+                request.setFirstName("testName");
+                request.setLastName("testLastName");
 
-        ResponseEntity<UserDTO> responseEntity = restTemplate
-                .exchange("/auth/register", HttpMethod.POST, new HttpEntity<>(request), UserDTO.class);
+                ResponseEntity<UserDTO> responseEntity = restTemplate
+                                .exchange("/auth/register", HttpMethod.POST, new HttpEntity<>(request), UserDTO.class);
 
-        assertNotNull(responseEntity.getBody());
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("test@gmail.com", responseEntity.getBody().getEmail());
-    }
+                assertNotNull(responseEntity.getBody());
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                assertEquals("test@gmail.com", responseEntity.getBody().getEmail());
+        }
 
-    @Test
-    public void testRegisterUserUserAlreadyExists() {
-        RegistrationRequest request = new RegistrationRequest();
-        request.setEmail(Constants.MIKA_EMAIL);
-        request.setPassword(Constants.MIKA_PASSWORD);
+        @Test
+        public void testRegisterUserUserAlreadyExists() {
+                RegistrationRequest request = new RegistrationRequest();
+                request.setEmail(Constants.MIKA_EMAIL);
+                request.setPassword(Constants.MIKA_PASSWORD);
 
-        ResponseEntity<UserDTO> responseEntity = restTemplate
-                .exchange("/auth/register", HttpMethod.POST, new HttpEntity<>(request), UserDTO.class);
+                ResponseEntity<UserDTO> responseEntity = restTemplate
+                                .exchange("/auth/register", HttpMethod.POST, new HttpEntity<>(request), UserDTO.class);
 
-        assertNotNull(responseEntity.getBody());
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-    }
+                assertNotNull(responseEntity.getBody());
+                assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        }
 
+        @Test
+        public void testMe() {
+                HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+                HttpEntity<String> entity = new HttpEntity<>(headers);
+                ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/me", HttpMethod.GET, entity,
+                                UserDTO.class);
 
-
-    @Test
-    public void testMe() {
-        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/me", HttpMethod.GET,  entity, UserDTO.class);
-
-        assertNotNull(responseEntity.getBody());
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(Constants.MIKA_EMAIL, responseEntity.getBody().getEmail());
-    }
+                assertNotNull(responseEntity.getBody());
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+                assertEquals(Constants.MIKA_EMAIL, responseEntity.getBody().getEmail());
+        }
 }
