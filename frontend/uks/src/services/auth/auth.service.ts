@@ -1,12 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginRequest, TokenResponse } from 'src/models/authentication/login';
 import { RegistrationRequest } from 'src/models/authentication/registration';
-import { LoggedUser } from 'src/models/user/user';
+import { UserBasicInfo } from 'src/models/user/user';
 import { HttpRequestService } from 'src/utils/http-request.service';
 import { getTokenExpiration } from 'src/utils/jwtTokenUtils';
 
@@ -14,7 +13,7 @@ import { getTokenExpiration } from 'src/utils/jwtTokenUtils';
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedUserSubject = new BehaviorSubject<LoggedUser | undefined>(undefined);
+  private loggedUserSubject = new BehaviorSubject<UserBasicInfo | undefined>(undefined);
 
   constructor(
     private httpRequestService: HttpRequestService,
@@ -22,7 +21,7 @@ export class AuthService {
   ) {
     if (this.loggedUserSubject.value === undefined) {
       this.getCurrentUser().subscribe({
-        next: (user: LoggedUser) => {
+        next: (user: UserBasicInfo) => {
           this.onNewUserReceived(user);
         }
       });
@@ -44,14 +43,21 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  signup(signupRequest: RegistrationRequest): Observable<LoggedUser | null> {
+  signup(signupRequest: RegistrationRequest): Observable<UserBasicInfo | null> {
     const url = environment.API_BASE_URL + "/auth/register";
     const body = JSON.stringify(signupRequest);
 
-    return this.httpRequestService.post(url, body) as Observable<LoggedUser | null>;
+    return this.httpRequestService.post(url, body) as Observable<UserBasicInfo | null>;
   }
 
-  getLoggedUser(): Observable<LoggedUser | undefined> {
+  getLoggedUser(): Observable<UserBasicInfo | undefined> {
+    if (this.loggedUserSubject.value === undefined) {
+      this.getCurrentUser().subscribe({
+        next: (user: UserBasicInfo) => {
+          this.onNewUserReceived(user);
+        }
+      });
+    }
     return this.loggedUserSubject.asObservable();
   }
 
@@ -61,7 +67,7 @@ export class AuthService {
     sessionStorage.setItem(environment.TOKEN, token.accessToken);
 
     this.getCurrentUser().subscribe({
-      next: (user: LoggedUser) => {
+      next: (user: UserBasicInfo) => {
         this.onNewUserReceived(user);
         this.router.navigate(['/home']);
       },
@@ -79,13 +85,13 @@ export class AuthService {
     return false;
   }
 
-  private onNewUserReceived(msg: LoggedUser | undefined) {
+  private onNewUserReceived(msg: UserBasicInfo | undefined) {
     this.loggedUserSubject.next(msg);
   }
 
-  private getCurrentUser(): Observable<LoggedUser> {
+  private getCurrentUser(): Observable<UserBasicInfo> {
     const url = environment.API_BASE_URL + "/auth/me";
-    return this.httpRequestService.get(url) as Observable<LoggedUser>;
+    return this.httpRequestService.get(url) as Observable<UserBasicInfo>;
   }
 
 }

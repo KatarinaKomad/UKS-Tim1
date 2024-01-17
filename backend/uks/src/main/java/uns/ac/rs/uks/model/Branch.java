@@ -30,5 +30,5 @@ public class Branch {
     private List<Commit> commits;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Repository repository;
+    private Repo repository;
 }

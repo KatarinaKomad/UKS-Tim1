@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { SelectionOptions } from 'src/models/navigation';
-import { LoggedUser } from 'src/models/user/user';
+import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 
 
@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
   @ViewChild('drawer') drawer: MatDrawer | undefined;
   SelectionOptions = SelectionOptions;
 
-  loggedUser: LoggedUser | undefined;
+  loggedUser: UserBasicInfo | undefined;
 
   constructor(
     private router: Router,
@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.getLoggedUser().subscribe({
-      next: (user: LoggedUser | undefined) => {
+      next: (user: UserBasicInfo | undefined) => {
         this.loggedUser = user;
       },
       error: (e: any) => {

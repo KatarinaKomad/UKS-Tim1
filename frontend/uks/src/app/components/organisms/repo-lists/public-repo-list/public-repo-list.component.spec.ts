@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageTemplateComponent } from './page-template.component';
+import { PublicRepoListComponent } from './public-repo-list.component';
 
-describe('PageTemplateComponent', () => {
-  let component: PageTemplateComponent;
-  let fixture: ComponentFixture<PageTemplateComponent>;
+describe('PublicRepoListComponent', () => {
+  let component: PublicRepoListComponent;
+  let fixture: ComponentFixture<PublicRepoListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageTemplateComponent ]
+      imports: [PublicRepoListComponent]
     })
     .compileComponents();
-
-    fixture = TestBed.createComponent(PageTemplateComponent);
+    
+    fixture = TestBed.createComponent(PublicRepoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

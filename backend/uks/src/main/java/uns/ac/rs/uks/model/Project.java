@@ -17,7 +17,7 @@ public class Project {
     private Long id;
     private String name;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Repository repository;
+    private Repo repository;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Issue> issues;

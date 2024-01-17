@@ -43,11 +43,11 @@ public class User implements UserDetails {
 
     // ************************************* GITHUB ******************************************/
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Repository> repositories;
+    private List<Repo> repositories;
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Repository> watching;
+    private List<Repo> watching;
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Repository> stared;
+    private List<Repo> stared;
 
 
     @OneToMany(mappedBy = "updatedBy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

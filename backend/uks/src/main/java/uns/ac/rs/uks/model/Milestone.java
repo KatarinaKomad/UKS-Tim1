@@ -19,7 +19,7 @@ public class Milestone {
     @Enumerated(EnumType.STRING)
     private State state;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Repository repository;
+    private Repo repository;
 
     @OneToMany(mappedBy = "milestone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Item> items;
