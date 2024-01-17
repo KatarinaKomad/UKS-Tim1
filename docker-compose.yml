@@ -40,8 +40,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   front:
-    image: angular-app
-    container_name: front
+    image: ${REGISTRY:-uks}/webapp:${TAG:-latest}
     build:
       context: .
       dockerfile: frontend/uks/Dockerfile
