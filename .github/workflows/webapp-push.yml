@@ -45,7 +45,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
       - uses: ./.github/workflows/composite/build-push
-        if: success()
         with:
           service: ${{ env.SERVICE }}
           registry_host: ${{ env.REGISTRY_HOST }}
