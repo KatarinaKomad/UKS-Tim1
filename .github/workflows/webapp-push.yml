@@ -19,7 +19,7 @@ env:
   SERVICE: front
   IMAGE: angular-app
   REGISTRY_HOST: docker.io
-  REGISTRY_ENDPOINT: docker.io/draganmirkovic2402/front
+  REGISTRY_ENDPOINT: draganmirkovic2402
 
 jobs:
   build:
@@ -48,7 +48,6 @@ jobs:
           service: ${{ env.SERVICE }}
           registry_host: ${{ env.REGISTRY_HOST }}
           registry_endpoint: ${{ env.REGISTRY_ENDPOINT}}
-          image_name: ${{ env.IMAGE }}
           image_tag: ${{ github.sha }}
           registry_username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           registry_password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}

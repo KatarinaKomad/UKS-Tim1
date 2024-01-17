@@ -6,13 +6,10 @@ inputs:
     description: "Service to build"
     required: true
   registry_host:
-    description: "Image registry host"
+    description: "Image registry"
     required: true
   registry_endpoint:
     description: "Image registry repo"
-    required: true
-  image_name:
-    description: "Name of image"
     required: true
   image_tag:
     description: "Image tag"
@@ -34,6 +31,10 @@ runs:
         mkdir -p ~/.docker
         echo $'{\n  "experimental": "enabled"\n}' | sudo tee ~/.docker/config.json
         sudo service docker restart
+
+    - name: echo endpoint
+      shell: bash
+      run: echo ${{ inputs.registry_endpoint }}
 
     - name: Login to Container Registry
       uses: docker/login-action@v1
