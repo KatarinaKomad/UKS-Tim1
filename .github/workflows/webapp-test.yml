@@ -8,7 +8,7 @@ on:
       - frontend/uks/**
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
