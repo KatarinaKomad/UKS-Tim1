@@ -17,7 +17,7 @@ env:
   REGISTRY_HOST: docker.io
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,6 +37,13 @@ jobs:
         run: |
           cd frontend/uks && npm test
 
+  build_push:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
       - uses: ./.github/workflows/composite/build-push
         if: success()
         with:
