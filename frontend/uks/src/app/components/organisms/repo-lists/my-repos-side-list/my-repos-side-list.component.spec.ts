@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MyReposSideListComponent } from './my-repos-side-list.component';
 
@@ -8,10 +9,10 @@ describe('MyReposSideListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MyReposSideListComponent]
-    })
-    .compileComponents();
-    
+      declarations: [MyReposSideListComponent],
+      imports: [HttpClientModule],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(MyReposSideListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
