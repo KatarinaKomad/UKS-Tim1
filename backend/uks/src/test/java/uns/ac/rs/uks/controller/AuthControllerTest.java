@@ -1,6 +1,5 @@
 package uns.ac.rs.uks.controller;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,8 @@ import uns.ac.rs.uks.dto.request.LoginRequest;
 import uns.ac.rs.uks.dto.request.RegistrationRequest;
 import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.dto.response.UserDTO;
-import uns.ac.rs.uks.model.Role;
-import uns.ac.rs.uks.model.RoleEnum;
-import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.util.Constants;
+import uns.ac.rs.uks.util.LoginUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,35 +29,11 @@ public class AuthControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String mikaPassword = "bWlrYTEyMw==";
-
-    private String token;
-
-    HttpHeaders headers = new HttpHeaders();
-
-    @AfterEach
-    public void cleanUp() {
-        token = "";
-        headers.clear();
-    }
-
-    public void login(String username, String password) {
-        LoginRequest request = new LoginRequest();
-        request.setEmail(username);
-        request.setPassword(password);
-        ResponseEntity<TokenResponse> tokenResp = restTemplate
-                .exchange("/auth/login", HttpMethod.POST, new HttpEntity<>(request), TokenResponse.class);
-
-        assertNotNull(tokenResp.getBody());
-        token = tokenResp.getBody().getAccessToken();
-        headers.setBearerAuth(token);
-    }
-
     @Test
     public void testLoginSuccess() {
         LoginRequest request = new LoginRequest();
         request.setEmail(Constants.MIKA_EMAIL);
-        request.setPassword(mikaPassword);
+        request.setPassword(Constants.MIKA_PASSWORD);
         ResponseEntity<TokenResponse> responseEntity = restTemplate
                 .exchange("/auth/login", HttpMethod.POST, new HttpEntity<>(request), TokenResponse.class);
 
@@ -89,7 +62,7 @@ public class AuthControllerTest {
     public void testRegisterUserUserAlreadyExists() {
         RegistrationRequest request = new RegistrationRequest();
         request.setEmail(Constants.MIKA_EMAIL);
-        request.setPassword(mikaPassword);
+        request.setPassword(Constants.MIKA_PASSWORD);
 
         ResponseEntity<UserDTO> responseEntity = restTemplate
                 .exchange("/auth/register", HttpMethod.POST, new HttpEntity<>(request), UserDTO.class);
@@ -102,7 +75,7 @@ public class AuthControllerTest {
 
     @Test
     public void testMe() {
-        login(Constants.MIKA_EMAIL, mikaPassword);
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<UserDTO> responseEntity = restTemplate.exchange("/auth/me", HttpMethod.GET,  entity, UserDTO.class);
 

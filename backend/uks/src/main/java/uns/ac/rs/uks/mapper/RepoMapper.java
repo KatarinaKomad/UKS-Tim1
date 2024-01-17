@@ -14,9 +14,9 @@ public class RepoMapper {
                         .name(repo.getName())
                         .isPublic(repo.getIsPublic())
                         .owner(UserMapper.toDTO(repo.getOwner()))
-                        .forkCount(repo.getForkChildren().size())
-                        .starCount(repo.getStaredBy().size())
-                        .watchCount(repo.getWatchers().size())
+                        .forkCount(repo.getForkChildren() != null ? repo.getForkChildren().size() : 0)
+                        .starCount(repo.getStaredBy() != null ? repo.getStaredBy().size() : 0)
+                        .watchCount(repo.getWatchers() != null ? repo.getWatchers().size() : 0)
                         .build();
     }
 
