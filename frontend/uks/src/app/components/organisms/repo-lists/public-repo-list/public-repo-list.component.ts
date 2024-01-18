@@ -17,7 +17,6 @@ export class PublicRepoListComponent {
 
   constructor(
     private repoService: RepoService,
-    private cdr: ChangeDetectorRef
   ) {
     this.setPublicRepos();
   }

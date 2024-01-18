@@ -29,6 +29,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RepoItemComponent } from './components/molecules/repo-item/repo-item.component';
 import { MyReposSideListComponent } from './components/organisms/repo-lists/my-repos-side-list/my-repos-side-list.component';
 import { PublicRepoListComponent } from './components/organisms/repo-lists/public-repo-list/public-repo-list.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NewRepoDialogComponent } from './components/molecules/new-repo-dialog/new-repo-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,8 @@ import { PublicRepoListComponent } from './components/organisms/repo-lists/publi
     ForgotPasswordPageComponent,
     PublicRepoListComponent,
     RepoItemComponent,
-    MyReposSideListComponent
+    MyReposSideListComponent,
+    NewRepoDialogComponent
   ],
   exports: [MatSidenavModule, SidebarComponent, NavbarComponent],
   imports: [
@@ -64,6 +68,8 @@ import { PublicRepoListComponent } from './components/organisms/repo-lists/publi
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatDialogModule,
+    MatSlideToggleModule,
     ToastrModule.forRoot()
   ],
   providers: [],

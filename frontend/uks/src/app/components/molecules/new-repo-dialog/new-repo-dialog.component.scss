@@ -1,0 +1,21 @@
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.submit {
+    font-size: medium;
+    width: 45%;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.cancel {
+    font-size: medium;
+    width: 45%;
+    margin-top: 5%;
+    margin-left: 5%;
+}
