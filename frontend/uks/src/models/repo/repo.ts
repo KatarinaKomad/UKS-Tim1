@@ -10,3 +10,9 @@ export interface RepoBasicInfoDTO {
     watchCount: number;
 
 }
+
+export interface RepoRequest {
+    name: string;
+    ownerId?: string;
+    isPublic: boolean;
+}

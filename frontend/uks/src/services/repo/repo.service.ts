@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RepoBasicInfoDTO } from 'src/models/repo/repo';
+import { RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
 @Injectable({
@@ -19,5 +19,12 @@ export class RepoService {
   getMyRepos(userId: string): Observable<RepoBasicInfoDTO[]> {
     const url = environment.API_BASE_URL + `/repo/getMyRepos/${userId}`;
     return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;
+  }
+
+  createNewRepo(repoRequest: RepoRequest): Observable<RepoBasicInfoDTO | null> {
+    const url = environment.API_BASE_URL + "/repo/create";
+    const body = JSON.stringify(repoRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
   }
 }

@@ -1,5 +1,7 @@
 package uns.ac.rs.uks.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +12,16 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
+import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.util.Constants;
 import uns.ac.rs.uks.util.LoginUtil;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,5 +67,26 @@ public class RepoControllerTest {
         for (RepoBasicInfoDTO repo: repos) {
             assertEquals(repo.getOwner().getId(), Constants.MIKA_USER_ID);
         }
+    }
+
+    @Test
+    public void createNewRepo() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+
+        String testName= "testName";
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setName(testName);
+        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
+        repoRequest.setIsPublic(true);
+
+        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/create", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(testName, responseEntity.getBody().getName());
+        assertEquals(Constants.MIKA_USER_ID, responseEntity.getBody().getOwner().getId());
     }
 }

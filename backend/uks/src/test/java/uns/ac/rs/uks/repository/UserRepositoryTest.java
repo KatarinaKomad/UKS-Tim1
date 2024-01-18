@@ -44,6 +44,26 @@ public class UserRepositoryTest {
     }
 
 
+    @ParameterizedTest(name = "Finding user by id {0}")
+    @ValueSource(strings = {"0e7f2a1d-49d0-44cd-8a01-4d40186f6f08", "ff1d6606-e1f5-4e26-8a32-a14800b42a27"})
+    public void userByIdExists(String id) {
+        UUID uuid = UUID.fromString(id);
+        Optional<User> optionalUser = userRepository.findById(uuid);
+        assertTrue(optionalUser.isPresent());
+        User user = optionalUser.get();
+        assertEquals(uuid, user.getId());
+    }
+
+    @ParameterizedTest(name = "Not finding user by id {0}")
+    @ValueSource(strings = {"0e7f2a1d-49d0-44cd-8a01-4d40186f7f08", "ff1d6506-e1f5-4e26-8a32-a14800b42a27"})
+    public void noUserById(String id) {
+        UUID uuid = UUID.fromString(id);
+        Optional<User> optionalUser = userRepository.findById(uuid);
+        assertTrue(optionalUser.isEmpty());
+    }
+
+
+
     @Test
     @DisplayName("Test blocking user by admin")
     public void updateBlockedByAdminToTrue() {
