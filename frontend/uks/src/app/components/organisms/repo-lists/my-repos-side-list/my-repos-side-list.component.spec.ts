@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MyReposSideListComponent } from './my-repos-side-list.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
 
 describe('MyReposSideListComponent', () => {
   let component: MyReposSideListComponent;
@@ -14,6 +14,7 @@ describe('MyReposSideListComponent', () => {
       declarations: [MyReposSideListComponent]
     })
       .compileComponents();
+
 
     fixture = TestBed.createComponent(MyReposSideListComponent);
     component = fixture.componentInstance;

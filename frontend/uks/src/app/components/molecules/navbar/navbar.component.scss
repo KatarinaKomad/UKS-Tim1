@@ -1,0 +1,47 @@
+@import '../../../../styles.scss';
+
+
+.navbar-container {
+    color: $github-light-gray-color;
+    border: 1px solid $github-border-color;
+}
+
+.menu-button {
+    cursor: pointer;
+    border: 1px solid $github-border-color;
+    border-radius: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    width: 35px;
+    height: 35px;
+    .icon {
+        
+        color: $grey-color;
+    }
+}
+
+.span-spacer {
+    flex: 1 1 auto;
+}
+  
+.mat-tab-group {
+    margin-bottom: 48px;
+}
+
+.logo {
+    display: flex;
+  
+    .logoIcon {
+      width: 70px;
+      height: 40px;
+    }  
+}
+
+.title {
+    font-size: 18px;
+    font-family: $font;
+    color: $black-color;
+    margin: 30px 0px;
+  }
