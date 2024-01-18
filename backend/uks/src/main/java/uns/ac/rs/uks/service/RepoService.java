@@ -2,12 +2,13 @@ package uns.ac.rs.uks.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uns.ac.rs.uks.dto.request.RegistrationRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.RepoMapper;
+import uns.ac.rs.uks.model.Member;
 import uns.ac.rs.uks.model.Repo;
+import uns.ac.rs.uks.model.RepositoryRole;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.repository.RepoRepository;
 
@@ -20,6 +21,9 @@ public class RepoService {
     private RepoRepository repoRepository;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MemberService memberService;
 
     public List<RepoBasicInfoDTO> getAllPublic() {
         List<Repo> allPublic = repoRepository.findAllByIsPublicTrue();
@@ -35,6 +39,21 @@ public class RepoService {
         User user = userService.getById(repoRequest.getOwnerId());
         Repo repo = RepoMapper.toRepoFromRequest(repoRequest, user);
         repo = repoRepository.save(repo);
+        memberService.addNewMember(user, repo, RepositoryRole.OWNER);
         return RepoMapper.toDTO(repo);
+    }
+
+    public RepoBasicInfoDTO getByNameAndPublicOrMember(RepoRequest repoRequest) {
+        List<Repo> repos = repoRepository.findAllByName(repoRequest.getName());
+        for (Repo repo : repos) {
+            if(repo.getIsPublic()){
+                return RepoMapper.toDTO(repo);
+            }
+            Member member = memberService.findMemberByUserIdAndRepositoryId(repoRequest.getOwnerId(), repo.getId());
+            if(member != null) {
+                return RepoMapper.toDTO(repo);
+            }
+        }
+        return null;
     }
 }

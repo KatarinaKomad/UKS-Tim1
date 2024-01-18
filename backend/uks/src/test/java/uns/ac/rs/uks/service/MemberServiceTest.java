@@ -69,6 +69,33 @@ public class MemberServiceTest {
         assertNull(member);
     }
 
+    @Test
+    void testFindMemberByUserIdAndRepositoryIdSuccess() {
+        // Mocking
+        UUID userId = Constants.MIKA_USER_ID;
+        UUID repositoryId = Constants.REPOSITORY_ID_1_UKS_TEST;
+        Member memberTest = createMember(Constants.MIKA_EMAIL, repositoryId);
+        memberTest.getUser().setId(userId);
+
+        when(memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId))
+                .thenReturn(Optional.of(memberTest));
+
+        Member member = memberService.findMemberByUserIdAndRepositoryId(userId, repositoryId);
+        assertNotNull(member);
+        assertEquals(member.getRepository().getId(), repositoryId);
+        assertEquals(member.getUser().getId(), userId);
+    }
+
+    @Test
+    public void testNoMemberByUserIdAndRepositoryId() {
+        UUID userId = Constants.MIKA_USER_ID;
+        UUID repositoryId = Constants.REPOSITORY_ID_1_UKS_TEST;
+
+        when(memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId)).thenReturn(Optional.empty());
+        Member member = memberService.findMemberByUserIdAndRepositoryId(userId, repositoryId);
+        assertNull(member);
+    }
+
     private Member createMember(String email, UUID repoId) {
         Repo repository = new Repo();
         repository.setId(repoId);

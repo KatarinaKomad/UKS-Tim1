@@ -27,4 +27,11 @@ export class RepoService {
 
     return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
   }
+
+  validateOverviewByRepoName(repoRequest: RepoRequest): Observable<RepoBasicInfoDTO | null> {
+    const url = environment.API_BASE_URL + "/repo/validateOverviewByRepoName";
+    const body = JSON.stringify(repoRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
+  }
 }
