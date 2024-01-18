@@ -13,4 +13,6 @@ public interface RepoRepository extends JpaRepository<Repo, Long> {
     List<Repo> findAllByIsPublicTrue();
 
     List<Repo> findAllByOwnerId(UUID userID);
+
+    List<Repo> findAllByName(String name);
 }

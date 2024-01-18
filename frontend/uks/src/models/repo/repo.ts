@@ -14,5 +14,5 @@ export interface RepoBasicInfoDTO {
 export interface RepoRequest {
     name: string;
     ownerId?: string;
-    isPublic: boolean;
+    isPublic?: boolean;
 }
