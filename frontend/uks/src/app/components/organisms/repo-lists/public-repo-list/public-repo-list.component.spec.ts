@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PublicRepoListComponent } from './public-repo-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('PublicRepoListComponent', () => {
   let component: PublicRepoListComponent;
@@ -8,10 +9,11 @@ describe('PublicRepoListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PublicRepoListComponent]
+      imports: [HttpClientModule],
+      declarations: [PublicRepoListComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(PublicRepoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

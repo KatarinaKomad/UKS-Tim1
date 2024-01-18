@@ -8,10 +8,10 @@ describe('RepoItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RepoItemComponent]
+      declarations: [RepoItemComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(RepoItemComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

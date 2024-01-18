@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyReposSideListComponent } from './my-repos-side-list.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('MyReposSideListComponent', () => {
   let component: MyReposSideListComponent;
@@ -8,10 +10,11 @@ describe('MyReposSideListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MyReposSideListComponent]
+      imports: [MatDialogModule, HttpClientModule],
+      declarations: [MyReposSideListComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(MyReposSideListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

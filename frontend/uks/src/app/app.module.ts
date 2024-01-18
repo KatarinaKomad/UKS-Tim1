@@ -53,7 +53,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MyReposSideListComponent,
     NewRepoDialogComponent
   ],
-  exports: [MatSidenavModule, SidebarComponent, NavbarComponent],
+  exports: [],
   imports: [
     BrowserModule,
     AppRoutingModule,
