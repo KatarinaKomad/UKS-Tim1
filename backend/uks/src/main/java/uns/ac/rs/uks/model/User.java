@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 @Entity
 @Data
 @Table(name = "USERS")
@@ -24,7 +23,8 @@ import java.util.*;
 public class User implements UserDetails {
     @Id
     private UUID id;
-    // ************************************* ACCOUNT ******************************************/
+    // ************************************* ACCOUNT
+    // ******************************************/
     @Column(unique = true, nullable = false)
     private String email;
     @JsonIgnore
@@ -41,14 +41,14 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // ************************************* GITHUB ******************************************/
+    // ************************************* GITHUB
+    // ******************************************/
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Repo> repositories;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Repo> watching;
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Repo> stared;
-
 
     @OneToMany(mappedBy = "updatedBy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Branch> branches;
@@ -62,28 +62,38 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Item> assignedItems;
 
-    // ************************************* auth ******************************************/
+    // ************************************* auth
+    // ******************************************/
     @Override
     public String getUsername() {
         return email;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return !deleted;
     }
+
     @Override
-    public boolean isAccountNonLocked() { return !blockedByAdmin && !deleted;}
+    public boolean isAccountNonLocked() {
+        return !blockedByAdmin && !deleted;
+    }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
-    public boolean isEnabled() { return true;}
+    public boolean isEnabled() {
+        return true;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(role);
     }
+
     @Override
     public String getPassword() {
         return password;

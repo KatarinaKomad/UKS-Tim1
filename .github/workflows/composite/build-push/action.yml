@@ -11,9 +11,6 @@ inputs:
   registry_endpoint:
     description: "Image registry repo"
     required: true
-  image_name:
-    description: "Name of image"
-    required: true
   image_tag:
     description: "Image tag"
     required: true

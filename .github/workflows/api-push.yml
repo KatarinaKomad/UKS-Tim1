@@ -1,4 +1,4 @@
-name: Angular App Push
+name: API Push
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,10 +10,10 @@ on:
     branches:
       - main
     paths:
-      - frontend/uks/**
+      - backend/uks/**
 
 env:
-  SERVICE: front
+  SERVICE: api
   REGISTRY_HOST: docker.io
 
 jobs:
@@ -21,21 +21,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          node-version: 20
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
 
-      - name: Install Dependencies
+      - name: Test
         run: |
-          cd frontend/uks && npm install
-
-      - name: Run Tests
-        run: |
-          cd frontend/uks && npm test
+          cd backend/uks && mvn clean test
 
   build_push:
     runs-on: ubuntu-latest
@@ -44,6 +40,7 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+
       - uses: ./.github/workflows/composite/build-push
         with:
           service: ${{ env.SERVICE }}
