@@ -2,9 +2,11 @@ package uns.ac.rs.uks.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +14,9 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Repo {
+@Builder
+public class Repo implements Serializable {
+
     @Id
     private UUID id;
     private String name;
@@ -28,7 +32,7 @@ public class Repo {
     private List<Milestone> milestones;
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Project> projects;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Label> labels;
 
 

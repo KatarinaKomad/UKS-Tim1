@@ -11,10 +11,10 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginPageComponent, data: {} },
-  { path: 'signUp', component: SignUpPageComponent, data: {} },
-  { path: 'forgotPassword', component: ForgotPasswordPageComponent, data: {} },
+  { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
+  { path: 'login', component: LoginPageComponent, canMatch: [], data: {} },
+  { path: 'signUp', component: SignUpPageComponent, canMatch: [], data: {} },
+  { path: 'forgotPassword', component: ForgotPasswordPageComponent, canMatch: [], data: {} },
   {
     path: 'home',
     component: HomePageComponent,
@@ -24,15 +24,16 @@ const routes: Routes = [
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
-    canMatch: [repoGuard],
+    canMatch: [],
     data: {},
   },
 
-  { path: '**', component: PageNotFoundComponent },
+  { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },
+  { path: '**', component: PageNotFoundComponent, canMatch: [] },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -39,6 +39,23 @@ public class MemberRepositoryTest {
         assertTrue(optionalMember.isEmpty());
     }
 
+    @ParameterizedTest(name = "Finding repository member by id {0} and repository id {1}")
+    @MethodSource("memberExistsByIdProvider")
+    public void memberByIdAndRepositoryIdExists(UUID userId, UUID repositoryId) {
+        Optional<Member> optionalMember = memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId);
+        assertTrue(optionalMember.isPresent());
+        Member member = optionalMember.get();
+        assertEquals(userId, member.getUser().getId());
+        assertEquals(repositoryId, member.getRepository().getId());
+    }
+
+    @ParameterizedTest(name = "Not finding repository member by id {0} and repository id {1}")
+    @MethodSource("memberDoNotExistByIdProvider")
+    public void noMembersByUserIdAndRepositoryId(UUID userId, UUID repositoryId) {
+        Optional<Member> optionalMember = memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId);
+        assertTrue(optionalMember.isEmpty());
+    }
+
     static List<Arguments> memberExistsProvider() {
         return List.of(
                 arguments("mika@gmail.com", Constants.REPOSITORY_ID_1_UKS_TEST),
@@ -49,6 +66,19 @@ public class MemberRepositoryTest {
     static List<Arguments> memberDoNotExistProvider() {
         return List.of(
                 arguments("admin@gmail.com", Constants.REPOSITORY_ID_1_UKS_TEST)
+        );
+    }
+
+    static List<Arguments> memberExistsByIdProvider() {
+        return List.of(
+                arguments(Constants.MIKA_USER_ID, Constants.REPOSITORY_ID_1_UKS_TEST),
+                arguments(Constants.PERA_USER_ID, Constants.REPOSITORY_ID_1_UKS_TEST)
+        );
+    }
+
+    static List<Arguments> memberDoNotExistByIdProvider() {
+        return List.of(
+                arguments(Constants.ADMIN_USER_ID, Constants.REPOSITORY_ID_1_UKS_TEST)
         );
     }
 }

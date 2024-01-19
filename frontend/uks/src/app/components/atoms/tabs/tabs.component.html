@@ -1,22 +1,23 @@
-<mat-tab-group animationDuration="0ms">
-
-    <mat-tab>
+<mat-tab-group animationDuration="0ms" [(selectedIndex)]="activeTab" (selectedTabChange)="onTabChange($event)">
+    <mat-tab class="custom-tab">
         <ng-template mat-tab-label class="menuItem">
             <i class="icon fa-solid fa-code fa-lg"></i>
             <span class="itemTitle">Code</span>
         </ng-template>
         Code Content
     </mat-tab>
-    
-    <mat-tab>
+
+    <mat-tab class="custom-tab">
         <ng-template mat-tab-label class="menuItem">
             <i class="icon fa-regular fa-circle-dot fa-lg"></i>
             <span class="itemTitle">Issues</span>
         </ng-template>
-        <app-project-issues></app-project-issues>
+        <app-project-issues *ngIf="view === 'issues'"></app-project-issues>
+        <app-project-labels *ngIf="view === 'labels'"></app-project-labels>
+        <!-- <app-project-milestones *ngIf="activeIssuesView === 'milestones'"></app-project-milestones> -->
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab class="custom-tab">
         <ng-template mat-tab-label class="menuItem">
             <i class="icon fa-solid fa-code-pull-request fa-lg"></i>
             <span class="itemTitle">Pull requests</span>
@@ -24,7 +25,7 @@
         Pull requests Content
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab class="custom-tab">
         <ng-template mat-tab-label class="menuItem">
             <i class="icon fa-solid fa-gear fa-lg"></i>
             <span class="itemTitle">Settings</span>
@@ -32,4 +33,4 @@
         Settings Content
     </mat-tab>
 
-</mat-tab-group>   
+</mat-tab-group>

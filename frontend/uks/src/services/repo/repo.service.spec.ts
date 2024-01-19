@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
 
 import { RepoService } from './repo.service';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('RepoService', () => {
   let service: RepoService;
@@ -11,7 +11,6 @@ describe('RepoService', () => {
       imports: [HttpClientModule],
       providers: [RepoService],
     });
-
     service = TestBed.inject(RepoService);
   });
 

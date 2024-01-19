@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class IssueVersion extends Item {
+public class IssueVersion extends Item implements Serializable {
     private String description;
     @UpdateTimestamp
     private LocalDateTime updatedAt;

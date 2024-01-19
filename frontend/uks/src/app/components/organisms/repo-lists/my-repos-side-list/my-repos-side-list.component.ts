@@ -5,6 +5,16 @@ import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogTitle,
+  MatDialogContent,
+  MatDialogActions,
+  MatDialogClose,
+} from '@angular/material/dialog';
+import { NewRepoDialogComponent } from 'src/app/components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
 
 @Component({
   selector: 'app-my-repos-side-list',
@@ -18,6 +28,7 @@ export class MyReposSideListComponent {
   loggedUser!: UserBasicInfo | undefined;
 
   constructor(
+    public dialog: MatDialog,
     private router: Router,
     private repoService: RepoService,
     private authService: AuthService
@@ -51,12 +62,32 @@ export class MyReposSideListComponent {
   }
 
   navigateToRepo(repository: RepoBasicInfoDTO) {
+    localStorage.setItem("repoId", repository.id);
     const link = `/repository/${repository?.name}`
     this.router.navigate([link], { state: { repository } })
   }
 
   addNewRepository() {
-    throw new Error('Method not implemented.');
+    const user = this.loggedUser;
+    const dialogRef = this.dialog.open(NewRepoDialogComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '50%',
+      width: '50%',
+      data: { user },
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.repoService.createNewRepo(result).subscribe({
+          next: (newRepo: RepoBasicInfoDTO | null) => {
+            if (newRepo) {
+              this.myRepos.push(newRepo as RepoBasicInfoDTO);
+            }
+          }
+        });
+      }
+    });
   }
 
 

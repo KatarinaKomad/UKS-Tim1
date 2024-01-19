@@ -1,12 +1,8 @@
-<button
-  [class]="
+<button [class]="
     defaultClass !== ''
       ? defaultClass
-      : 'bg-green-600 font-bold text-white rounded-xl text-[18px] w-fit px-4 py-2 disabled:opacity-80 hover:bg-green-800 disabled:hover:bg-green-600 ' +
+      : 'bg-green-600 text-white rounded-xl text-[18px] w-fit px-4 py-2 disabled:opacity-80 hover:bg-green-800 disabled:hover:bg-green-600 ' +
         extenseClass
-  "
-  [disabled]="disabled"
-  (click)="onClick()"
->
+  " [disabled]="disabled" (click)="onClick()" [type]="type">
   {{ text }}
 </button>

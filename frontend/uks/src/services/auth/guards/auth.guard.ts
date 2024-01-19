@@ -1,10 +1,12 @@
-import { RepoBasicInfoDTO } from 'src/models/repo/repo';
+import { RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
 import { UserBasicInfo } from 'src/models/user/user';
 
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from '../auth.service';
+import { RepoService } from 'src/services/repo/repo.service';
+import { catchError, map, of } from 'rxjs';
 
 export const authGuard = () => {
   const authService = inject(AuthService);
@@ -16,22 +18,45 @@ export const authGuard = () => {
   return router.parseUrl('/login');
 };
 
-export const repoGuard = async () => {
+export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot) => {
   const authService = inject(AuthService);
+  const repoService = inject(RepoService);
   const router = inject(Router);
 
-  const repository: RepoBasicInfoDTO =
-    router.getCurrentNavigation()?.extras?.state?.['repository'];
+
   authService.getLoggedUser().subscribe({
     next: (user: UserBasicInfo | undefined) => {
-      if (!user || !repository) {
-        router.navigate(['/not-found']);
-        return;
+      let repoName = '';
+      try {
+        console.log(state.toString())
+        console.log(route.url)
+        console.log(router.url)
+
+        repoName = state.toString().replace('repository,', '').trim();
+      } catch (error) {
+        return true;
       }
-      if (repository.owner.id !== user.id && !repository.isPublic) {
-        router.navigate(['/not-found']);
-        return;
+      const repoRequest: RepoRequest = {
+        name: repoName,
+        ownerId: user?.id
       }
+
+      repoService.validateOverviewByRepoName(repoRequest).subscribe({
+        next: (repository: RepoBasicInfoDTO | null) => {
+          if (!repository) {
+            return router.navigate(['/not-found']);
+          }
+          return true;
+        }, error: () => {
+          return false;
+        }
+      })
+      return true;
+    }, error: () => {
+      return false;
     },
   });
+  return true;
 };
+

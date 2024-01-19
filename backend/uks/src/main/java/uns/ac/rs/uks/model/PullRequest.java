@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PullRequest extends Item {
+public class PullRequest extends Item implements Serializable {
 
     @OneToOne
     private Branch origin;

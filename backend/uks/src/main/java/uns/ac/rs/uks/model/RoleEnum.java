@@ -1,6 +1,8 @@
 package uns.ac.rs.uks.model;
 
-public enum RoleEnum {
+import java.io.Serializable;
+
+public enum RoleEnum implements Serializable {
     ROLE_ADMIN("ROLE_ADMIN"),
     ROLE_USER("ROLE_USER");
 

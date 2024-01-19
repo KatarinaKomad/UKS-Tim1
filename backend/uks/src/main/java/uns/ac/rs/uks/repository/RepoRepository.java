@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface RepoRepository extends JpaRepository<Repo, Long> {
+public interface RepoRepository extends JpaRepository<Repo, UUID> {
 
     List<Repo> findAllByIsPublicTrue();
 
     List<Repo> findAllByOwnerId(UUID userID);
+
+    List<Repo> findAllByName(String name);
 }

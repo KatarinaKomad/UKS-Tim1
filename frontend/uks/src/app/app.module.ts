@@ -15,6 +15,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MyReposSideListComponent } from './components/organisms/repo-lists/my-repos-side-list/my-repos-side-list.component';
 import { PublicRepoListComponent } from './components/organisms/repo-lists/public-repo-list/public-repo-list.component';
+
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NewRepoDialogComponent } from './components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { ButtonComponent } from './components/atoms/button/button.component';
 import { InputComponent } from './components/atoms/input/input.component';
 import { NavbarComponent } from './components/atoms/navbar/navbar.component';
@@ -30,6 +35,12 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
+import { IssuesButtonGroupComponent } from './components/molecules/issues-button-group/issues-button-group.component';
+import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 
 @NgModule({
   declarations: [
@@ -49,8 +60,12 @@ import { AppComponent } from './app.component';
     PublicRepoListComponent,
     RepoItemComponent,
     MyReposSideListComponent,
+    NewRepoDialogComponent,
+    ProjectLabelsComponent,
+    IssuesButtonGroupComponent,
+    NewLabelDialogComponent
   ],
-  exports: [MatSidenavModule, SidebarComponent, NavbarComponent],
+  exports: [],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -65,9 +80,13 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    MatDialogModule,
+    MatSlideToggleModule,
+    MatTableModule,
+    MatSortModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

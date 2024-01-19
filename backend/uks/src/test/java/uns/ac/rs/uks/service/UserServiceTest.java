@@ -17,6 +17,7 @@ import uns.ac.rs.uks.repository.UserRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -40,10 +41,6 @@ public class UserServiceTest {
     @AfterEach
     void closeService() throws Exception {
         closeable.close();
-    }
-
-    public User getUserByEmail(String email) throws NotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(()->new NotFoundException("User not found."));
     }
 
     @Test
@@ -120,6 +117,32 @@ public class UserServiceTest {
         boolean userExists = userService.existsByEmail(Constants.MIKA_EMAIL);
         // Assertions
         assertFalse(userExists);
+    }
+
+
+    @Test
+    void testGetUserByIdSuccess() {
+        // Mocking
+        UUID id = Constants.MIKA_USER_ID;
+        User user = new User();
+        user.setId(id);
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+
+        // Test
+        User user1 = userService.getById(id);
+
+        // Assertions
+        assertNotNull(user1);
+        assertEquals(user1.getId(), id);
+    }
+
+    @Test
+    public void testNoUserById() {
+        // Mocking
+        when(userRepository.findById(Constants.MIKA_USER_ID)).thenReturn(Optional.empty());
+        // Test && Assertions
+        assertThrows(NotFoundException.class, () -> userService.getById(Constants.MIKA_USER_ID));
     }
 
 }
