@@ -1,6 +1,8 @@
 package uns.ac.rs.uks.model;
 
-public enum RepositoryRole {
+import java.io.Serializable;
+
+public enum RepositoryRole implements Serializable {
     OWNER("OWNER"),
     COLLABORATOR("COLLABORATOR"),
     CONTRIBUTOR("CONTRIBUTOR");

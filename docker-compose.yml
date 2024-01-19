@@ -17,6 +17,12 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=postgres
 
+  # redis as a cache store
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
   api:
     image: ${REGISTRY:-uks}/api:${TAG:-latest}
     build:
@@ -24,9 +30,9 @@ services:
     container_name: api
     depends_on:
       - db
+      - redis
     # links:
     #   - db:db
-    #- redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/uks
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -35,7 +41,7 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - TOKEN_SECRET=2aafbe15fde010e3a6de59e99c0adfd13bd40b60e3e5fdf351b263c3c7f72b35
     ports:
-      - "8080:8080"
+      - "8881:8881"
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
@@ -48,21 +54,14 @@ services:
       - "4200:80" # only for test purpouses
 
   # Nginx as a web server and reverse proxy
-  nginx:
-    image: nginx
-    container_name: uks_nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./config/nginx.conf:/etc/nginx/conf.d
-      - ./static:/code/app/static #must be same as web!
-    depends_on:
-      - api
-      # - front
-
-  # # redis as a cache store
-  # redis:
-  #   image: redis
-  #   container_name: uks_redis
-  #   expose:
-  #     - '6379'
+  # nginx:
+  #   image: nginx
+  #   container_name: uks_nginx
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./config/nginx.conf:/etc/nginx/conf.d
+  #     - ./static:/code/app/static #must be same as web!
+  #   depends_on:
+  #     - api
+  #     # - front

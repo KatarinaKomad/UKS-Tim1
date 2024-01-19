@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RepoBasicInfoDTO {
+public class RepoBasicInfoDTO implements Serializable {
     private UUID id;
     private Boolean isPublic;
     private String name;
