@@ -24,9 +24,9 @@ services:
     container_name: api
     depends_on:
       - db
+      - redis
     # links:
     #   - db:db
-    #- redis
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/uks
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -60,9 +60,9 @@ services:
       - api
       # - front
 
-  # # redis as a cache store
-  # redis:
-  #   image: redis
-  #   container_name: uks_redis
-  #   expose:
-  #     - '6379'
+  # redis as a cache store
+  redis:
+    image: redis
+    container_name: uks_redis
+    ports:
+      - "6379:6379"
