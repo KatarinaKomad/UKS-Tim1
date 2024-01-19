@@ -22,7 +22,6 @@ services:
     image: redis
     ports:
       - "6379:6379"
-
   api:
     image: ${REGISTRY:-uks}/api:${TAG:-latest}
     build:
@@ -54,14 +53,16 @@ services:
       - "4200:80" # only for test purpouses
 
   # Nginx as a web server and reverse proxy
-  # nginx:
-  #   image: nginx
-  #   container_name: uks_nginx
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./config/nginx.conf:/etc/nginx/conf.d
-  #     - ./static:/code/app/static #must be same as web!
-  #   depends_on:
-  #     - api
-  #     # - front
+
+  nginx:
+    image: nginx
+    container_name: uks_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d
+      - ./static:/code/app/static #must be same as web!
+    depends_on:
+      - api
+      # - front
+
