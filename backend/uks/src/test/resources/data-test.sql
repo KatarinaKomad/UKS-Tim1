@@ -42,6 +42,9 @@ INSERT INTO MEMBER(repository_id, user_id, repository_role) VALUES
 (REPOSITORY_ID_3_UKS_TEST, MIKA_USER_ID, 'OWNER'),
 (REPOSITORY_ID_4_UKS_TEST, MIKA_USER_ID, 'OWNER');
 
+INSERT INTO LABEL(repository_id, name, description, color) VALUES
+(REPOSITORY_ID_1_UKS_TEST, 'test name', 'test description','#6bbf26'),
+(REPOSITORY_ID_1_UKS_TEST, 'test name2', 'test description2', '#e7e019');
 
 
 ------------------------------------------------------------------------------------------------------------------------

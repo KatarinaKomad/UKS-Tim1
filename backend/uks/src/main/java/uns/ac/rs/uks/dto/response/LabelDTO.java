@@ -1,27 +1,23 @@
-package uns.ac.rs.uks.model;
+package uns.ac.rs.uks.dto.response;
 
-import jakarta.persistence.*;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uns.ac.rs.uks.model.Repo;
 
-import java.io.Serializable;
+import java.util.UUID;
 
-
-@Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Label implements Serializable {
+public class LabelDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String color; // hex
     private String description;
-    @ManyToOne
-    private Repo repository;
+    private UUID repoId;
 }

@@ -1,8 +1,7 @@
-@import '../../../../styles.scss';
-
 .menuItem {
     display: flex;
     cursor: pointer;
+    max-height: 10px;
 }
 
 .itemTitle {
