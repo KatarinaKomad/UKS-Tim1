@@ -43,6 +43,11 @@ public class RepoService {
         return RepoMapper.toDTO(repo);
     }
 
+
+    public Repo getById(UUID repoId) {
+        return repoRepository.findById(repoId).orElseThrow(()->new NotFoundException("Repository not found."));
+    }
+  
     public RepoBasicInfoDTO getByNameAndPublicOrMember(RepoRequest repoRequest) {
         List<Repo> repos = repoRepository.findAllByName(repoRequest.getName());
         for (Repo repo : repos) {

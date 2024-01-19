@@ -14,7 +14,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { NewRepoDialogComponent } from 'src/app/components/molecules/new-repo-dialog/new-repo-dialog.component';
+import { NewRepoDialogComponent } from 'src/app/components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
 
 @Component({
   selector: 'app-my-repos-side-list',
@@ -62,6 +62,7 @@ export class MyReposSideListComponent {
   }
 
   navigateToRepo(repository: RepoBasicInfoDTO) {
+    localStorage.setItem("repoId", repository.id);
     const link = `/repository/${repository?.name}`
     this.router.navigate([link], { state: { repository } })
   }

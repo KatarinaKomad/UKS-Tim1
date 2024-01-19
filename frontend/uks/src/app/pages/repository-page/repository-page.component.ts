@@ -2,6 +2,7 @@ import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RepoService } from 'src/services/repo/repo.service';
 
 @Component({
   selector: 'app-repository-page',
@@ -12,10 +13,8 @@ export class RepositoryPageComponent implements OnInit {
   repository: RepoBasicInfoDTO;
 
   constructor(private router: Router) {
-    this.repository =
-      this.router.getCurrentNavigation()?.extras?.state?.['repository'];
-    console.log(this.repository);
+    this.repository = this.router.getCurrentNavigation()?.extras?.state?.['repository'];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }
