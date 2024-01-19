@@ -15,6 +15,7 @@ export class RepoItemComponent {
 
   navigateToRepo() {
     const repository = this.repository;
+    localStorage.setItem("repoId", repository?.id as string);
     const link = `/repository/${repository?.name}`
     this.router.navigate([link], { state: { repository } })
   }

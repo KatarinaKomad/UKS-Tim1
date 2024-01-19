@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ButtonComponent implements OnInit {
 
   @Input() text!: string;
+  @Input() type: string = 'submit';
   @Input() defaultClass: string = '';
   @Input() extenseClass: string = '';
   @Input() disabled: boolean = false;
