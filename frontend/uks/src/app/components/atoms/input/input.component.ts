@@ -17,8 +17,9 @@ export class InputComponent implements OnInit {
   @Input() defaultClass: string = '';
   @Input() extenseClass: string = '';
   @Input() type: string = 'text';
+  @Input() readOnly: boolean = false;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

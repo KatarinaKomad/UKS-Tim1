@@ -19,6 +19,10 @@ public class UserService {
     private UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    public User getById(UUID userId) throws NotFoundException{
+        return userRepository.findById(userId).orElseThrow(()->new NotFoundException("User not found."));
+    }
+
     public User getUserByEmail(String email) throws NotFoundException {
         logger.info("Try to get user with email {}", email);
         return userRepository.findByEmail(email).orElseThrow(()->new NotFoundException("User not found."));

@@ -15,6 +15,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MyReposSideListComponent } from './components/organisms/repo-lists/my-repos-side-list/my-repos-side-list.component';
 import { PublicRepoListComponent } from './components/organisms/repo-lists/public-repo-list/public-repo-list.component';
+
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NewRepoDialogComponent } from './components/molecules/new-repo-dialog/new-repo-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { ButtonComponent } from './components/atoms/button/button.component';
 import { InputComponent } from './components/atoms/input/input.component';
 import { NavbarComponent } from './components/atoms/navbar/navbar.component';
@@ -30,6 +35,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
 
 @NgModule({
   declarations: [
@@ -49,8 +55,9 @@ import { AppComponent } from './app.component';
     PublicRepoListComponent,
     RepoItemComponent,
     MyReposSideListComponent,
+    NewRepoDialogComponent
   ],
-  exports: [MatSidenavModule, SidebarComponent, NavbarComponent],
+  exports: [],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -65,7 +72,9 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    MatDialogModule,
+    MatSlideToggleModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

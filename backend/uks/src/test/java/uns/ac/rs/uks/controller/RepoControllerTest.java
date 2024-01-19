@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.util.Constants;
 import uns.ac.rs.uks.util.LoginUtil;
@@ -60,5 +61,64 @@ public class RepoControllerTest {
         for (RepoBasicInfoDTO repo: repos) {
             assertEquals(repo.getOwner().getId(), Constants.MIKA_USER_ID);
         }
+    }
+
+    @Test
+    public void createNewRepo() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+
+        String testName= "testName";
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setName(testName);
+        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
+        repoRequest.setIsPublic(true);
+
+        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/create", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(testName, responseEntity.getBody().getName());
+        assertEquals(Constants.MIKA_USER_ID, responseEntity.getBody().getOwner().getId());
+    }
+
+
+    @Test
+    public void testSearchByNamePublic() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+
+        String publicName = "UKS-test-PUBLIC";
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setName(publicName);
+        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
+
+        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/validateOverviewByRepoName", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(publicName, responseEntity.getBody().getName());
+        assertEquals(Constants.PERA_USER_ID, responseEntity.getBody().getOwner().getId());
+    }
+
+    @Test
+    public void testSearchByNamePrivateNotMember() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+
+        String privateName = "myPrivateRepo";
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setName(privateName);
+        repoRequest.setOwnerId(Constants.PERA_USER_ID);
+
+        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/validateOverviewByRepoName", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNull(responseEntity.getBody());
     }
 }
