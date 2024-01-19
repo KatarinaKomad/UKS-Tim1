@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectIssuesComponent } from './project-issues.component';
+import { IssuesButtonGroupComponent } from './issues-button-group.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
-describe('ProjectIssuesComponent', () => {
-  let component: ProjectIssuesComponent;
-  let fixture: ComponentFixture<ProjectIssuesComponent>;
+describe('IssuesButtonGroupComponent', () => {
+  let component: IssuesButtonGroupComponent;
+  let fixture: ComponentFixture<IssuesButtonGroupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProjectIssuesComponent],
+      declarations: [IssuesButtonGroupComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -27,7 +27,7 @@ describe('ProjectIssuesComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ProjectIssuesComponent);
+    fixture = TestBed.createComponent(IssuesButtonGroupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -12,4 +12,9 @@ export class ProjectIssuesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  addNewIssue() {
+    throw new Error('Method not implemented.');
+  }
+
+
 }

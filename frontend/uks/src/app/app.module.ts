@@ -17,7 +17,7 @@ import { MyReposSideListComponent } from './components/organisms/repo-lists/my-r
 import { PublicRepoListComponent } from './components/organisms/repo-lists/public-repo-list/public-repo-list.component';
 
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { NewRepoDialogComponent } from './components/molecules/new-repo-dialog/new-repo-dialog.component';
+import { NewRepoDialogComponent } from './components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ButtonComponent } from './components/atoms/button/button.component';
@@ -35,6 +35,9 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
+import { IssuesButtonGroupComponent } from './components/molecules/issues-button-group/issues-button-group.component';
+import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
 
 
 @NgModule({
@@ -55,7 +58,10 @@ import { AppComponent } from './app.component';
     PublicRepoListComponent,
     RepoItemComponent,
     MyReposSideListComponent,
-    NewRepoDialogComponent
+    NewRepoDialogComponent,
+    ProjectLabelsComponent,
+    IssuesButtonGroupComponent,
+    NewLabelDialogComponent
   ],
   exports: [],
   imports: [
@@ -79,4 +85,4 @@ import { AppComponent } from './app.component';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

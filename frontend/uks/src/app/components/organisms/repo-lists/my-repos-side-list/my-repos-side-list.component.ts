@@ -14,7 +14,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
-import { NewRepoDialogComponent } from 'src/app/components/molecules/new-repo-dialog/new-repo-dialog.component';
+import { NewRepoDialogComponent } from 'src/app/components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
 
 @Component({
   selector: 'app-my-repos-side-list',
