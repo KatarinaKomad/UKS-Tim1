@@ -44,4 +44,20 @@ public class RepoRepositoryTest {
         assertTrue(publicRepos.isEmpty());
     }
 
+    @ParameterizedTest(name = "Finding repositories by name {0}")
+    @ValueSource(strings = {"UKS-test", "UKS-test-PUBLIC"})
+    public void findAllByName(String name) {
+        List<Repo> publicRepos = repoRepository.findAllByName(name);
+        assertFalse(publicRepos.isEmpty());
+        for (Repo repo: publicRepos) {
+            assertEquals(repo.getName(), name);
+        }
+    }
+
+    @ParameterizedTest(name = "Finding no repositories by name {0}")
+    @ValueSource(strings = {"testName"})
+    public void findAllByNameNoRepo(String name) {
+        List<Repo> publicRepos = repoRepository.findAllByName(name);
+        assertTrue(publicRepos.isEmpty());
+    }
 }

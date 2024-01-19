@@ -35,4 +35,9 @@ public class RepoController {
     public RepoBasicInfoDTO createNewRepo(@Valid @RequestBody RepoRequest repoRequest) {
         return repoService.createNewRepo(repoRequest);
     }
+
+    @PostMapping("/validateOverviewByRepoName")
+    public RepoBasicInfoDTO validateOverviewByRepoName(@Valid @RequestBody RepoRequest repoRequest) {
+        return repoService.getByNameAndPublicOrMember(repoRequest);
+    }
 }
