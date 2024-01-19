@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
-    canMatch: [repoGuard],
+    canMatch: [],
     data: {},
   },
 
@@ -35,4 +35,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

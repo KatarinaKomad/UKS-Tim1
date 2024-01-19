@@ -66,6 +66,7 @@ class Item {
 class Label {
     name: String
     color: String #hex
+    description: String
 }
 
 enum ReviewStatus {
@@ -107,7 +108,7 @@ Repository "1" *-- "0..*" Repository : fork
 Repository  "1" -- "0..*" Branch
 Repository  "1" -- "0..*" Milestone
 Repository  "1" -- "0..*" Project
-Repository  "1" *-- "0..*" Label
+Repository  "1" -- "0..*" Label
 
 Item <|-- IssueVersion
 Item <|-- PullRequest

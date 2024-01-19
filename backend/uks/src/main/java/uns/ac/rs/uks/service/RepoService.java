@@ -37,4 +37,8 @@ public class RepoService {
         repo = repoRepository.save(repo);
         return RepoMapper.toDTO(repo);
     }
+
+    public Repo getById(UUID repoId) {
+        return repoRepository.findById(repoId).orElseThrow(()->new NotFoundException("Repository not found."));
+    }
 }

@@ -2,15 +2,12 @@ package uns.ac.rs.uks.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import uns.ac.rs.uks.model.Repo;
+import uns.ac.rs.uks.model.Label;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface RepoRepository extends JpaRepository<Repo, UUID> {
-
-    List<Repo> findAllByIsPublicTrue();
-
-    List<Repo> findAllByOwnerId(UUID userID);
+public interface LabelRepository extends JpaRepository<Label, Long> {
+    List<Label> findAllByRepositoryId(UUID repoId);
 }

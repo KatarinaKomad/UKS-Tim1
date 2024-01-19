@@ -38,6 +38,8 @@ import { AppComponent } from './app.component';
 import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 import { IssuesButtonGroupComponent } from './components/molecules/issues-button-group/issues-button-group.component';
 import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -80,6 +82,8 @@ import { NewLabelDialogComponent } from './components/molecules/dialogs/new-labe
     BrowserAnimationsModule,
     MatDialogModule,
     MatSlideToggleModule,
+    MatTableModule,
+    MatSortModule,
     ToastrModule.forRoot()
   ],
   providers: [],

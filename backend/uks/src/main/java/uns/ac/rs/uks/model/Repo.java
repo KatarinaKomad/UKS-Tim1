@@ -30,7 +30,7 @@ public class Repo {
     private List<Milestone> milestones;
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Project> projects;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Label> labels;
 
 

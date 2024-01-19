@@ -62,6 +62,7 @@ export class MyReposSideListComponent {
   }
 
   navigateToRepo(repository: RepoBasicInfoDTO) {
+    localStorage.setItem("repoId", repository.id);
     const link = `/repository/${repository?.name}`
     this.router.navigate([link], { state: { repository } })
   }
