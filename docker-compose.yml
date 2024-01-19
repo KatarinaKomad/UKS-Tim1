@@ -63,6 +63,6 @@ services:
   # redis as a cache store
   redis:
     image: redis
-    container_name: uks_redis
+    container_name: redis
     ports:
       - "6379:6379"
