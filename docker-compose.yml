@@ -17,6 +17,13 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=postgres
 
+  # redis as a cache store
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+
   api:
     image: ${REGISTRY:-uks}/api:${TAG:-latest}
     build:
@@ -34,6 +41,8 @@ services:
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SPRING_PROFILES_ACTIVE=dev
       - TOKEN_SECRET=2aafbe15fde010e3a6de59e99c0adfd13bd40b60e3e5fdf351b263c3c7f72b35
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     ports:
       - "8080:8080"
     volumes:
@@ -59,10 +68,3 @@ services:
     depends_on:
       - api
       # - front
-
-  # redis as a cache store
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
