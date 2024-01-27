@@ -46,6 +46,9 @@ INSERT INTO LABEL(repository_id, name, description, color) VALUES
 (REPOSITORY_ID_1_UKS_TEST, 'test name', 'test description','#6bbf26'),
 (REPOSITORY_ID_1_UKS_TEST, 'test name2', 'test description2', '#e7e019');
 
+INSERT INTO MILESTONE(repository_id, name, description, due_date, state) VALUES
+(REPOSITORY_ID_1_UKS_TEST, 'mile stone', 'test milestone', '2024-01-25 23:59:59', 'CLOSE'),
+(REPOSITORY_ID_1_UKS_TEST, 'milestone2', 'test milestone2', '2024-02-25 23:59:59', 'OPEN');
 
 ------------------------------------------------------------------------------------------------------------------------
 
