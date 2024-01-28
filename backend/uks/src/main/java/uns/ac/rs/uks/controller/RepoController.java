@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import uns.ac.rs.uks.dto.request.EditRepoRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.service.RepoService;
@@ -39,5 +40,10 @@ public class RepoController {
     @PostMapping("/validateOverviewByRepoName")
     public RepoBasicInfoDTO validateOverviewByRepoName(@Valid @RequestBody RepoRequest repoRequest) {
         return repoService.getByNameAndPublicOrMember(repoRequest);
+    }
+
+    @PostMapping("/canEditRepoItems")
+    public Boolean canEditRepoItems(@Valid @RequestBody EditRepoRequest repoRequest) {
+        return repoService.canEditRepoItems(repoRequest);
     }
 }

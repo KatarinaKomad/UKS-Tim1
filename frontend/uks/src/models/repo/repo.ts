@@ -16,3 +16,8 @@ export interface RepoRequest {
     ownerId?: string;
     isPublic?: boolean;
 }
+
+export interface EditRepoRequest {
+    userId: string;
+    repoId: String;
+}

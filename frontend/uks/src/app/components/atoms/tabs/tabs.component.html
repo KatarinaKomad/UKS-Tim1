@@ -14,7 +14,7 @@
         </ng-template>
         <app-project-issues *ngIf="view === 'issues'"></app-project-issues>
         <app-project-labels *ngIf="view === 'labels'"></app-project-labels>
-        <!-- <app-project-milestones *ngIf="activeIssuesView === 'milestones'"></app-project-milestones> -->
+        <app-project-milestones *ngIf="view === 'milestones'"></app-project-milestones>
     </mat-tab>
 
     <mat-tab class="custom-tab">

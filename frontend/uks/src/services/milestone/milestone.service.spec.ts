@@ -1,18 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RepoService } from './repo.service';
+import { MilestoneService } from './milestone.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../auth/auth.service';
 
-describe('RepoService', () => {
-  let service: RepoService;
+describe('MilestoneService', () => {
+  let service: MilestoneService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [RepoService, AuthService],
+      providers: [MilestoneService],
     });
-    service = TestBed.inject(RepoService);
+    service = TestBed.inject(MilestoneService);
   });
 
   it('should be created', () => {

@@ -3,6 +3,7 @@ package uns.ac.rs.uks.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import uns.ac.rs.uks.dto.request.EditRepoRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
@@ -63,5 +64,10 @@ public class RepoService {
             }
         }
         return null;
+    }
+
+    public Boolean canEditRepoItems(EditRepoRequest repoRequest) {
+        Member member = memberService.findMemberByUserIdAndRepositoryId(repoRequest.getUserId(), repoRequest.getRepoId());
+        return member != null;
     }
 }
