@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { RepoService } from './repo.service';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 describe('RepoService', () => {
   let service: RepoService;
@@ -9,7 +10,7 @@ describe('RepoService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [RepoService],
+      providers: [RepoService, AuthService],
     });
     service = TestBed.inject(RepoService);
   });
