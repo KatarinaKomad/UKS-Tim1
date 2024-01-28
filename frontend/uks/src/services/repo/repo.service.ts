@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
+import { EditRepoRequest, RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
 @Injectable({
@@ -33,5 +33,12 @@ export class RepoService {
     const body = JSON.stringify(repoRequest);
 
     return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
+  }
+
+  canEditRepoItems(repoRequest: EditRepoRequest): Observable<boolean> {
+    const url = environment.API_BASE_URL + "/repo/canEditRepoItems";
+    const body = JSON.stringify(repoRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<boolean>;
   }
 }

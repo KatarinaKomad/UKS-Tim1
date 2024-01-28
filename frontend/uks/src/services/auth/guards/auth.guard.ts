@@ -27,16 +27,9 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
 
   authService.getLoggedUser().subscribe({
     next: (user: UserBasicInfo | undefined) => {
-      let repoName = '';
-      try {
-        console.log(state.toString())
-        console.log(route.url)
-        console.log(router.url)
+      const repoName = getRepoName(state);
+      if (!repoName || !user?.id) return true;
 
-        repoName = state.toString().replace('repository,', '').trim();
-      } catch (error) {
-        return true;
-      }
       const repoRequest: RepoRequest = {
         name: repoName,
         ownerId: user?.id
@@ -60,3 +53,11 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
   return true;
 };
 
+
+function getRepoName(state: RouterStateSnapshot): string {
+  try {
+    return state.toString().replace('repository,', '').trim();
+  } catch (error) {
+    return '';
+  }
+}

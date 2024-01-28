@@ -32,7 +32,7 @@
             <div class="button-container">
                 <app-button [type]="'button'" [text]="'Cancel'"
                     [extenseClass]="'bg-red-500 hover:bg-red-800 disabled:hover:bg-red-600 '"
-                    (buttonClick)="onCancelClick()"></app-button>
+                    (click)="onCancelClick()"></app-button>
                 <app-button [text]="'Confirm'" [disabled]="newLabelForm.invalid"
                     (buttonClick)="onSubmitClick()"></app-button>
             </div>
