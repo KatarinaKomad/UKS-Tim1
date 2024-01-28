@@ -22,7 +22,6 @@ export class IssuesButtonGroupComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private authService: AuthService,
     private repoService: RepoService
   ) { }
 
@@ -35,29 +34,13 @@ export class IssuesButtonGroupComponent implements OnInit, AfterViewInit {
     })
   }
   ngAfterViewInit(): void {
-    this.setAddButtonVisible();
-  }
-  private setAddButtonVisible() {
-    this.authService.getLoggedUser().subscribe({
-      next: (user: UserBasicInfo | undefined) => {
-        const repoRequest = this.getCanEditRepoRequest(user)
-        if (!repoRequest) return;
-        this.repoService.canEditRepoItems(repoRequest).subscribe({
-          next: (canEdit: boolean) => {
-            this.canEdit = canEdit;
-          }, error: (e: any) => {
-            console.log(e);
-          }
-        })
+    this.repoService.getCanEditRepoItems().subscribe({
+      next: (canEdit: boolean) => {
+        this.canEdit = canEdit;
       }, error: (e: any) => {
         console.log(e);
-      },
-    });
-  }
-  getCanEditRepoRequest(user: UserBasicInfo | undefined): EditRepoRequest | null {
-    const repoId = localStorage.getItem("repoId");
-    if (!repoId || !user?.id) return null;
-    return { repoId, userId: user.id }
+      }
+    })
   }
 
   showView(viewName: string) {

@@ -5,6 +5,7 @@ import { NewMilestoneDialogComponent } from '../dialogs/new-milestone-dialog/new
 import { MatDialog } from '@angular/material/dialog';
 import { Toastr } from 'src/utils/toastr.service';
 import { ChangeStateRequest, STATE } from 'src/models/state/state';
+import { RepoService } from 'src/services/repo/repo.service';
 
 @Component({
   selector: 'app-milestone-item',
@@ -20,14 +21,17 @@ export class MilestoneItemComponent implements OnInit {
   completePercentage: number = 0;
   openIssues: [] = [];
   closedIssues: [] = [];
+  canEdit: boolean = false;
 
   @Input() milestone: MilestoneDTO | undefined;
   @Output() editEvent: EventEmitter<MilestoneDTO | null> = new EventEmitter<MilestoneDTO | null>();
   @Output() deleteEvent: EventEmitter<MilestoneDTO | null> = new EventEmitter<MilestoneDTO | null>();
 
 
+
   constructor(
     private milestoneService: MilestoneService,
+    private repoService: RepoService,
     public dialog: MatDialog,
     private toastr: Toastr,
   ) { }
@@ -35,6 +39,16 @@ export class MilestoneItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.repoId = localStorage.getItem("repoId") as string
+  }
+
+  ngAfterViewInit(): void {
+    this.repoService.getCanEditRepoItems().subscribe({
+      next: (canEdit: boolean) => {
+        this.canEdit = canEdit;
+      }, error: (e: any) => {
+        console.log(e);
+      }
+    })
   }
 
   seeMilestoneIssues() {

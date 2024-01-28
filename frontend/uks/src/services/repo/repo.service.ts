@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { EditRepoRequest, RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
 import { HttpRequestService } from 'src/utils/http-request.service';
+import { AuthService } from '../auth/auth.service';
+import { UserBasicInfo } from 'src/models/user/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RepoService {
 
-  constructor(private httpRequestService: HttpRequestService) { }
+  constructor(
+    private httpRequestService: HttpRequestService,
+    private authService: AuthService
+  ) { }
 
   getAllPublic(): Observable<RepoBasicInfoDTO[]> {
     const url = environment.API_BASE_URL + "/repo/getAllPublic";
@@ -41,4 +46,23 @@ export class RepoService {
 
     return this.httpRequestService.post(url, body) as Observable<boolean>;
   }
+
+  getCanEditRepoItems(): Observable<boolean> {
+    let repoRequest;
+    this.authService.getLoggedUser().subscribe({
+      next: (user: UserBasicInfo | undefined) => {
+        repoRequest = this.createEditRepoRequest(user)
+      }, error: (e: any) => {
+        console.log(e);
+        return of(false);
+      },
+    });
+    return repoRequest ? this.canEditRepoItems(repoRequest) : of(false);
+  }
+  private createEditRepoRequest(user: UserBasicInfo | undefined): EditRepoRequest | null {
+    const repoId = localStorage.getItem("repoId");
+    if (!repoId || !user?.id) return null;
+    return { repoId, userId: user.id }
+  }
+
 }

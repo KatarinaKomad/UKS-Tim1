@@ -9,8 +9,6 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Toastr } from 'src/utils/toastr.service';
 import { AuthService } from 'src/services/auth/auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
-import { UserBasicInfo } from 'src/models/user/user';
-import { EditRepoRequest } from 'src/models/repo/repo';
 
 
 @Component({
@@ -33,7 +31,6 @@ export class ProjectLabelsComponent implements OnInit, AfterViewInit {
   constructor(
     public dialog: MatDialog,
     private labelService: LabelService,
-    private authService: AuthService,
     private repoService: RepoService,
     private _liveAnnouncer: LiveAnnouncer,
     private toastr: Toastr) {
@@ -51,7 +48,16 @@ export class ProjectLabelsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.setAddButtonVisible();
+    this.repoService.getCanEditRepoItems().subscribe({
+      next: (canEdit: boolean) => {
+        this.canEdit = canEdit;
+        if (canEdit) {
+          this.displayedColumns = ['name', 'description', 'issues', 'actions'];
+        }
+      }, error: (e: any) => {
+        console.log(e);
+      }
+    })
   }
 
   addNewLabel() {
@@ -129,34 +135,6 @@ export class ProjectLabelsComponent implements OnInit, AfterViewInit {
   removeFromTable(labelId: number): void {
     this.dataSource.data = this.dataSource.data.filter((elem: { id: number; }) => elem.id !== labelId);
     this.dataSource.data = [...this.dataSource.data];
-  }
-
-
-  private setAddButtonVisible() {
-    this.authService.getLoggedUser().subscribe({
-      next: (user: UserBasicInfo | undefined) => {
-        const repoRequest = this.getCanEditRepoRequest(user);
-        if (!repoRequest) return;
-        this.repoService.canEditRepoItems(repoRequest).subscribe({
-          next: (canEdit: boolean) => {
-            this.canEdit = canEdit;
-            if (canEdit) {
-              this.displayedColumns = ['name', 'description', 'issues', 'actions'];
-            }
-          }, error: (e: any) => {
-            console.log(e);
-          }
-        })
-      }, error: (e: any) => {
-        console.log(e);
-      },
-    });
-  }
-
-  getCanEditRepoRequest(user: UserBasicInfo | undefined): EditRepoRequest | null {
-    const repoId = localStorage.getItem("repoId");
-    if (!repoId || !user?.id) return null;
-    return { repoId, userId: user.id }
   }
 
 }
