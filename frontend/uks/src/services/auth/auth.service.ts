@@ -27,6 +27,9 @@ export class AuthService {
         next: (user: UserBasicInfo) => {
           this.onNewUserReceived(user);
         },
+        error: (error) => {
+          console.error('Error fetching current user:', error);
+        },
       });
     }
   }
