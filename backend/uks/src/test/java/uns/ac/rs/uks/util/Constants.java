@@ -16,4 +16,7 @@ public class Constants {
 	public static final UUID DELETED_USER_ID = UUID.fromString("ecf1c234-f25d-442f-b045-fbca70d4a86f");
 
 	public static final UUID REPOSITORY_ID_1_UKS_TEST = UUID.fromString("a3826e27-77d8-465c-9d9f-87ccbb04ecaf");
+	public static final UUID REPOSITORY_ID_2_UKS_TEST = UUID.fromString("ba6dcc79-1444-4310-9e7d-9736def57f60");
+	public static final UUID REPOSITORY_ID_3_UKS_TEST = UUID.fromString("b6677751-cc42-4fb7-a662-31dda9c4482b");
+	public static final UUID REPOSITORY_ID_4_UKS_TEST = UUID.fromString("f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e");
 }

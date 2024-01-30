@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import uns.ac.rs.uks.dto.request.EditRepoRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.util.Constants;
@@ -84,7 +85,6 @@ public class RepoControllerTest {
         assertEquals(Constants.MIKA_USER_ID, responseEntity.getBody().getOwner().getId());
     }
 
-
     @Test
     public void testSearchByNamePublic() {
         HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
@@ -120,5 +120,36 @@ public class RepoControllerTest {
                 .exchange("/repo/validateOverviewByRepoName", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
 
         assertNull(responseEntity.getBody());
+
+    @Test
+    public void testUserCanEditRepoItems() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+
+        EditRepoRequest repoRequest = new EditRepoRequest();
+        repoRequest.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        repoRequest.setUserId(Constants.PERA_USER_ID);
+
+        HttpEntity<EditRepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+
+        ResponseEntity<Boolean> responseEntity = restTemplate
+                .exchange("/repo/canEditRepoItems", HttpMethod.POST, entity, Boolean.class);
+
+        assertEquals(Boolean.TRUE, responseEntity.getBody());
+    }
+
+    @Test
+    public void testUserCanNotEditRepoItems() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+
+        EditRepoRequest repoRequest = new EditRepoRequest();
+        repoRequest.setRepoId(Constants.REPOSITORY_ID_3_UKS_TEST);
+        repoRequest.setUserId(Constants.PERA_USER_ID);
+
+        HttpEntity<EditRepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+
+        ResponseEntity<Boolean> responseEntity = restTemplate
+                .exchange("/repo/canEditRepoItems", HttpMethod.POST, entity, Boolean.class);
+
+        assertEquals(Boolean.FALSE, responseEntity.getBody());
     }
 }

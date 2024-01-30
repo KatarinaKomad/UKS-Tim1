@@ -33,6 +33,8 @@ class Branch {
 class Milestone {
     state: State
     name: String
+    dueDate: DateTime
+    description: String
 }
 
 class Project {

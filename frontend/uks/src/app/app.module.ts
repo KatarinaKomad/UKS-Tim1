@@ -40,6 +40,14 @@ import { IssuesButtonGroupComponent } from './components/molecules/issues-button
 import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
+import { NewMilestoneDialogComponent } from './components/molecules/dialogs/new-milestone-dialog/new-milestone-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
+import { MilestoneItemComponent } from './components/molecules/milestone-item/milestone-item.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
@@ -63,7 +71,10 @@ import { MatSortModule } from '@angular/material/sort';
     NewRepoDialogComponent,
     ProjectLabelsComponent,
     IssuesButtonGroupComponent,
-    NewLabelDialogComponent
+    NewLabelDialogComponent,
+    ProjectMilestonesComponent,
+    NewMilestoneDialogComponent,
+    MilestoneItemComponent
   ],
   exports: [],
   imports: [
@@ -84,9 +95,16 @@ import { MatSortModule } from '@angular/material/sort';
     MatSlideToggleModule,
     MatTableModule,
     MatSortModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    MatDatepickerModule,
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMAT }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

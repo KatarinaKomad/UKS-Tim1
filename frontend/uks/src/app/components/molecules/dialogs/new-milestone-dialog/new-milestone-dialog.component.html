@@ -1,0 +1,43 @@
+<div class="flex flex-row w-full h-full bg-gray-800 items-center justify-center text-white">
+    <div class="flex flex-col bg-gray-800 px-2 py-2 h-4/5 w-4/5">
+        <h2 class="!text-lg text-bold pb-2">Create new milestone</h2>
+        <form (submit)="onSubmitClick()" [formGroup]="newMilestoneForm">
+            <div class="flex flex-row">
+                <div [class]="'flex flex-col w-3/4 h-[13vh] pr-2'">
+                    <span class=" text-[16px]">Name*</span>
+                    <input class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none" id="name"
+                        type="text" formControlName="name" placeholder="Enter milestone name" />
+                </div>
+
+                <div [class]=" 'flex flex-col w-1/4 h-[13vh]'">
+                    <span class=" text-[16px]">Due date</span>
+                    <div [class]="'flex flex-row '">
+                        <input class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none"
+                            id="dueDate" [matDatepicker]="dp" type="text" readonly="true" formControlName="dueDate"
+                            placeholder="Enter due date" />
+                        <mat-datepicker-toggle class="calendar-icon" matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                        <mat-datepicker #dp></mat-datepicker>
+                    </div>
+                </div>
+
+            </div>
+
+            <div [class]="'flex flex-col w-full h-[13vh] '">
+                <app-input milestone="Description*" id="description" [extenseClass]="'w-full'"
+                    [control]="newMilestoneForm.controls.description" placeholder="Enter description" [required]="true"
+                    [invalid]="newMilestoneForm.controls.description.invalid && newMilestoneForm.controls.description.dirty"
+                    errorMessage="Invalid description" type="text"></app-input>
+            </div>
+
+
+            <div class="button-container">
+                <app-button [type]="'button'" [text]="'Cancel'"
+                    [extenseClass]="'bg-red-500 hover:bg-red-800 disabled:hover:bg-red-600 '"
+                    (buttonClick)="onCancelClick()"></app-button>
+                <app-button [text]="'Confirm'" [disabled]="newMilestoneForm.invalid"
+                    (buttonClick)="onSubmitClick()"></app-button>
+            </div>
+        </form>
+
+    </div>
+</div>
