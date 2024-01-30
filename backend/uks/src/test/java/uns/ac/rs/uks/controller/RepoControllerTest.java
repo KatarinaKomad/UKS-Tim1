@@ -114,12 +114,13 @@ public class RepoControllerTest {
         repoRequest.setName(privateName);
         repoRequest.setOwnerId(Constants.PERA_USER_ID);
 
-        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest, headers);
 
         ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
                 .exchange("/repo/validateOverviewByRepoName", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
 
         assertNull(responseEntity.getBody());
+    }
 
     @Test
     public void testUserCanEditRepoItems() {
