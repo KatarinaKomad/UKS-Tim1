@@ -56,7 +56,7 @@ services:
     networks:
       - uks
 
-  # Nginx as a web server and reverse proxy
+  # Nginx as a reverse proxy (gateway)
   nginx:
     image: nginx:alpine
     container_name: nginx
