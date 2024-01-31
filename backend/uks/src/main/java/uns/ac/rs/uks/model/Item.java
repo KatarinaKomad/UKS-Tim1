@@ -22,6 +22,11 @@ public abstract class Item implements Serializable {
     @Column(columnDefinition = "uuid")
     private UUID id;
     private String name;
+    private String description;
+    @Enumerated(EnumType.STRING)
+    private State state;
+    @ManyToOne
+    private Repo repository;
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -35,6 +40,6 @@ public abstract class Item implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Label> labels;
 }

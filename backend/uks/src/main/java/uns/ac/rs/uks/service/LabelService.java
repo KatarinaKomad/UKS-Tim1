@@ -2,10 +2,12 @@ package uns.ac.rs.uks.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uns.ac.rs.uks.dto.request.LabelRequest;
 import uns.ac.rs.uks.dto.response.LabelDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.LabelMapper;
+import uns.ac.rs.uks.model.Item;
 import uns.ac.rs.uks.model.Label;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.repository.LabelRepository;
@@ -47,6 +49,7 @@ public class LabelService {
     }
 
     public void deleteLabel(Long labelId) {
+        labelRepository.deleteLabelRelations(labelId);
         labelRepository.deleteById(labelId);
     }
 

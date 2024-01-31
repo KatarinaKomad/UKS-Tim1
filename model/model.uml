@@ -41,7 +41,9 @@ class Project {
     name: String
 }
 
-class Issue {}
+class Issue {
+    createdAt: DateTime
+}
 
 class PullRequest {}
 
@@ -50,9 +52,10 @@ class Commit {
     committedAt: DateTime
 }
 
-class IssueVersion {
-    updatedAt: DateTime
-    description: String
+class IssueEvent {
+    type: IssueEventType
+    newValue: String
+    createdAt: DateTime
 }
 
 class Comment {
@@ -63,6 +66,8 @@ class Comment {
 }
 class Item {
     name: String
+    description: String
+    state: State
     createdAt: DateTime
 }
 class Label {
@@ -88,6 +93,19 @@ enum RepositoryRole {
     CONTRIBUTOR
 }
 
+enum IssueEventType {
+    LABEL
+    ASSIGNEE
+    MILESTONE
+    NAME
+    DESCRIPTION
+    STATE
+    COMMENT
+    PR_REF
+    PR_REVIEW
+    COMMIT_REF
+}
+
 Member *-- User
 Member *-- Repository
 
@@ -97,11 +115,8 @@ User "0..*" -- "0..*" Repository: stared
 User "1" -- "0..*" Repository: owning
 User "1" -- "0..*" Branch
 
-User "0..*" -- "0..*" Issue
+User "0..*" -- "0..*" Issue: participants
 User "1" -- "0..*" Commit
-
-User "1" -- "0..*" Item: author
-Item "0..*" -- "0..*" User: assignees
 
 User "1" --* "0..*" Review
 PullRequest "1" -- "0..*" Review
@@ -111,12 +126,16 @@ Repository  "1" -- "0..*" Branch
 Repository  "1" -- "0..*" Milestone
 Repository  "1" -- "0..*" Project
 Repository  "1" -- "0..*" Label
+Repository  "1" -- "0..*" Issue
+Repository  "1" -- "0..*" Item
 
-Item <|-- IssueVersion
+Item <|-- Issue
 Item <|-- PullRequest
 Milestone "1" -- "0..*" Item
 Item "1" *-- "0..*" Comment
 Item "1" *-- "0..*" Label
+User "1" -- "0..*" Item: author
+Item "0..*" -- "0..*" User: assignees
 
 Branch "1..*" -- "0..*" Commit
 Commit "1" *-- "0..*" Commit : parent
@@ -126,7 +145,8 @@ PullRequest *-- Branch: origin
 PullRequest *-- Branch: target
 
 Project "1" *-- "0..*" Issue
-Issue "1" *-- "1..*" IssueVersion
+Issue "1" -- "1..*" IssueEvent
 
+IssueEvent "0..*" - "1" User: author
 
 @enduml
