@@ -1,7 +1,11 @@
-FROM node:20
-RUN mkdir /app
-COPY /frontend/uks /app
-RUN cd /app && npm install && npm run build
-EXPOSE 4200
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM nginx:stable-alpine
+COPY default.conf /etc/nginx/conf.d
+COPY --from=build /app/dist/uks/ /usr/share/nginx/html
+# EXPOSE 80
