@@ -40,6 +40,7 @@ public class RepoControllerTest {
                 restTemplate.exchange("/repo/getAllPublic", HttpMethod.GET,  entity, responseType);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        System.out.println(responseEntity.getBody());
         List<RepoBasicInfoDTO> repos = (List<RepoBasicInfoDTO>) responseEntity.getBody();
         assertNotNull(repos);
         for (RepoBasicInfoDTO repo: repos) {
