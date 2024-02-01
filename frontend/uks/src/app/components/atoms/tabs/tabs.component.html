@@ -12,9 +12,9 @@
             <i class="icon fa-regular fa-circle-dot fa-lg"></i>
             <span class="itemTitle">Issues</span>
         </ng-template>
-        <app-project-issues *ngIf="view === 'issues'"></app-project-issues>
-        <app-project-labels *ngIf="view === 'labels'"></app-project-labels>
-        <app-project-milestones *ngIf="view === 'milestones'"></app-project-milestones>
+
+        <router-outlet name="project-view"></router-outlet>
+        <router-outlet name="issue-view"></router-outlet>
     </mat-tab>
 
     <mat-tab class="custom-tab">

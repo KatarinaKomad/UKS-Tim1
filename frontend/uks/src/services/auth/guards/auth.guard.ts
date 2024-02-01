@@ -2,7 +2,7 @@ import { RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
 import { UserBasicInfo } from 'src/models/user/user';
 
 import { inject } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from '../auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
@@ -27,7 +27,7 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
 
   authService.getLoggedUser().subscribe({
     next: (user: UserBasicInfo | undefined) => {
-      const repoName = getRepoName(state);
+      const repoName = localStorage.getItem("repoName") as string;
       if (!repoName || !user?.id) return true;
 
       const repoRequest: RepoRequest = {
@@ -54,10 +54,10 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
 };
 
 
-function getRepoName(state: RouterStateSnapshot): string {
-  try {
-    return state.toString().replace('repository,', '').trim();
-  } catch (error) {
-    return '';
-  }
-}
+// function getRepoName(state: RouterStateSnapshot): string {
+//   try {
+//     return state.toString().replace('repository,', '').trim();
+//   } catch (error) {
+//     return '';
+//   }
+// }

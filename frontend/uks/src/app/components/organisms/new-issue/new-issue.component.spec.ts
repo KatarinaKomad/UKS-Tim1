@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProjectIssuesComponent } from './project-issues.component';
+import { NewIssueComponent } from './new-issue.component';
+import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { MatDialogModule } from '@angular/material/dialog';
-import { HttpClientModule } from '@angular/common/http';
 
-describe('ProjectIssuesComponent', () => {
-  let component: ProjectIssuesComponent;
-  let fixture: ComponentFixture<ProjectIssuesComponent>;
+describe('NewIssueComponent', () => {
+  let component: NewIssueComponent;
+  let fixture: ComponentFixture<NewIssueComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule, HttpClientModule],
-      declarations: [ProjectIssuesComponent],
+      declarations: [NewIssueComponent],
+      imports: [HttpClientModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -24,13 +23,14 @@ describe('ProjectIssuesComponent', () => {
               },
             },
             queryParams: of({}),
+            url: of([{ path: 'example' }]), // Mock the url observable
           },
         },
       ],
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(ProjectIssuesComponent);
+    fixture = TestBed.createComponent(NewIssueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

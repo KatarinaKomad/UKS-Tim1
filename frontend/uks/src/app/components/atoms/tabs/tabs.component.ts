@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute } from '@angular/router';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 @Component({
   selector: 'app-tabs',
@@ -13,32 +14,27 @@ export class TabsComponent implements OnInit {
   activeTab: number = 0;
   repoName: string = '';
 
-  view: string = 'issues';
-
   constructor(
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navigationService: NavigationService
   ) { }
 
   ngOnInit(): void {
-    this.repoName = this.route.snapshot.paramMap.get('repoName') as string;
+    this.repoName = localStorage.getItem("repoName") as string;
     this.route.queryParams.subscribe(params => {
       if (params['tab']) {
         this.activeTab = params['tab'];
-      }
-      if (params['view']) {
-        this.view = params['view'];
       }
     })
   }
 
   onTabChange(event: MatTabChangeEvent) {
     const index = event.index;
-    this.router.navigate(
-      [`repository/${this.repoName}`],
-      {
-        queryParams: { tab: index, view: (index !== 1) ? undefined : 'issues' }
-      });
+    // issue tab == 1
+    index === 1 ?
+      this.navigationService.navigateToProjectIssues() :
+      this.navigationService.navigateToTab(index);
+
   }
 
 
