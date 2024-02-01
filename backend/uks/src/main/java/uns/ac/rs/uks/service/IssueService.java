@@ -30,6 +30,9 @@ public class IssueService {
     public Issue getById(UUID issueId) {
         return issueRepository.findById(issueId).orElseThrow(()->new NotFoundException("Issue not found."));
     }
+    public IssueDTO findById(UUID issueId) {
+       return IssueMapper.toDTO(getById(issueId));
+    }
 
     public List<IssueDTO> getAllRepoIssues(UUID repoId) {
         List<Issue> issues = issueRepository.findAllByRepositoryId(repoId);
@@ -41,7 +44,7 @@ public class IssueService {
         Issue issue = IssueMapper.newIssueFromDTO(issueRequest, items);
         List<IssueEvent> events = issueEventService.createIssueEventsFromNewIssue(items);
         issue.setEvents(events);
-        issue = issueRepository.save(issue);
+        issue = issueRepository.saveAndFlush(issue);
         return IssueMapper.toDTO(issue);
     }
 
@@ -59,7 +62,7 @@ public class IssueService {
         }
         IssueEvent event =  issueEventService.createEventFromEventRequest(request, items, issue);
         issue.getEvents().add(event);
-        issue = issueRepository.save(issue);
+        issue = issueRepository.saveAndFlush(issue);
         return IssueMapper.toDTO(issue);
     }
 

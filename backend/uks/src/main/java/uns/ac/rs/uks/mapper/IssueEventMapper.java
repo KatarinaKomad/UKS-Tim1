@@ -11,7 +11,7 @@ public class IssueEventMapper {
         return IssueEventDTO.builder()
                 .id(event.getId())
                 //issueId
-                .authorId(event.getAuthor() != null ? event.getAuthor().getId() : null)
+                .author(event.getAuthor() != null ? UserMapper.toDTO(event.getAuthor()) : null)
                 .value(event.getNewValue())
                 .type(event.getType())
                 .createdAt(event.getCreatedAt())

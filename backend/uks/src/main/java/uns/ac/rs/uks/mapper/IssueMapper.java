@@ -14,6 +14,7 @@ public class IssueMapper {
     public static IssueDTO toDTO(Issue issue) {
         return IssueDTO.builder()
                 .id(issue.getId())
+                .counter(issue.getCounter())
                 .name(issue.getName())
                 .description(issue.getDescription())
                 .state(issue.getState())

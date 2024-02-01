@@ -37,6 +37,12 @@ public class IssueController {
         return issueEventService.getIssueEventHistory(issueId);
     }
 
+    @GetMapping("/getById/{issueId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public IssueDTO getIssueById(@PathVariable UUID issueId) {
+        return issueService.findById(issueId);
+    }
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_USER')")
     public IssueDTO createNewIssue(@Valid @RequestBody IssueRequest issueRequest) {

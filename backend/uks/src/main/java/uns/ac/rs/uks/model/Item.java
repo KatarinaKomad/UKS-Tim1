@@ -21,6 +21,8 @@ public abstract class Item implements Serializable {
     @Id
     @Column(columnDefinition = "uuid")
     private UUID id;
+    @Column(insertable = false, updatable = false, columnDefinition="serial")
+    private Long counter;
     private String name;
     private String description;
     @Enumerated(EnumType.STRING)

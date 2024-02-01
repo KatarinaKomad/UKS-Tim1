@@ -98,7 +98,7 @@ public class IssueServiceTest {
         IssueRequest issueRequest = createIssueRequest();
         Issue issue = createIssue();
 
-        when(issueRepository.save(any(Issue.class))).thenReturn(issue);
+        when(issueRepository.saveAndFlush(any(Issue.class))).thenReturn(issue);
 
         // Test
         IssueDTO dto = issueService.createNewIssue(issueRequest);
@@ -122,7 +122,7 @@ public class IssueServiceTest {
 
         IssueEvent event = createEvent();
         when(entityManager.getReference(Milestone.class, 3L)).thenReturn(milestone);
-        when(issueRepository.save(any(Issue.class))).thenReturn(issue);
+        when(issueRepository.saveAndFlush((any(Issue.class)))).thenReturn(issue);
         when(issueRepository.findById(Constants.ISSUE_ID_1)).thenReturn(Optional.of(issue));
         when(issueEventService.createEventFromEventRequest(any(IssueEventRequest.class), any(IssueItemsDTO.class), any(Issue.class))).thenReturn(event);
         // Test
