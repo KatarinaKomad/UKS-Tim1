@@ -110,9 +110,4 @@ export class MilestoneItemComponent implements OnInit {
   }
 
 
-  closeMilestone() {
-
-  }
-
-
 }

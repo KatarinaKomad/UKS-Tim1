@@ -1,0 +1,50 @@
+<div class="segment">
+    <div class="flex flex-row header">
+        <div class="title">Assignees</div>
+        <button (click)="showAssignees()">
+            <i class="icon fa-solid fa-gear fa-lg"></i>
+        </button>
+    </div>
+    <div class="elements">
+        <span>
+            No one
+        </span>
+    </div>
+
+</div>
+
+<div class="segment">
+    <div class="flex flex-row header">
+        <div class="title">Labels</div>
+        <button (click)="showLabels()">
+            <i class="icon fa-solid fa-gear fa-lg"></i>
+        </button>
+    </div>
+    <div class="elements">
+        <span>
+            None yet
+        </span>
+    </div>
+</div>
+
+<div class="segment">
+    <div class="flex flex-row header">
+        <div class="title">Milestone</div>
+        <button (click)="showMilestones()">
+            <i class="icon fa-solid fa-gear fa-lg"></i>
+        </button>
+    </div>
+
+    <div class="elements">
+        <span>
+            No milestone
+        </span>
+    </div>
+</div>
+
+<div class="flex flex-row delete-button">
+    <button (click)="deleteIssue()" *ngIf="this.issue">
+        Delete Issue
+        <i class="icon fa-solid fa-trash fa-lg"></i>
+    </button>
+</div>

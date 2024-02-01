@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SelectionOptions, titleMapper } from 'src/models/navigation';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth/auth.service';
 
 
@@ -20,7 +20,6 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private authService: AuthService
   ) {
     this.getCurrentHref();
@@ -39,7 +38,7 @@ export class NavbarComponent implements OnInit {
     this.selected = href as SelectionOptions;
     this.title = titleMapper(this.selected);
     if (this.title === '' && href.includes(SelectionOptions.REPOSITORY)) {
-      this.title = this.route.snapshot.paramMap.get('repoName') as string;
+      this.title = localStorage.getItem("repoName") as string;
     }
   }
 

@@ -48,6 +48,15 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
 import { MilestoneItemComponent } from './components/molecules/milestone-item/milestone-item.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IssueItemComponent } from './components/molecules/issue-item/issue-item.component';
+// import { AuthorFilterComponent } from './components/molecules/filter-overlays/author-filter/author-filter.component';
+// import { AssigneeFilterComponent } from './components/molecules/filter-overlays/assignee-filter/assignee-filter.component';
+// import { LabelFilterComponent } from './components/molecules/filter-overlays/label-filter/label-filter.component';
+// import { MilestoneFilterComponent } from './components/molecules/filter-overlays/milestone-filter/milestone-filter.component';
+import { NewIssueComponent } from './components/organisms/new-issue/new-issue.component';
+import { IssueOverviewComponent } from './components/organisms/issue-overview/issue-overview.component';
+import { IssuePropertiesSideViewComponent } from './components/molecules/issue-properties-side-view/issue-properties-side-view.component';
+import { NewIssueFormComponent } from './components/molecules/new-issue-form/new-issue-form.component';
 
 
 @NgModule({
@@ -74,7 +83,20 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     NewLabelDialogComponent,
     ProjectMilestonesComponent,
     NewMilestoneDialogComponent,
-    MilestoneItemComponent
+    MilestoneItemComponent,
+
+    IssueItemComponent,
+    NewIssueComponent,
+    NewIssueFormComponent,
+    IssueOverviewComponent,
+    IssuePropertiesSideViewComponent,
+
+    // AssigneeFilterComponent,
+    // AuthorFilterComponent,
+    // LabelFilterComponent,
+    // MilestoneFilterComponent,
+
+
   ],
   exports: [],
   imports: [

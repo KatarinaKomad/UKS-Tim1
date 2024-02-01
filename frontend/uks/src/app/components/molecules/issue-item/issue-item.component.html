@@ -1,0 +1,24 @@
+<div class="card-container">
+    <div class="issue-left-container flex flex-col !w-2/5 ">
+        <div class="flex flex-row">
+            <h3 class=" issue-title " (click)="viewIssue()">
+                {{issue?.name}}
+            </h3>
+            <div *ngFor="let issue of issue?.labels" class="py-1 px-2">
+                <span [style.background]="issue?.color" class="rounded-2xl px-2 mx-auto text-base">{{issue.name}}
+                </span>
+            </div>
+        </div>
+
+        <p class="flex flex-row issue-description">
+            #{{issue?.counter}} -
+            created by {{issue?.author?.firstName}} {{issue?.author?.lastName}},
+            {{issue?.createdAt | date: 'dd.MM.yyyy.'}}
+            <span class="px-2" *ngIf="issue?.milestone">
+                <i class="fa-regular fa-flag"></i>
+                {{issue?.milestone?.name}}
+            </span>
+        </p>
+
+    </div>
+</div>

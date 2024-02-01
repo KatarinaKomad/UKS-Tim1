@@ -4,6 +4,7 @@ import { IssuesButtonGroupComponent } from './issues-button-group.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 describe('IssuesButtonGroupComponent', () => {
   let component: IssuesButtonGroupComponent;
@@ -23,6 +24,7 @@ describe('IssuesButtonGroupComponent', () => {
               },
             },
             queryParams: of({}),
+            url: of([{ path: 'example' }]), // Mock the url observable
           },
         },
       ],

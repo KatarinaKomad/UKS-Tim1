@@ -34,7 +34,8 @@ public class Repo implements Serializable {
     private List<Project> projects;
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Label> labels;
-
+    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Issue> issues;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Repo forkParent;

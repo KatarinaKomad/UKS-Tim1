@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProjectIssuesComponent } from './project-issues.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ProjectIssuesComponent', () => {
   let component: ProjectIssuesComponent;
@@ -10,6 +12,7 @@ describe('ProjectIssuesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MatDialogModule, HttpClientModule],
       declarations: [ProjectIssuesComponent],
       providers: [
         {

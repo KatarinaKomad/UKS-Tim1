@@ -1,1 +1,50 @@
 <app-issues-button-group (buttonClick)="addNewIssue()"></app-issues-button-group>
+<div class="flex flex-col pt-4 w-5/6 mx-auto issue-container">
+    <div class="flex flex-row space-x-4 issues-header">
+        <div class="flex flex-col  w-1/2">
+            <div class="issue-left-container">
+                <button class="header-button !py-1 " (click)="changeShownIssues(true)" [ngStyle]="{'background-color': shownOpen  ? '#d1d5da' : '#f6f8fa', 
+            'color': shownOpen ? 'white' : 'black'}">
+                    <i class="icon fa-regular fa-circle-dot"></i>
+                    Open
+                </button>
+
+                <button class="header-button !py-1" (click)="changeShownIssues(false)"
+                    [ngStyle]="{'background-color': !shownOpen ? '#d1d5da' : '#f6f8fa', 'color': !shownOpen ? 'white' : 'black'}">
+                    <i class="fa-solid fa-check"></i>
+                    Closed
+                </button>
+            </div>
+        </div>
+
+        <!-- <div class="flex flex-col  w-1/2">
+            <span class="issue-right-container">
+                <button class="filter-button !py-1 " (click)="showFilterForm(true)">
+                    Author
+                    <i class="fa-solid fa-sort-down"></i>
+                </button>
+                <button class="filter-button !py-1 " (click)="changeShownIssues(true)">
+                    Label
+                    <i class="fa-solid fa-sort-down "></i>
+                </button>
+                <button class="filter-button !py-1 " (click)="changeShownIssues(true)">
+                    Issue
+                    <i class="fa-solid fa-sort-down"></i>
+                </button>
+                <button class="filter-button !py-1 " (click)="changeShownIssues(true)">
+                    Assignee
+                    <i class="fa-solid fa-sort-down"></i>
+                </button>
+
+                <app-assignee-filter *ngIf="isFilterFormVisible"
+                    (closeEvent)="closeFilter($event)"></app-assignee-filter>
+            </span>
+        </div> -->
+    </div>
+    <div class="flex flex-row" *ngFor="let issue of shownIssues">
+        <app-issue-item [issue]="issue"></app-issue-item>
+    </div>
+    <div *ngIf="shownIssues.length === 0" class="flex flex-row">
+        No issues
+    </div>
+</div>

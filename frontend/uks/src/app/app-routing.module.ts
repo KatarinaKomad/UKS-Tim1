@@ -9,6 +9,11 @@ import { SignUpPageComponent } from './pages/authentication/sign-up-page/sign-up
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
+import { NewIssueComponent } from './components/organisms/new-issue/new-issue.component';
+import { IssueOverviewComponent } from './components/organisms/issue-overview/issue-overview.component';
+import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
+import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
+import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
@@ -24,9 +29,17 @@ const routes: Routes = [
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
-    canMatch: [repoGuard],
+    canMatch: [],
     data: {},
+    children: [
+      { path: 'issues', component: ProjectIssuesComponent, outlet: "project-view" },
+      { path: 'milestones', component: ProjectMilestonesComponent, outlet: "project-view" },
+      { path: 'labels', component: ProjectLabelsComponent, outlet: "project-view" },
+      { path: 'issue/new', component: NewIssueComponent, outlet: "issue-view" },
+      { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: "issue-view" },
+    ]
   },
+
 
   { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },
   { path: '**', component: PageNotFoundComponent, canMatch: [] },
