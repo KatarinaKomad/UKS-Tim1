@@ -52,14 +52,29 @@ public class IssueEventService {
         event.setIssue(issue);
         switch (request.getType()) {
             case LABEL -> {
-                String name = String.join(", ", items.getLabels().stream().map(Label::getName).toList());
-                event.setNewValue(name);
+                if(items.getLabels() == null || items.getLabels().size()==0){
+                    event.setNewValue("none");
+                } else {
+                    String name = String.join(", ", items.getLabels().stream().map(Label::getName).toList());
+                    event.setNewValue(name);
+                }
             }
             case ASSIGNEE -> {
-                String name = String.join(", ", items.getAssignees().stream().map(User::getName).toList());
-                event.setNewValue(name);
+                if(items.getAssignees() == null || items.getAssignees().size()==0){
+                    event.setNewValue("no one");
+                } else {
+                    String name = String.join(", ", items.getAssignees().stream().map(User::getName).toList());
+                    event.setNewValue(name);
+                }
             }
-            case MILESTONE -> event.setNewValue(items.getMilestone().getName());
+            case MILESTONE -> {
+                if(items.getMilestone() == null){
+                    event.setNewValue("none");
+                } else {
+                    event.setNewValue(items.getMilestone().getName());
+                }
+
+            }
             case NAME -> event.setNewValue(request.getName());
             case DESCRIPTION -> event.setNewValue(request.getDescription());
             case STATE -> event.setNewValue(request.getState().name());
@@ -68,6 +83,9 @@ public class IssueEventService {
         return event;
     }
 
+    public void saveAll(List<IssueEvent> events){
+        issueEventRepository.saveAll(events);
+    }
 
     private IssueEvent createEvent(String name, User author, IssueEventType type) {
         IssueEvent event = new IssueEvent();

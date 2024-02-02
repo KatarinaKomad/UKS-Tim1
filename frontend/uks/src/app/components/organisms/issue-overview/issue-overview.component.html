@@ -61,10 +61,11 @@
 
 
     <div class="flex flex-col w-3/6 p-5 h-full" *ngIf="isEdit">
-        <app-new-issue-form [issue]="issue" (closeEvent)="closeEdit($event)"></app-new-issue-form>
+        <app-new-issue-form [issue]="issue" (updateIssueEvent)="closeEdit($event)"></app-new-issue-form>
     </div>
 
     <div class="flex flex-col w-2/6 p-5 ml-5">
-        <app-issue-properties-side-view [issue]="issue"></app-issue-properties-side-view>
+        <app-issue-properties-side-view [issuePropertiesInput]="issueProperties" [issueId]="issue?.id"
+            (changeEvent)="handleIssuePropertiesChange($event)"></app-issue-properties-side-view>
     </div>
 </div>

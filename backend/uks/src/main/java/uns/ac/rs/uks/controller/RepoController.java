@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
+import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.service.RepoService;
 
 import java.util.List;
@@ -45,5 +46,11 @@ public class RepoController {
     @PostMapping("/canEditRepoItems")
     public Boolean canEditRepoItems(@Valid @RequestBody EditRepoRequest repoRequest) {
         return repoService.canEditRepoItems(repoRequest);
+    }
+
+    @GetMapping("/getMembers/{repoId}")
+//    @PreAuthorize("hasPermission(#repositoryId, 'OWNER')")
+    public List<UserDTO> getMembers(@PathVariable UUID repoId ) {
+        return repoService.getMembers(repoId);
     }
 }

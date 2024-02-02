@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute, NavigationExtras } from '@angular/router';
-import { ISSUE_EVENT_TYPE, IssueDTO, IssueEventDTO, IssueEventRequest, IssueRequest } from 'src/models/issue/issue';
+import { ISSUE_EVENT_TYPE, IssueDTO, IssueEventDTO, IssueEventRequest, IssueProperties, IssueRequest } from 'src/models/issue/issue';
+import { LabelDTO } from 'src/models/label/label';
+import { MilestoneDTO } from 'src/models/milestone/milestone';
 import { STATE, STATE_COLORS } from 'src/models/state/state';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
@@ -16,7 +18,6 @@ import { NavigationService } from 'src/services/navigation/navigation.service';
 })
 export class IssueOverviewComponent {
 
-
   repoId: string;
   issueId: string = '';
   loggedUser?: UserBasicInfo;
@@ -28,16 +29,12 @@ export class IssueOverviewComponent {
   isEdit: boolean = false;
 
   issue?: IssueDTO;
+  issueProperties: IssueProperties = {};
   events: IssueEventDTO[] = [];
 
-  newIssueForm = this.formBuilder.group({
-    name: new FormControl(""),
-    description: new FormControl(""),
-  })
   stateColor: string = STATE_COLORS.OPEN;
 
   constructor(
-    private formBuilder: FormBuilder,
     private navigationService: NavigationService,
     private authService: AuthService,
     private issueService: IssueService,
@@ -50,14 +47,11 @@ export class IssueOverviewComponent {
         this.loggedUser = logged;
       }
     })
-
-    this.getIssueFromRoute();
-    this.getIssueEvents();
   }
 
   ngOnInit(): void {
-    this.newIssueForm.controls.name.setValue(this.issue?.name ? this.issue?.name : "")
-    this.newIssueForm.controls.description.setValue(this.issue?.description ? this.issue?.description : "")
+    this.getIssueFromRoute();
+    this.getIssueEvents();
   }
 
   edit() {
@@ -86,6 +80,10 @@ export class IssueOverviewComponent {
     })
   }
 
+  handleIssuePropertiesChange(issueProperties: IssueProperties) {
+    this.issueProperties = { ...issueProperties };
+  }
+
   showProjectIssues() {
     this.navigationService.navigateToProjectIssues();
   }
@@ -108,6 +106,11 @@ export class IssueOverviewComponent {
             this.issue = res;
             this.setStateColor(res.state);
 
+            this.issueProperties.assignees = this.issue?.assignees
+            this.issueProperties.labels = this.issue?.labels
+            this.issueProperties.milestone = this.issue?.milestone
+
+            this.issueProperties = { ...this.issueProperties }
           }, error: (e: any) => {
             console.log(e);
           }

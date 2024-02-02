@@ -45,6 +45,9 @@ public class IssueService {
         List<IssueEvent> events = issueEventService.createIssueEventsFromNewIssue(items);
         issue.setEvents(events);
         issue = issueRepository.saveAndFlush(issue);
+        Issue finalIssue = issue;
+        events.forEach(e->e.setIssue(finalIssue));
+        issueEventService.saveAll(events);
         return IssueMapper.toDTO(issue);
     }
 

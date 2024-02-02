@@ -1,0 +1,18 @@
+<div class="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" (click)="closeForm()">
+            &times;
+        </span>
+        <form class="filter-row">
+            <label for="labelFilter">Filter labels:</label>
+            <input type="text" id="labelFilter" [formControl]="filter" name="label" class="border input-filter" />
+
+            <button (click)="submitFilter()" class="border search-button">Search</button>
+        </form>
+        <div *ngFor="let elem of shownList" class="item-row">
+            <input type="checkbox" [checked]="isSelected(elem)" (change)="onCheckboxChange($event, elem)" />
+            <span [style.background]="elem?.color" class="rounded-2xl px-2 mx-auto text-base">{{elem.name}}
+            </span>
+        </div>
+    </div>
+</div>

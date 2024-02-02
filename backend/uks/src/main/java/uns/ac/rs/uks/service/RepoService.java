@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
+import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.RepoMapper;
+import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.Member;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.RepositoryRole;
@@ -69,5 +71,10 @@ public class RepoService {
     public Boolean canEditRepoItems(EditRepoRequest repoRequest) {
         Member member = memberService.findMemberByUserIdAndRepositoryId(repoRequest.getUserId(), repoRequest.getRepoId());
         return member != null;
+    }
+
+    public List<UserDTO> getMembers(UUID repoId) {
+        List<Member> members = memberService.findAllMembersByRepositoryId(repoId);
+        return members.stream().map(member -> UserMapper.toDTO(member.getUser())).toList();
     }
 }

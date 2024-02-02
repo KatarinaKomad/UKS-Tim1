@@ -7,6 +7,7 @@ import uns.ac.rs.uks.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class IssueMapper {
@@ -34,9 +35,13 @@ public class IssueMapper {
     public static Issue newIssueFromDTO(IssueRequest issueRequest, IssueItemsDTO items) {
         ArrayList<User> participants = new ArrayList<>();
         participants.add(items.getAuthor());
-        if(items.getAssignees() != null){
-            participants.addAll(items.getAssignees());
+        if (items.getAssignees() != null) {
+            Set<UUID> authorIds = Set.of(items.getAuthor().getId());
+            items.getAssignees().stream()
+                    .filter(user -> !authorIds.contains(user.getId()))
+                    .forEach(participants::add);
         }
+
 
         Issue issue = new Issue();
         issue.setId(UUID.randomUUID());

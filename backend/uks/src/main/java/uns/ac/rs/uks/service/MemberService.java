@@ -8,6 +8,7 @@ import uns.ac.rs.uks.model.RepositoryRole;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.repository.MemberRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,6 +23,10 @@ public class MemberService {
     }
     public Member findMemberByUserIdAndRepositoryId(UUID userId, UUID repositoryId){
         return memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId).orElse(null);
+    }
+
+    public List<Member> findAllMembersByRepositoryId(UUID repositoryId){
+        return memberRepository.findAllMembersByRepositoryId(repositoryId);
     }
 
     public void addNewMember(User user, Repo repo, RepositoryRole role) {

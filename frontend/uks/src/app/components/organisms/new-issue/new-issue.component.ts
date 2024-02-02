@@ -1,9 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { IssueDTO, IssueRequest } from 'src/models/issue/issue';
-import { UserBasicInfo } from 'src/models/user/user';
-import { AuthService } from 'src/services/auth/auth.service';
+import { IssueDTO, IssueProperties, IssueRequest } from 'src/models/issue/issue';
 import { IssueService } from 'src/services/issue/issue.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 
@@ -14,47 +10,29 @@ import { NavigationService } from 'src/services/navigation/navigation.service';
 })
 export class NewIssueComponent {
 
-  repoId: string;
-  loggedUser?: UserBasicInfo;
-
   issueRequest?: IssueRequest;
-  issueId: string = '';
-  issue?: IssueDTO;
 
-  newIssueForm = this.formBuilder.group({
-    name: new FormControl(""),
-    description: new FormControl(""),
-  })
+  issueProperties: IssueProperties = {};
 
   constructor(
-    private formBuilder: FormBuilder,
     private navigationService: NavigationService,
-    private authService: AuthService,
     private issueService: IssueService,
-    private route: ActivatedRoute
-  ) {
-    this.repoId = localStorage.getItem("repoId") as string
-
-    this.authService.getLoggedUser().subscribe({
-      next: (logged?: UserBasicInfo) => {
-        this.loggedUser = logged;
-      }
-    })
-
-    this.getIssueFromRoute();
-  }
+  ) { }
 
   ngOnInit(): void {
-    this.newIssueForm.controls.name.setValue(this.issue?.name ? this.issue?.name : "")
-    this.newIssueForm.controls.description.setValue(this.issue?.description ? this.issue?.description : "")
   }
 
-  onCancelClick(): void {
-    this.navigationService.navigateToProjectIssues();
-  }
+  handleSubmitForm(issueRequest: IssueRequest | null) {
+    // cancel
+    if (issueRequest === null) {
+      this.navigationService.navigateToProjectIssues();
+      return;
+    }
+    // submit
+    issueRequest.assigneeIds = this.issueProperties.assignees?.map(a => a.id);
+    issueRequest.labelIds = this.issueProperties.labels?.map(l => l.id);
+    issueRequest.milestoneId = this.issueProperties.milestone?.id;
 
-  onSubmitClick(): void {
-    const issueRequest: IssueRequest = this.createIssueRequest();
     this.issueService.createNewIssue(issueRequest).subscribe({
       next: (res: IssueDTO | null) => {
         console.log(res);
@@ -65,27 +43,7 @@ export class NewIssueComponent {
     })
   }
 
-  private createIssueRequest(): IssueRequest {
-    return {
-      name: this.newIssueForm.controls.name.value as string,
-      description: this.newIssueForm.controls.description.value as string,
-      repoId: this.repoId,
-      authorId: this.loggedUser?.id as string,
-    }
-  }
-
-  private getIssueFromRoute() {
-    if (this.route.params) {
-      this.route.params.subscribe(params => {
-        this.issueId = params['issueId'];
-        this.issueService.getById(this.issueId).subscribe({
-          next: (res: IssueDTO) => {
-            this.issue = res;
-          }, error: (e: any) => {
-            console.log(e);
-          }
-        })
-      });
-    }
+  handleIssuePropertiesChange(issueProperties: IssueProperties) {
+    this.issueProperties = issueProperties;
   }
 }
