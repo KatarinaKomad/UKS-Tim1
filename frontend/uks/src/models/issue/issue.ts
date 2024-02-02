@@ -56,3 +56,15 @@ export enum ISSUE_EVENT_TYPE {
     PR_REVIEW = "PR_REVIEW",
     COMMIT_REF = "COMMIT_REF"
 }
+
+export enum ISSUE_PROPERTIES {
+    LABEL = "LABEL",
+    ASSIGNEE = "ASSIGNEE",
+    MILESTONE = "MILESTONE",
+}
+
+export interface IssueProperties {
+    assignees?: UserBasicInfo[];
+    labels?: LabelDTO[];
+    milestone?: MilestoneDTO;
+}

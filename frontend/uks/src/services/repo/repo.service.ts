@@ -21,6 +21,11 @@ export class RepoService {
     return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;
   }
 
+  getRepoMembers(repoId: string): Observable<UserBasicInfo[]> {
+    const url = environment.API_BASE_URL + `/repo/getMembers/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
+  }
+
   getMyRepos(userId: string): Observable<RepoBasicInfoDTO[]> {
     const url = environment.API_BASE_URL + `/repo/getMyRepos/${userId}`;
     return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;

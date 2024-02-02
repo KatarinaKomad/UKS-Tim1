@@ -22,7 +22,8 @@ export class NewIssueFormComponent {
   ISSUE_EVENT_TYPE = ISSUE_EVENT_TYPE;
 
   @Input() issue?: IssueDTO;
-  @Output() closeEvent: EventEmitter<IssueDTO | null> = new EventEmitter<IssueDTO | null>();
+  @Output() updateIssueEvent: EventEmitter<IssueDTO | null> = new EventEmitter<IssueDTO | null>();
+  @Output() newIssueEvent: EventEmitter<IssueRequest | null> = new EventEmitter<IssueRequest | null>();
   events: IssueEventDTO[] = [];
 
   newIssueForm = this.formBuilder.group({
@@ -32,7 +33,6 @@ export class NewIssueFormComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private navigationService: NavigationService,
     private authService: AuthService,
     private issueService: IssueService
   ) {
@@ -52,23 +52,11 @@ export class NewIssueFormComponent {
   }
 
   onCancelClick(): void {
-    this.issue ? this.showIssueOverview(null) : this.showProjectIssues();
+    this.issue ? this.emitUpdateIssueEvent(null) : this.emitNewIssueEvent(null);
   }
 
   onSubmitClick(): void {
-    this.issue ? this.updateIssue() : this.createNewIssue();
-  }
-
-  private createNewIssue() {
-    const issueRequest: IssueRequest = this.createIssueRequest();
-    this.issueService.createNewIssue(issueRequest).subscribe({
-      next: (res: IssueDTO | null) => {
-        console.log(res);
-        this.showProjectIssues();
-      }, error: (e: any) => {
-        console.log(e);
-      }
-    })
+    this.issue ? this.updateIssue() : this.emitNewIssueEvent(this.createIssueRequest());
   }
 
   private updateIssue() {
@@ -92,7 +80,7 @@ export class NewIssueFormComponent {
       }
     }
     if (this.issue) {
-      this.showIssueOverview(this.issue);
+      this.emitUpdateIssueEvent(this.issue);
     }
   }
 
@@ -106,11 +94,12 @@ export class NewIssueFormComponent {
     })
   }
 
-  private showProjectIssues() {
-    this.navigationService.navigateToProjectIssues();
+  private emitUpdateIssueEvent(changedIssue: IssueDTO | null) {
+    this.updateIssueEvent.emit(changedIssue);
   }
-  private showIssueOverview(changedIssue: IssueDTO | null) {
-    this.closeEvent.emit(changedIssue);
+
+  private emitNewIssueEvent(issueRequest: IssueRequest | null) {
+    this.newIssueEvent.emit(issueRequest);
   }
 
 
