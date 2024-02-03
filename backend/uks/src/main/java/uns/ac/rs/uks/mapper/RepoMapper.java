@@ -21,6 +21,7 @@ public class RepoMapper {
                         .forkCount(repo.getForkChildren() != null ? repo.getForkChildren().size() : 0)
                         .starCount(repo.getStaredBy() != null ? repo.getStaredBy().size() : 0)
                         .watchCount(repo.getWatchers() != null ? repo.getWatchers().size() : 0)
+                        .defaultBranch(repo.getDefaultBranch() != null ? repo.getDefaultBranch().getId() : 0)
                         .build();
     }
 
