@@ -15,21 +15,34 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './repo-settings.component.scss',
 })
 export class RepoSettingsComponent implements OnInit {
-  repository: RepoBasicInfoDTO;
-  repoName: string = '';
+  repository: RepoBasicInfoDTO = {
+    id: '', isPublic: false, name: '', owner: {
+      id: '', email: '', firstName: '', lastName: ''
+    }, forkCount: 0, starCount: 0, watchCount: 0, defaultBranch: 0
+  }
   repoNameControl = new FormControl('', [Validators.required]);
   branches: BranchBasicInfoDTO[] = [];
 
   constructor(
-    private router: Router,
     private branchService: BranchService,
     private repoService: RepoService,
     private toastr: ToastrService
   ) {
-    this.repository =
-      this.router.getCurrentNavigation()?.extras?.state?.['repository'];
-    this.repoNameControl.setValue(this.repository.name);
-    branchService.getRepoBranches(this.repository.id).subscribe({
+    const repoId = localStorage.getItem('repoId') as string;
+    const repoName = localStorage.getItem('repoName') as string;
+    this.repoNameControl.setValue(repoName);
+
+    this.repoService.getById(repoId).subscribe({
+      next: (response: RepoBasicInfoDTO | null) => {
+        if (response) {
+          this.repository = response;
+        }
+      },
+      error: (e: HttpErrorResponse) => {
+        console.log(e);
+      },
+    });
+    this.branchService.getRepoBranches(repoId).subscribe({
       next: (response: BranchBasicInfoDTO[]) => {
         this.branches = response;
       },
@@ -39,7 +52,7 @@ export class RepoSettingsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   handleSave(): void {
     this.repoService

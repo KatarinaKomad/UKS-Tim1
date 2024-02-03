@@ -1,20 +1,10 @@
-<div
-  class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200"
->
+<div class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200">
   <div class="text-xl font-semibold mx-auto mb-5">
     {{ repository.name }} Settings
   </div>
-  <app-input
-    [label]="'Repository name'"
-    [id]="'repoName'"
-    [control]="repoNameControl"
-    [placeholder]="'Repo Name'"
-    [required]="true"
-    [invalid]="repoNameControl.invalid && repoNameControl.dirty"
-    [errorMessage]="'Repo Name is required'"
-    [type]="'text'"
-    defaultClass="flex items-center gap-x-4"
-  ></app-input>
+  <app-input [label]="'Repository name'" [id]="'repoName'" [control]="repoNameControl" [placeholder]="'Repo Name'"
+    [required]="true" [invalid]="repoNameControl.invalid && repoNameControl.dirty"
+    [errorMessage]="'Repo Name is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
 
   <div class="flex items-center gap-x-4">
     <div class="text-[16px]">Public repository</div>

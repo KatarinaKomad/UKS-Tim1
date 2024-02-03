@@ -20,7 +20,7 @@ export class RepoService {
   constructor(
     private httpRequestService: HttpRequestService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   getAllPublic(): Observable<RepoBasicInfoDTO[]> {
     const url = environment.API_BASE_URL + '/repo/getAllPublic';
@@ -36,6 +36,11 @@ export class RepoService {
     const url = environment.API_BASE_URL + `/repo/getMyRepos/${userId}`;
     return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;
   }
+  getById(repoId: string): Observable<RepoBasicInfoDTO | null> {
+    const url = environment.API_BASE_URL + `/repo/getById/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO | null>;
+  }
+
 
   createNewRepo(repoRequest: RepoRequest): Observable<RepoBasicInfoDTO | null> {
     const url = environment.API_BASE_URL + '/repo/create';

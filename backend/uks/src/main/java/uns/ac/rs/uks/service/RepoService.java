@@ -59,6 +59,9 @@ public class RepoService {
     public Repo getById(UUID repoId) {
         return repoRepository.findById(repoId).orElseThrow(() -> new NotFoundException("Repository not found."));
     }
+    public RepoBasicInfoDTO findById(UUID repoId) {
+        return RepoMapper.toDTO(getById(repoId));
+    }
 
     public RepoBasicInfoDTO getByNameAndPublicOrMember(RepoRequest repoRequest) {
         List<Repo> repos = repoRepository.findAllByName(repoRequest.getName());

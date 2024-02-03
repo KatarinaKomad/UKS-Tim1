@@ -62,4 +62,10 @@ public class RepoController {
     public RepoBasicInfoDTO update(@RequestBody RepoUpdateRequest request, @PathVariable UUID repositoryId) {
         return repoService.updateRepo(repositoryId, request);
     }
+
+    @GetMapping("/getById/{repoId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public RepoBasicInfoDTO getById(@PathVariable UUID repoId) {
+        return repoService.findById(repoId);
+    }
 }
