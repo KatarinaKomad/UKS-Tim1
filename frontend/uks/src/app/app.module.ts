@@ -3,6 +3,12 @@ import {
   MatDialog,
   MatDialogModule,
 } from '@angular/material/dialog';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+  MatNativeDateModule,
+} from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
 
@@ -22,19 +28,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-  MatNativeDateModule,
-} from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
 import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
 import { NewMilestoneDialogComponent } from './components/molecules/dialogs/new-milestone-dialog/new-milestone-dialog.component';
 import { NewRepoDialogComponent } from './components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
@@ -52,14 +49,12 @@ import { TabsComponent } from './components/atoms/tabs/tabs.component';
 import { IssueItemComponent } from './components/molecules/issue-item/issue-item.component';
 import { IssuePropertiesSideViewComponent } from './components/molecules/issue-properties-side-view/issue-properties-side-view.component';
 import { IssuesButtonGroupComponent } from './components/molecules/issues-button-group/issues-button-group.component';
-import { IssuesButtonGroupComponent } from './components/molecules/issues-button-group/issues-button-group.component';
 import { MilestoneItemComponent } from './components/molecules/milestone-item/milestone-item.component';
 import { NewIssueFormComponent } from './components/molecules/new-issue-form/new-issue-form.component';
 import { RepoItemComponent } from './components/molecules/repo-item/repo-item.component';
 import { IssueOverviewComponent } from './components/organisms/issue-overview/issue-overview.component';
 import { NewIssueComponent } from './components/organisms/new-issue/new-issue.component';
 import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
-import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
 import { RepoSettingsComponent } from './components/organisms/repo-settings/repo-settings.component';
