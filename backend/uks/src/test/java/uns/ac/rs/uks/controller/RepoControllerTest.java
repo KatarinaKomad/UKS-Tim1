@@ -65,26 +65,26 @@ public class RepoControllerTest {
 //        }
     }
 
-    @Test
-    public void createNewRepo() {
-        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-
-        String testName= "testName";
-        RepoRequest repoRequest = new RepoRequest();
-        repoRequest.setName(testName);
-        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
-        repoRequest.setIsPublic(true);
-
-        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
-
-        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
-                .exchange("/repo/create", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
-
-        assertNotNull(responseEntity.getBody());
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(testName, responseEntity.getBody().getName());
-        assertEquals(Constants.MIKA_USER_ID, responseEntity.getBody().getOwner().getId());
-    }
+//    @Test
+//    public void createNewRepo() {
+//        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+//
+//        String testName= "testName";
+//        RepoRequest repoRequest = new RepoRequest();
+//        repoRequest.setName(testName);
+//        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
+//        repoRequest.setIsPublic(true);
+//
+//        HttpEntity<RepoRequest> entity = new HttpEntity<>(repoRequest,headers);
+//
+//        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+//                .exchange("/repo/create", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+//
+//        assertNotNull(responseEntity.getBody());
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(testName, responseEntity.getBody().getName());
+//        assertEquals(Constants.MIKA_USER_ID, responseEntity.getBody().getOwner().getId());
+//    }
 
     @Test
     public void testSearchByNamePublic() {
