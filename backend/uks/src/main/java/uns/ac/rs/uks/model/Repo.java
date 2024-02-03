@@ -25,7 +25,6 @@ public class Repo implements Serializable {
 
     private Boolean isPublic;
 
-
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Branch> branches;
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -37,11 +36,13 @@ public class Repo implements Serializable {
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Issue> issues;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Branch defaultBranch;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Repo forkParent;
     @OneToMany(mappedBy = "forkParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Repo> forkChildren;
-
 
     @ManyToMany
     private List<User> staredBy;

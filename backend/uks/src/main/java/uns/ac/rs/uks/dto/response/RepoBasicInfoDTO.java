@@ -20,4 +20,5 @@ public class RepoBasicInfoDTO implements Serializable {
     private Integer starCount;
     private Integer watchCount;
     private Integer forkCount;
+    private Long defaultBranch;
 }
