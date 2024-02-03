@@ -24,6 +24,7 @@
     padding-top: 1%;
     padding-left: 2%;
 
+    width: 85%;
 
     .issue-title {
         color: $dark-text-color;
@@ -45,6 +46,24 @@
 }
 
 
+.issue-right-container {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: right;
+    align-items: right;
+
+    padding-top: 2%;
+    padding-right: 2%;
+
+
+    .assignees {
+        color: $dark-text-color;
+        display: flex;
+        justify-content: right;
+        padding-top: 1%;
+    }
+}
 
 .card-container:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);

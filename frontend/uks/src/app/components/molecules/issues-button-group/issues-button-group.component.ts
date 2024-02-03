@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { RepoService } from 'src/services/repo/repo.service';
@@ -11,6 +11,7 @@ import { RepoService } from 'src/services/repo/repo.service';
 export class IssuesButtonGroupComponent implements OnInit, AfterViewInit {
 
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
+  @Input() showSearch?: boolean;
 
   openView: string = '';
   canEdit: boolean = false;

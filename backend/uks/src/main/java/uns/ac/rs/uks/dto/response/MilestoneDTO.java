@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.model.Item;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.State;
@@ -27,6 +28,6 @@ public class MilestoneDTO {
     private LocalDateTime dueDate;
     private State state;
 
-//    private List<ItemDTO> items;
+    private List<IssueBasicInfoDTO> issues;
 
 }

@@ -1,7 +1,7 @@
 @import '../../../../styles.scss';
 
 .card-container {
-    width: 81vw;
+    width: 82.3vw;
     height: 25vh;
 
     display: flex;
@@ -14,6 +14,7 @@
     border: 1px solid #d0d7de;
 
     position: relative;
+    overflow-y: hidden;
 }
 
 .milestone-left-container {

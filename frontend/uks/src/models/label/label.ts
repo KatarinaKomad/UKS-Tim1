@@ -1,3 +1,4 @@
+import { IssueBasicInfoDTO, IssueDTO } from "../issue/issue";
 
 export interface LabelRequest {
     id?: number;
@@ -14,4 +15,5 @@ export interface LabelDTO {
     color: string;
     description: string;
     repoId: string;
+    issues: IssueBasicInfoDTO[];
 }

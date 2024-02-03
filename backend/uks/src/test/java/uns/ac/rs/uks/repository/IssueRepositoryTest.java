@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import uns.ac.rs.uks.model.Issue;
 import uns.ac.rs.uks.model.IssueEvent;
+import uns.ac.rs.uks.model.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,31 @@ public class IssueRepositoryTest {
     public void findAllByIssueIdNoEvents(String repoId) {
         List<Issue> issues = issueRepository.findAllByRepositoryId(UUID.fromString(repoId));
         assertTrue(issues.isEmpty());
+    }
+
+    @ParameterizedTest(name = "Finding issues of author by id {0}")
+    @ValueSource(strings = {"ff1d6606-e1f5-4e26-8a32-a14800b42a27"})
+    public void findAllByAuthorId(String authorId) {
+        UUID id = UUID.fromString(authorId);
+        List<Issue> issues = issueRepository.findAllByAuthorId(id);
+        assertFalse(issues.isEmpty());
+        for (Issue issue: issues) {
+            assertEquals(issue.getAuthor().getId(), id);
+        }
+    }
+
+    @ParameterizedTest(name = "Finding issues of author by id {0}")
+    @ValueSource(strings = {"ff1d6606-e1f5-4e26-8a32-a14800b42a27"})
+    public void findAllByAssigneesId(String authorId) {
+        UUID id = UUID.fromString(authorId);
+        List<Issue> issues = issueRepository.findAllByAssigneesId(id);
+        assertFalse(issues.isEmpty());
+        for (Issue issue: issues) {
+            for (User assignee:issue.getAssignees()) {
+                assertEquals(assignee.getId(), id);
+            }
+
+        }
     }
 
 }

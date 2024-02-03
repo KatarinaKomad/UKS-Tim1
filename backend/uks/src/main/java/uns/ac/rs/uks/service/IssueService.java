@@ -7,6 +7,7 @@ import uns.ac.rs.uks.dto.request.IssueEventRequest;
 import uns.ac.rs.uks.dto.request.IssueItem;
 import uns.ac.rs.uks.dto.request.IssueRequest;
 import uns.ac.rs.uks.dto.response.IssueDTO;
+import uns.ac.rs.uks.dto.response.UserIssuesDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.IssueMapper;
@@ -94,6 +95,15 @@ public class IssueService {
                     .map(labelId -> entityManager.getReference(Label.class, labelId)).toList());
             dto.setLabels(labels);
         }
+        return dto;
+    }
+
+    public UserIssuesDTO getUserIssues(UUID id) {
+        UserIssuesDTO dto = new UserIssuesDTO();
+        List<Issue> createdIssues = this.issueRepository.findAllByAuthorId(id);
+        List<Issue> assignedIssue = this.issueRepository.findAllByAssigneesId(id);
+        dto.setCreatedIssues(IssueMapper.toDTOs(createdIssues));
+        dto.setAssignedIssues(IssueMapper.toDTOs(assignedIssue));
         return dto;
     }
 }

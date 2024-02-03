@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RepoService } from 'src/services/repo/repo.service';
 import { IssueDTO } from 'src/models/issue/issue';
@@ -12,7 +12,7 @@ import { NavigationService } from 'src/services/navigation/navigation.service';
   templateUrl: './issue-item.component.html',
   styleUrl: './issue-item.component.scss'
 })
-export class IssueItemComponent {
+export class IssueItemComponent implements OnChanges, AfterViewInit {
 
   STATE = STATE;
 
@@ -24,6 +24,7 @@ export class IssueItemComponent {
   canEdit: boolean = false;
 
   @Input() issue: IssueDTO | undefined;
+  @Input() showRepoName?: boolean;
 
   constructor(
     private navigationService: NavigationService,
@@ -34,6 +35,12 @@ export class IssueItemComponent {
 
   ngOnInit(): void {
     this.repoId = localStorage.getItem("repoId") as string
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['issue'].currentValue) {
+      this.issue = changes['issue'].currentValue;
+    }
   }
 
   ngAfterViewInit(): void {

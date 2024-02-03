@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Toastr } from 'src/utils/toastr.service';
 import { ChangeStateRequest, STATE } from 'src/models/state/state';
 import { RepoService } from 'src/services/repo/repo.service';
+import { IssueBasicInfoDTO, IssueDTO } from 'src/models/issue/issue';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 @Component({
   selector: 'app-milestone-item',
@@ -19,8 +21,8 @@ export class MilestoneItemComponent implements OnInit {
   repoId: string = '';
 
   completePercentage: number = 0;
-  openIssues: [] = [];
-  closedIssues: [] = [];
+  openIssues: IssueBasicInfoDTO[] = [];
+  closedIssues: IssueBasicInfoDTO[] = [];
   canEdit: boolean = false;
 
   @Input() milestone: MilestoneDTO | undefined;
@@ -32,6 +34,7 @@ export class MilestoneItemComponent implements OnInit {
   constructor(
     private milestoneService: MilestoneService,
     private repoService: RepoService,
+    private navigationService: NavigationService,
     public dialog: MatDialog,
     private toastr: Toastr,
   ) { }
@@ -39,7 +42,21 @@ export class MilestoneItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.repoId = localStorage.getItem("repoId") as string
+
+    if (this.milestone) {
+      this.openIssues = this.milestone.issues.filter(i => i.state === STATE.OPEN)
+      this.closedIssues = this.milestone.issues.filter(i => i.state === STATE.CLOSE)
+      this.setCompletedPercentage();
+
+    }
   }
+  private setCompletedPercentage() {
+    if (this.milestone && this.milestone.issues.length > 0) {
+      const value = (this.closedIssues.length / this.milestone?.issues.length) * 100;
+      this.completePercentage = Number(value.toFixed(2));
+    }
+  }
+
 
   ngAfterViewInit(): void {
     this.repoService.getCanEditRepoItems().subscribe({
@@ -109,5 +126,8 @@ export class MilestoneItemComponent implements OnInit {
     })
   }
 
+  navigateToIssues() {
+    this.navigationService.navigateToProjectIssues();
+  }
 
 }

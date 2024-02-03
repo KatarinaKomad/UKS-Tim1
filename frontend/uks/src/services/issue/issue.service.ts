@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IssueDTO, IssueEventDTO, IssueEventRequest, IssueRequest } from 'src/models/issue/issue';
+import { IssueDTO, IssueEventDTO, IssueEventRequest, IssueRequest, UserIssuesDTO } from 'src/models/issue/issue';
 import { ChangeStateRequest } from 'src/models/state/state';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
@@ -23,6 +23,11 @@ export class IssueService {
   getById(issueId: string): Observable<IssueDTO> {
     const url = environment.API_BASE_URL + `/issue/getById/${issueId}`;
     return this.httpRequestService.get(url) as Observable<IssueDTO>;
+  }
+
+  getMyIssues(userId: string): Observable<UserIssuesDTO> {
+    const url = environment.API_BASE_URL + `/issue/getMyIssues/${userId}`;
+    return this.httpRequestService.get(url) as Observable<UserIssuesDTO>;
   }
 
   createNewIssue(issueRequest: IssueRequest): Observable<IssueDTO | null> {

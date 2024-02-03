@@ -1,6 +1,7 @@
 package uns.ac.rs.uks.mapper;
 
 import uns.ac.rs.uks.dto.request.IssueRequest;
+import uns.ac.rs.uks.dto.response.IssueBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.IssueDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.model.*;
@@ -25,7 +26,22 @@ public class IssueMapper {
                 .milestone(issue.getMilestone() != null ? MilestoneMapper.toDTO(issue.getMilestone()) : null)
                 .labels(issue.getLabels() != null ? LabelMapper.toDTOs(issue.getLabels()) : new ArrayList<>())
                 .participants(issue.getParticipants() != null ? UserMapper.toDTOs(issue.getParticipants()) : new ArrayList<>())
+                .repo(issue.getRepository() != null ? RepoMapper.toDTO(issue.getRepository()):null)
                 .build();
+    }
+
+    public static IssueBasicInfoDTO toBasicDTO(Issue issue) {
+        return IssueBasicInfoDTO.builder()
+                .id(issue.getId())
+                .counter(issue.getCounter())
+                .name(issue.getName())
+                .description(issue.getDescription())
+                .state(issue.getState())
+                .build();
+    }
+
+    public static List<IssueBasicInfoDTO> toBasicDTOs(List<Issue> issues) {
+        return issues.stream().map(IssueMapper::toBasicDTO).toList();
     }
 
     public static List<IssueDTO> toDTOs(List<Issue> issues) {

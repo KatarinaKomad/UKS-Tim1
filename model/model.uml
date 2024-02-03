@@ -133,7 +133,7 @@ Item <|-- Issue
 Item <|-- PullRequest
 Milestone "1" -- "0..*" Item
 Item "1" *-- "0..*" Comment
-Item "1" *-- "0..*" Label
+Item "1" -- "0..*" Label
 User "1" -- "0..*" Item: author
 Item "0..*" -- "0..*" User: assignees
 

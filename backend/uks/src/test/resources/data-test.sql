@@ -58,7 +58,7 @@ INSERT INTO ISSUE (id, name, description, state, repository_id, created_at, auth
 (ISSUE_ID_2, 'issue2', 'description2', 'CLOSE', REPOSITORY_ID_1_UKS_TEST, '2024-01-25 15:01:00', PERA_USER_ID, 2);
 
 
-INSERT INTO ITEM_LABELS(item_id, labels_id) VALUES
+INSERT INTO ITEM_LABELS(items_id, labels_id) VALUES
 (ISSUE_ID_1, 2),
 (ISSUE_ID_1, 1);
 

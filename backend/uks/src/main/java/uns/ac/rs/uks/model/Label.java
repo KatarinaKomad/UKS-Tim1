@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -24,4 +25,6 @@ public class Label implements Serializable {
     private String description;
     @ManyToOne
     private Repo repository;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "labels")
+    private List<Item> items;
 }

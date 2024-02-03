@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { FILTER_ASSIGNEE_OVERLAY, INPUT_ASSIGNEE_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
 import { UserBasicInfo } from 'src/models/user/user';
 import { RepoService } from 'src/services/repo/repo.service';
 import { areArraysEqual } from 'src/utils/custom-filters';
@@ -9,14 +10,17 @@ import { areArraysEqual } from 'src/utils/custom-filters';
   templateUrl: './assignee-filter.component.html',
   styleUrl: './assignee-filter.component.scss'
 })
-export class AssigneeFilterComponent implements OnChanges {
+export class AssigneeFilterComponent implements OnChanges, AfterViewInit {
 
+  @ViewChild('overlayContent') overlayContent?: ElementRef;
   @Input() preSelected: UserBasicInfo[] | undefined = [];
+  @Input() isInput: boolean = false;
   @Output() closeEvent: EventEmitter<UserBasicInfo[] | null> = new EventEmitter<UserBasicInfo[] | null>();
 
   fullList: UserBasicInfo[] = [];
   shownList: UserBasicInfo[] = [];
   selected: UserBasicInfo[] = [];
+
 
   repoId: string = '';
   filter = new FormControl<string>("");
@@ -33,11 +37,21 @@ export class AssigneeFilterComponent implements OnChanges {
         this.shownList = list;
       }
     })
+
+  }
+
+  ngAfterViewInit(): void {
+    const position = !this.isInput ? FILTER_ASSIGNEE_OVERLAY : INPUT_ASSIGNEE_OVERLAY;
+    this.setOverlayPosition(position);
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const position = changes['isInput'] ? INPUT_ASSIGNEE_OVERLAY : FILTER_ASSIGNEE_OVERLAY;
+    this.setOverlayPosition(position);
+
     if (changes['preSelected'].currentValue) {
       this.selected = [...changes['preSelected'].currentValue];
+      this.setOverlayPosition(INPUT_ASSIGNEE_OVERLAY);
     }
   }
 
@@ -69,6 +83,14 @@ export class AssigneeFilterComponent implements OnChanges {
       this.closeEvent.emit(this.selected);
     } else {
       this.closeEvent.emit(null);
+    }
+  }
+
+  private setOverlayPosition(positions: OverlayPosition) {
+    if (this.overlayContent) {
+      const overlayContentElement = this.overlayContent.nativeElement as HTMLElement;
+      overlayContentElement.style.top = `${positions.top}%`;
+      overlayContentElement.style.left = `${positions.left}%`;
     }
   }
 }

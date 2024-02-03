@@ -67,6 +67,31 @@ import { RepositoryPageComponent } from './pages/repository-page/repository-page
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
+import { IssuesButtonGroupComponent } from './components/molecules/issues-button-group/issues-button-group.component';
+import { NewLabelDialogComponent } from './components/molecules/dialogs/new-label-dialog/new-label-dialog.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
+import { NewMilestoneDialogComponent } from './components/molecules/dialogs/new-milestone-dialog/new-milestone-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
+import { MilestoneItemComponent } from './components/molecules/milestone-item/milestone-item.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { IssueItemComponent } from './components/molecules/issue-item/issue-item.component';
+import { AuthorFilterComponent } from './components/molecules/filter-overlays/author-filter/author-filter.component';
+import { AssigneeFilterComponent } from './components/molecules/filter-overlays/assignee-filter/assignee-filter.component';
+import { LabelFilterComponent } from './components/molecules/filter-overlays/label-filter/label-filter.component';
+import { MilestoneFilterComponent } from './components/molecules/filter-overlays/milestone-filter/milestone-filter.component';
+import { NewIssueComponent } from './components/organisms/new-issue/new-issue.component';
+import { IssueOverviewComponent } from './components/organisms/issue-overview/issue-overview.component';
+import { IssuePropertiesSideViewComponent } from './components/molecules/issue-properties-side-view/issue-properties-side-view.component';
+import { NewIssueFormComponent } from './components/molecules/new-issue-form/new-issue-form.component';
+import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -101,6 +126,8 @@ import { AppComponent } from './app.component';
     AuthorFilterComponent,
     LabelFilterComponent,
     MilestoneFilterComponent,
+
+    MyIssuesPageComponent
     RepoSettingsComponent,
   ],
   exports: [],

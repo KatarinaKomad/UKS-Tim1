@@ -14,6 +14,7 @@ import { IssueOverviewComponent } from './components/organisms/issue-overview/is
 import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
 import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
 import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
+import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
@@ -23,6 +24,12 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomePageComponent,
+    canMatch: [authGuard],
+    data: {},
+  },
+  {
+    path: 'issues',
+    component: MyIssuesPageComponent,
     canMatch: [authGuard],
     data: {},
   },
