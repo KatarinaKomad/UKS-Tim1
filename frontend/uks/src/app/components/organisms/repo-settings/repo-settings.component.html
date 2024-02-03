@@ -1,0 +1,38 @@
+<div
+  class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200"
+>
+  <div class="text-xl font-semibold mx-auto mb-5">
+    {{ repository.name }} Settings
+  </div>
+  <app-input
+    [label]="'Repository name'"
+    [id]="'repoName'"
+    [control]="repoNameControl"
+    [placeholder]="'Repo Name'"
+    [required]="true"
+    [invalid]="repoNameControl.invalid && repoNameControl.dirty"
+    [errorMessage]="'Repo Name is required'"
+    [type]="'text'"
+    defaultClass="flex items-center gap-x-4"
+  ></app-input>
+
+  <div class="flex items-center gap-x-4">
+    <div class="text-[16px]">Public repository</div>
+    <mat-checkbox [(ngModel)]="repository.isPublic"></mat-checkbox>
+  </div>
+
+  <div class="flex items-center gap-x-4">
+    <div class="text-[16px] mr-3 pb-4">Default branch</div>
+    <mat-form-field class="bg-transparent h-[7vh] w-[10.5vw]">
+      <mat-select class="bg-transparent" [(ngModel)]="repository.defaultBranch">
+        @for (branch of branches; track branch) {
+        <mat-option [value]="branch.id">{{ branch.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="w-fit mx-auto mt-10">
+    <app-button text="Save" (buttonClick)="handleSave()" />
+  </div>
+</div>
