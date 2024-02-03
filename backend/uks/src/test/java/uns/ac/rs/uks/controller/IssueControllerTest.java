@@ -14,6 +14,7 @@ import uns.ac.rs.uks.dto.request.IssueEventRequest;
 import uns.ac.rs.uks.dto.request.IssueRequest;
 import uns.ac.rs.uks.dto.response.IssueDTO;
 import uns.ac.rs.uks.dto.response.IssueEventDTO;
+import uns.ac.rs.uks.dto.response.UserIssuesDTO;
 import uns.ac.rs.uks.model.IssueEventType;
 import uns.ac.rs.uks.model.State;
 import uns.ac.rs.uks.util.Constants;
@@ -154,5 +155,20 @@ public class IssueControllerTest {
         List<IssueEventDTO> issues = (List<IssueEventDTO>) responseEntity.getBody();
         assertNotNull(issues);
         assertEquals(issues.size(), 2);
+    }
+
+    @Test
+    public void testGetMyIssues() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        String url = "/issue/getMyIssues/" + Constants.PERA_USER_ID;
+        ResponseEntity<UserIssuesDTO> responseEntity =
+                restTemplate.exchange(url, HttpMethod.GET,  entity, UserIssuesDTO.class);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        UserIssuesDTO issues = (UserIssuesDTO) responseEntity.getBody();
+        assertNotNull(issues);
+        assertEquals(issues.getAssignedIssues().size(), 2);
+        assertEquals(issues.getCreatedIssues().size(), 2);
     }
 }

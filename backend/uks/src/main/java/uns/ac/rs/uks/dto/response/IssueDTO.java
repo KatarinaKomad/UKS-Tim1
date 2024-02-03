@@ -29,6 +29,7 @@ public class IssueDTO {
     private List<LabelDTO> labels;
 
     private List<UserDTO> participants;
+    private RepoBasicInfoDTO repo;
 //    private LocalDateTime updatedAt;
 
 //    private List<CommentDTO> comments;

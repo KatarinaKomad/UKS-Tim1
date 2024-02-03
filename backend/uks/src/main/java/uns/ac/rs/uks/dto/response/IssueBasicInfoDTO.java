@@ -1,25 +1,22 @@
 package uns.ac.rs.uks.dto.response;
 
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uns.ac.rs.uks.model.Repo;
+import uns.ac.rs.uks.model.State;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LabelDTO {
-
-    private Long id;
+public class IssueBasicInfoDTO {
+    private UUID id;
+    private Long counter;
     private String name;
-    private String color; // hex
     private String description;
-    private UUID repoId;
-    private List<IssueBasicInfoDTO> issues;
+    private State state;
+
 }

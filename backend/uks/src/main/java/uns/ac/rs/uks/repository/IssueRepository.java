@@ -10,4 +10,8 @@ import java.util.UUID;
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, UUID> {
     List<Issue> findAllByRepositoryId(UUID repoId);
+
+    List<Issue> findAllByAuthorId(UUID id);
+
+    List<Issue> findAllByAssigneesId(UUID id);
 }

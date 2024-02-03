@@ -14,8 +14,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uns.ac.rs.uks.dto.request.IssueEventRequest;
 import uns.ac.rs.uks.dto.request.IssueRequest;
 import uns.ac.rs.uks.dto.response.IssueDTO;
+import uns.ac.rs.uks.dto.response.UserIssuesDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
+import uns.ac.rs.uks.mapper.IssueMapper;
 import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.IssueRepository;
 import uns.ac.rs.uks.util.Constants;
@@ -131,6 +133,26 @@ public class IssueServiceTest {
         // Assertions
         assertNotNull(dto);
         assertEquals(dto.getMilestone().getId(), issue.getMilestone().getId());
+    }
+
+    @Test
+    public void getUserIssues() {
+
+        // Mocking
+        UUID id = Constants.PERA_USER_ID;
+        Issue issue = new Issue();
+        User user = new User();
+        user.setId(id);
+        issue.setAuthor(user);
+
+        when(issueRepository.findAllByAuthorId(id)).thenReturn(List.of(issue));
+        when(issueRepository.findAllByAssigneesId(id)).thenReturn(List.of(issue));
+        // Test
+        UserIssuesDTO dto = issueService.getUserIssues(id);
+        // Assertions
+        assertNotNull(dto);
+        assertEquals(dto.getAssignedIssues().size(), 1);
+        assertEquals(dto.getCreatedIssues().size(), 1);
     }
 
     private IssueEvent createEvent() {

@@ -44,7 +44,7 @@ created_at, author_id, milestone_id) VALUES
 '2024-01-25 15:01:00', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27', 2);
 
 
-INSERT INTO ITEM_LABELS(item_id, labels_id) VALUES
+INSERT INTO ITEM_LABELS(items_id, labels_id) VALUES
 ('4822a7d1-5a79-4444-9065-256643c80ffc', 2),
 ('4822a7d1-5a79-4444-9065-256643c80ffc', 1);
 
@@ -55,8 +55,8 @@ INSERT INTO ISSUE_PARTICIPANTS(issue_id, participants_id) VALUES
 ('9d75ceda-974a-4e04-88dc-9c6e455ddcd1', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08');
 
 INSERT INTO ITEM_ASSIGNEES(item_id, assignees_id) VALUES
-('4822a7d1-5a79-4444-9065-256643c80ffc', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27'),
-('9d75ceda-974a-4e04-88dc-9c6e455ddcd1', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27');
+('4822a7d1-5a79-4444-9065-256643c80ffc', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08'),
+('9d75ceda-974a-4e04-88dc-9c6e455ddcd1', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08');
 
 
 INSERT INTO ISSUE_EVENT (issue_id, author_id, new_value, type, created_at) VALUES
