@@ -1,3 +1,4 @@
+import { IssueBasicInfoDTO } from "../issue/issue";
 import { STATE } from "../state/state";
 
 export interface MilestoneRequest {
@@ -16,4 +17,5 @@ export interface MilestoneDTO {
     repoId: string;
     dueDate: any;
     state: STATE;
+    issues: IssueBasicInfoDTO[];
 }

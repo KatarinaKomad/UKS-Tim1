@@ -5,11 +5,11 @@
             <i class="icon fa-solid fa-gear fa-lg"></i>
         </button>
     </div>
-    <app-assignee-filter *ngIf="openedProperty === ISSUE_PROPERTIES.ASSIGNEE"
+    <app-assignee-filter *ngIf="openedProperty === ISSUE_PROPERTIES.ASSIGNEE" [isInput]="true"
         [preSelected]="this.issueProperties.assignees" (closeEvent)="closeAssigneeFilter($event)">
     </app-assignee-filter>
     <div class="elements">
-        <span *ngIf="this.issueProperties?.assignees?.length === 0">
+        <span *ngIf="!this.issueProperties?.assignees || this.issueProperties?.assignees?.length === 0">
             No one
         </span>
         <span *ngIf="this.issueProperties?.assignees">
@@ -28,11 +28,11 @@
             <i class="icon fa-solid fa-gear fa-lg"></i>
         </button>
     </div>
-    <app-label-filter *ngIf="openedProperty === ISSUE_PROPERTIES.LABEL" [preSelected]="this.issueProperties.labels"
-        (closeEvent)="closeLabelFilter($event)">
+    <app-label-filter *ngIf="openedProperty === ISSUE_PROPERTIES.LABEL" [isInput]="true"
+        [preSelected]="this.issueProperties.labels" (closeEvent)="closeLabelFilter($event)">
     </app-label-filter>
     <div class="elements">
-        <span *ngIf="this.issueProperties?.labels?.length === 0">
+        <span *ngIf="!this.issueProperties?.labels || this.issueProperties?.labels?.length === 0">
             None yet
         </span>
         <span *ngIf="this.issueProperties?.labels">
@@ -51,7 +51,7 @@
             <i class="icon fa-solid fa-gear fa-lg"></i>
         </button>
     </div>
-    <app-milestone-filter *ngIf="openedProperty === ISSUE_PROPERTIES.MILESTONE"
+    <app-milestone-filter *ngIf="openedProperty === ISSUE_PROPERTIES.MILESTONE" [isInput]="true"
         [preSelected]="this.issueProperties.milestone" (closeEvent)="closeMilestoneFilter($event)">
     </app-milestone-filter>
     <div class="elements">

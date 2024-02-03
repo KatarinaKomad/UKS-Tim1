@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { FILTER_MILESTONE_OVERLAY, INPUT_MILESTONE_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
 import { MilestoneDTO } from 'src/models/milestone/milestone';
 import { MilestoneService } from 'src/services/milestone/milestone.service';
 
@@ -10,7 +11,9 @@ import { MilestoneService } from 'src/services/milestone/milestone.service';
 })
 export class MilestoneFilterComponent {
 
+  @ViewChild('overlayContent') overlayContent?: ElementRef;
   @Input() preSelected?: MilestoneDTO;
+  @Input() isInput: boolean = false;
   @Output() closeEvent: EventEmitter<MilestoneDTO | null> = new EventEmitter<MilestoneDTO | null>();
 
   fullList: MilestoneDTO[] = [];
@@ -34,9 +37,19 @@ export class MilestoneFilterComponent {
     })
   }
 
+  ngAfterViewInit(): void {
+    const position = !this.isInput ? FILTER_MILESTONE_OVERLAY : INPUT_MILESTONE_OVERLAY;
+
+    this.setOverlayPosition(position);
+  }
+
   ngOnChanges(changes: SimpleChanges) {
+    const position = changes['isInput'] ? INPUT_MILESTONE_OVERLAY : FILTER_MILESTONE_OVERLAY;
+    this.setOverlayPosition(position);
+
     if (changes['preSelected'].currentValue) {
       this.selected = changes['preSelected'].currentValue;
+      this.setOverlayPosition(INPUT_MILESTONE_OVERLAY);
     }
   }
 
@@ -58,6 +71,14 @@ export class MilestoneFilterComponent {
       this.closeEvent.emit(this.selected);
     } else {
       this.closeEvent.emit(null);
+    }
+  }
+
+  private setOverlayPosition(positions: OverlayPosition) {
+    if (this.overlayContent) {
+      const overlayContentElement = this.overlayContent.nativeElement as HTMLElement;
+      overlayContentElement.style.top = `${positions.top}%`;
+      overlayContentElement.style.left = `${positions.left}%`;
     }
   }
 }

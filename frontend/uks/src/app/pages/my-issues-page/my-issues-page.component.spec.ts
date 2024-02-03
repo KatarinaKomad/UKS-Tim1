@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthorFilterComponent } from './author-filter.component';
+import { MyIssuesPageComponent } from './my-issues-page.component';
 import { HttpClientModule } from '@angular/common/http';
 
-describe('AuthorFilterComponent', () => {
-  let component: AuthorFilterComponent;
-  let fixture: ComponentFixture<AuthorFilterComponent>;
+describe('MyIssuesPageComponent', () => {
+  let component: MyIssuesPageComponent;
+  let fixture: ComponentFixture<MyIssuesPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AuthorFilterComponent],
+      declarations: [MyIssuesPageComponent],
       imports: [HttpClientModule]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(AuthorFilterComponent);
+    fixture = TestBed.createComponent(MyIssuesPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

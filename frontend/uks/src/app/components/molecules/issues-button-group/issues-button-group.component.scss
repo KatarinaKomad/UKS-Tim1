@@ -5,6 +5,7 @@
 .search-bar {
     padding-top: 10px;
     padding-left: 9%;
+    width: 47%;
 
     input {
         font-size: 12px;
@@ -33,6 +34,8 @@
 .button-group {
     padding-top: 10px;
     padding-left: 22%;
+
+    align-items: flex-end;
 }
 
 .show-button {

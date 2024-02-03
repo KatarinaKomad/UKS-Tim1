@@ -9,6 +9,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Toastr } from 'src/utils/toastr.service';
 import { AuthService } from 'src/services/auth/auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class ProjectLabelsComponent implements OnInit, AfterViewInit {
   constructor(
     public dialog: MatDialog,
     private labelService: LabelService,
+    private navigationService: NavigationService,
     private repoService: RepoService,
     private _liveAnnouncer: LiveAnnouncer,
     private toastr: Toastr) {
@@ -136,5 +138,10 @@ export class ProjectLabelsComponent implements OnInit, AfterViewInit {
     this.dataSource.data = this.dataSource.data.filter((elem: { id: number; }) => elem.id !== labelId);
     this.dataSource.data = [...this.dataSource.data];
   }
+
+  navigateToIssues() {
+    this.navigationService.navigateToProjectIssues();
+  }
+
 
 }

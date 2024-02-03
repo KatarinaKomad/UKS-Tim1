@@ -57,6 +57,7 @@ import { NewIssueComponent } from './components/organisms/new-issue/new-issue.co
 import { IssueOverviewComponent } from './components/organisms/issue-overview/issue-overview.component';
 import { IssuePropertiesSideViewComponent } from './components/molecules/issue-properties-side-view/issue-properties-side-view.component';
 import { NewIssueFormComponent } from './components/molecules/new-issue-form/new-issue-form.component';
+import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { NewIssueFormComponent } from './components/molecules/new-issue-form/new
     LabelFilterComponent,
     MilestoneFilterComponent,
 
+    MyIssuesPageComponent
 
   ],
   exports: [],
