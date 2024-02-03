@@ -1,8 +1,10 @@
+import { formFilter } from 'src/utils/custom-filters';
+
 import { FormControl, Validators } from '@angular/forms';
-import { FormInput } from './input';
+
 import { LoginRequest } from '../authentication/login';
 import { RegistrationRequest } from '../authentication/registration';
-import { formFilter } from 'src/utils/custom-filters';
+import { FormInput } from './input';
 
 export const loginForm: FormInput[] = [
   {
@@ -29,8 +31,8 @@ export const getLoginRequest = (loginForm: FormInput[]): LoginRequest => {
   return {
     email: formFilter(loginForm, 'email'),
     password: btoa(formFilter(loginForm, 'password')),
-  }
-}
+  };
+};
 
 export const signUpForm: FormInput[] = [
   {
@@ -80,12 +82,14 @@ export const signUpForm: FormInput[] = [
   },
 ];
 
-export const getRegistrationRequest = (signUpForm: FormInput[]): RegistrationRequest => {
+export const getRegistrationRequest = (
+  signUpForm: FormInput[]
+): RegistrationRequest => {
   return {
     email: formFilter(signUpForm, 'email'),
     password: btoa(formFilter(signUpForm, 'password')),
     passwordConfirmation: btoa(formFilter(signUpForm, 'passwordConfirmation')),
     firstName: formFilter(signUpForm, 'firstName'),
-    lastName: formFilter(signUpForm, 'lastName')
-  }
-}
+    lastName: formFilter(signUpForm, 'lastName'),
+  };
+};
