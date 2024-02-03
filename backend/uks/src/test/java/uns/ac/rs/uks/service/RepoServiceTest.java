@@ -17,10 +17,7 @@ import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
-import uns.ac.rs.uks.model.Member;
-import uns.ac.rs.uks.model.Repo;
-import uns.ac.rs.uks.model.RepositoryRole;
-import uns.ac.rs.uks.model.User;
+import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.RepoRepository;
 import uns.ac.rs.uks.util.Constants;
 
@@ -42,6 +39,8 @@ public class RepoServiceTest {
     private RepoRepository repoRepository;
     @Mock
     private UserService userService;
+    @Mock
+    private BranchService branchService;
     @Mock
     private MemberService memberService;
     private AutoCloseable closeable;
@@ -109,9 +108,15 @@ public class RepoServiceTest {
         RepoRequest repoRequest = createRepoRequest(testName, Constants.MIKA_USER_ID);
         Repo repo = createRepo(testName, Constants.MIKA_USER_ID, true);
 
+        Branch defaultBranch = new Branch();
+        defaultBranch.setId(1L);
+        defaultBranch.setRepository(repo);
+        defaultBranch.setName("main");
+
         User user = new User();
         user.setId(Constants.MIKA_USER_ID);
 
+        when(branchService.createDefaultBranch(any(Repo.class))).thenReturn(defaultBranch);
         when(userService.getById(Constants.MIKA_USER_ID)).thenReturn(user);
         when(repoRepository.save(any(Repo.class))).thenReturn(repo);
 
