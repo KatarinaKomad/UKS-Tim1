@@ -25,6 +25,12 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: maven
+          
+      - name: Wait for Redis to start
+        run: sleep 15s
+
+      - name: Print Redis Container Logs
+        run: docker logs redis
 
       - name: Test
         run: |
