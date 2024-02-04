@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ISSUE_EVENT_TYPE, IssueDTO, IssueEventDTO, IssueEventRequest, IssueProperties, IssueRequest } from 'src/models/issue/issue';
-import { LabelDTO } from 'src/models/label/label';
-import { MilestoneDTO } from 'src/models/milestone/milestone';
 import { STATE, STATE_COLORS } from 'src/models/state/state';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';

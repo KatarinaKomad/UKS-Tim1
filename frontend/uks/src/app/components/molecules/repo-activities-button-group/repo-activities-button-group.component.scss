@@ -1,0 +1,68 @@
+.span-spacer {
+    flex: 1 1 auto;
+}
+
+.container {
+    border-bottom: 1px solid #d1d5da;
+    padding-bottom: 10px;
+}
+
+.title {
+    padding-top: 10px;
+    padding-left: 9%;
+    width: 47%;
+}
+
+.button-group {
+    padding-top: 10px;
+    padding-left: 22%;
+
+    align-items: flex-end;
+}
+
+.show-button {
+    padding-top: 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #d1d5da;
+    width: 120px !important;
+    margin-left: 5px;
+}
+
+.show-button:disabled {
+    background-color: #d1d5da;
+}
+
+.repo-name {
+    font-size: large;
+    margin-right: 2%;
+    font-weight: bold;
+}
+
+.activity-count {
+    background-color: #d1d5da;
+    margin-left: 3px;
+
+    border-radius: 50%;
+    padding: 1px 5px;
+
+}
+
+.down-button {
+    width: 27px;
+    height: 30px;
+    border-radius: 6px;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #d1d5da;
+}
+
+.icon {
+    margin-right: 3px;
+}
+
+.forked {
+    font-size: smaller;
+}

@@ -6,7 +6,6 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 
 import { AuthService } from '../auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
-import { catchError, map, of } from 'rxjs';
 
 export const authGuard = () => {
   const authService = inject(AuthService);

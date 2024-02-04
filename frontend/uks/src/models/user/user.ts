@@ -4,3 +4,12 @@ export interface UserBasicInfo {
     lastName: string;
     email: string;
 }
+
+export const getEmptyUser = (): UserBasicInfo => {
+    return {
+        id: '',
+        email: '',
+        firstName: '',
+        lastName: ''
+    }
+}

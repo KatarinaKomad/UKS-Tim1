@@ -15,6 +15,8 @@ import { ProjectIssuesComponent } from './components/organisms/project-issues/pr
 import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
 import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
+import { NewForkPageComponent } from './pages/new-fork-page/new-fork-page.component';
+import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-overview-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
@@ -34,9 +36,19 @@ const routes: Routes = [
     data: {},
   },
   {
+    path: 'repository/fork',
+    component: NewForkPageComponent,
+    canMatch: [],
+  },
+  {
+    path: 'repository/forks-overview',
+    component: ForksOverviewPageComponent,
+    canMatch: [authGuard],
+  },
+  {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
-    canMatch: [],
+    canMatch: [authGuard],
     data: {},
     children: [
       { path: 'issues', component: ProjectIssuesComponent, outlet: "project-view" },
@@ -46,6 +58,10 @@ const routes: Routes = [
       { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: "issue-view" },
     ]
   },
+
+
+
+
 
 
   { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },

@@ -4,6 +4,13 @@
             {{repository?.owner?.firstName}} {{repository?.owner?.lastName}} /
             {{repository?.name}}
         </h4>
+        <div class="forked">
+            {{repository?.forkParent ?
+            'forked from: ' +
+            repository?.forkParent?.owner?.firstName + ' ' + repository?.forkParent?.owner?.lastName + ' / ' +
+            repository?.forkParent?.name
+            : ''}}
+        </div>
     </div>
 
     <div class="repo-stats">
