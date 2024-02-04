@@ -1,13 +1,12 @@
 package uns.ac.rs.uks.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
+import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.request.RepoUpdateRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
@@ -67,5 +66,17 @@ public class RepoController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public RepoBasicInfoDTO getById(@PathVariable UUID repoId) {
         return repoService.findById(repoId);
+    }
+
+    @PostMapping("/fork")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public RepoBasicInfoDTO forkRepo(@Valid @RequestBody RepoForkRequest forkRequest) {
+        return repoService.forkRepo(forkRequest);
+    }
+
+    @GetMapping("/getAllForked/{repoId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<RepoBasicInfoDTO> getAllForked(@PathVariable UUID repoId) {
+        return repoService.getAllForked(repoId);
     }
 }

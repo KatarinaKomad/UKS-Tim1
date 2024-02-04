@@ -12,14 +12,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RepoBasicInfoDTO implements Serializable {
+public class ForkParentDTO implements Serializable {
+
     private UUID id;
     private Boolean isPublic;
     private String name;
     private UserDTO owner;
-    private Integer starCount;
-    private Integer watchCount;
-    private Integer forkCount;
-    private Long defaultBranch;
-    private ForkParentDTO forkParent;
 }

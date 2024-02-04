@@ -41,7 +41,7 @@ public class Repo implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Repo forkParent;
-    @OneToMany(mappedBy = "forkParent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "forkParent", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Repo> forkChildren;
 
     @ManyToMany

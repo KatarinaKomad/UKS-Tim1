@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
+import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
@@ -165,5 +166,39 @@ public class RepoControllerTest {
 
         assertNotNull(responseEntity.getBody());
         assertEquals(2, responseEntity.getBody().size());
+    }
+
+    @Test
+    public void testFork() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        RepoForkRequest request = new RepoForkRequest();
+        request.setIsPublic(true);
+        request.setName("test");
+        request.setOriginalRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setOwnerId(Constants.MIKA_USER_ID);
+
+        HttpEntity<RepoForkRequest> entity = new HttpEntity<>(request, headers);
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/fork", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertEquals(Constants.REPOSITORY_ID_1_UKS_TEST, responseEntity.getBody().getForkParent().getId());
+    }
+
+    @Test
+    public void testGetAllForked() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ParameterizedTypeReference<List<RepoBasicInfoDTO>> responseType = new ParameterizedTypeReference<>() {};
+        String url = "/repo/getAllForked/" + Constants.REPOSITORY_ID_1_UKS_TEST;
+        ResponseEntity<?> responseEntity =
+                restTemplate.exchange(url, HttpMethod.GET,  entity, responseType);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<RepoBasicInfoDTO> repos = (List<RepoBasicInfoDTO>) responseEntity.getBody();
+        assertNotNull(repos);
+        for (RepoBasicInfoDTO repo: repos) {
+            assertEquals(Constants.REPOSITORY_ID_1_UKS_TEST, repo.getForkParent().getId());
+        }
     }
 }
