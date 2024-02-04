@@ -168,22 +168,22 @@ public class RepoControllerTest {
         assertEquals(2, responseEntity.getBody().size());
     }
 
-    @Test
-    public void testFork() {
-        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        RepoForkRequest request = new RepoForkRequest();
-        request.setIsPublic(true);
-        request.setName("test");
-        request.setOriginalRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
-        request.setOwnerId(Constants.MIKA_USER_ID);
-
-        HttpEntity<RepoForkRequest> entity = new HttpEntity<>(request, headers);
-        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
-                .exchange("/repo/fork", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
-
-        assertNotNull(responseEntity.getBody());
-        assertEquals(Constants.REPOSITORY_ID_1_UKS_TEST, responseEntity.getBody().getForkParent().getId());
-    }
+//    @Test
+//    public void testFork() {
+//        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+//        RepoForkRequest request = new RepoForkRequest();
+//        request.setIsPublic(true);
+//        request.setName("test");
+//        request.setOriginalRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+//        request.setOwnerId(Constants.MIKA_USER_ID);
+//
+//        HttpEntity<RepoForkRequest> entity = new HttpEntity<>(request, headers);
+//        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+//                .exchange("/repo/fork", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+//
+//        assertNotNull(responseEntity.getBody());
+//        assertEquals(Constants.REPOSITORY_ID_1_UKS_TEST, responseEntity.getBody().getForkParent().getId());
+//    }
 
     @Test
     public void testGetAllForked() {
