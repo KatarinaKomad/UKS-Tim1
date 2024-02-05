@@ -18,7 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
@@ -68,6 +68,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
+import { CodeOverviewComponent } from './components/organisms/code-overview/code-overview.component';
+import { RepoActivitiesButtonGroupComponent } from './components/molecules/repo-activities-button-group/repo-activities-button-group.component';
+import { RepoAboutSideViewComponent } from './components/molecules/repo-about-side-view/repo-about-side-view.component';
+import { ForkOptionsComponent } from './components/molecules/filter-overlays/fork-options/fork-options.component';
+import { NewForkPageComponent } from './pages/new-fork-page/new-fork-page.component';
+import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-overview-page.component';
 
 
 @NgModule({
@@ -107,6 +113,13 @@ import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.com
 
     MyIssuesPageComponent,
     RepoSettingsComponent,
+
+    CodeOverviewComponent,
+    RepoActivitiesButtonGroupComponent,
+    RepoAboutSideViewComponent,
+    ForkOptionsComponent,
+    NewForkPageComponent,
+    ForksOverviewPageComponent,
   ],
   exports: [],
   imports: [

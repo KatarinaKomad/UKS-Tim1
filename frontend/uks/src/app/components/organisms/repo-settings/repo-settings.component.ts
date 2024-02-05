@@ -1,11 +1,10 @@
 import { ToastrService } from 'ngx-toastr';
 import { BranchBasicInfoDTO } from 'src/models/branch/branch';
-import { RepoBasicInfoDTO, RepoUpdateRequest } from 'src/models/repo/repo';
+import { RepoBasicInfoDTO, RepoUpdateRequest, getEmptyRepo } from 'src/models/repo/repo';
 import { BranchService } from 'src/services/branch/branch.service';
 import { RepoService } from 'src/services/repo/repo.service';
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -15,11 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './repo-settings.component.scss',
 })
 export class RepoSettingsComponent implements OnInit {
-  repository: RepoBasicInfoDTO = {
-    id: '', isPublic: false, name: '', owner: {
-      id: '', email: '', firstName: '', lastName: ''
-    }, forkCount: 0, starCount: 0, watchCount: 0, defaultBranch: 0
-  }
+  repository: RepoBasicInfoDTO = getEmptyRepo();
   repoNameControl = new FormControl('', [Validators.required]);
   branches: BranchBasicInfoDTO[] = [];
 

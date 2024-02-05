@@ -1,15 +1,17 @@
 package uns.ac.rs.uks.service;
 
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
+import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.request.RepoUpdateRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.RepoMapper;
 import uns.ac.rs.uks.mapper.UserMapper;
@@ -17,7 +19,6 @@ import uns.ac.rs.uks.model.Member;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.RepositoryRole;
 import uns.ac.rs.uks.model.User;
-import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.RepoRepository;
 
 import java.util.List;
@@ -33,6 +34,8 @@ public class RepoService {
     private MemberService memberService;
     @Autowired
     private BranchService branchService;
+    @Autowired
+    private EntityManager entityManager;
 
     @Cacheable(value = "repos")
     public List<RepoBasicInfoDTO> getAllPublic() {
@@ -97,5 +100,31 @@ public class RepoService {
 
         repoRepository.save(repo);
         return RepoMapper.toDTO(repo);
+    }
+
+    @CacheEvict(value = "repos", allEntries = true)
+    public RepoBasicInfoDTO forkRepo(RepoForkRequest forkRequest) {
+        checkForkValidity(forkRequest);
+        Repo repo = getById(forkRequest.getOriginalRepoId());
+        Repo newRepo = RepoMapper.map(repo);
+        newRepo.setOwner(entityManager.getReference(User.class, forkRequest.getOwnerId()));
+        newRepo.setName(forkRequest.getName());
+        newRepo.setForkParent(repo);
+        return RepoMapper.toDTO(repoRepository.save(newRepo));
+    }
+
+    private void checkForkValidity(RepoForkRequest forkRequest) {
+        if(!forkRequest.getIsPublic()){
+            Member member = memberService.findMemberByUserIdAndRepositoryId(
+                    forkRequest.getOwnerId(), forkRequest.getOriginalRepoId());
+            if(member == null) {
+                throw new NotAllowedException("Fork not allowed");
+            }
+        }
+    }
+
+    public List<RepoBasicInfoDTO> getAllForked(UUID repoId) {
+        Repo repo = getById(repoId);
+        return RepoMapper.toDTOs(repo.getForkChildren());
     }
 }

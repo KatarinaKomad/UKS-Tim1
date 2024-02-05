@@ -1,5 +1,6 @@
 package uns.ac.rs.uks.service;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,12 +10,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.*;
@@ -23,6 +27,7 @@ import uns.ac.rs.uks.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,6 +48,8 @@ public class RepoServiceTest {
     private BranchService branchService;
     @Mock
     private MemberService memberService;
+    @Mock
+    private EntityManager entityManager;
     private AutoCloseable closeable;
 
     @BeforeEach
@@ -230,6 +237,37 @@ public class RepoServiceTest {
 
         List<UserDTO> members = repoService.getMembers(id);
         assertEquals(2, members.size());
+    }
+
+    @Test
+    public void testForkRepo() throws NotAllowedException {
+        // Mocking
+        String testName = "testName";
+
+        RepoForkRequest request = new RepoForkRequest();
+        request.setIsPublic(true);
+        request.setName(testName);
+        request.setOriginalRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setOwnerId(Constants.MIKA_USER_ID);
+
+        Repo oldRepo = createRepo(testName, Constants.PERA_USER_ID, true);
+        Repo newRepo = createRepo(testName, Constants.MIKA_USER_ID, true);
+        newRepo.setForkParent(oldRepo);
+
+        User user = new User();
+        user.setId(Constants.MIKA_USER_ID);
+        when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(oldRepo));
+        when(entityManager.getReference(User.class, Constants.MIKA_USER_ID)).thenReturn(user);
+        when(repoRepository.save(any(Repo.class))).thenReturn(newRepo);
+
+        // Test
+        RepoBasicInfoDTO dto = repoService.forkRepo(request);
+
+        // Assertions
+        assertNotNull(dto);
+        assertEquals(Constants.MIKA_USER_ID, dto.getOwner().getId());
+        assertEquals(Constants.PERA_USER_ID, dto.getForkParent().getOwner().getId());
+
     }
 
     private Repo createRepo(String name, UUID userId, boolean isPublic) {

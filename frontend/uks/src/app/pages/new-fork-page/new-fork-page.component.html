@@ -1,0 +1,64 @@
+<mat-drawer-container class="sidebar-container" hasBackdrop="true">
+    <mat-drawer #drawer mode="over" class="drawer">
+        <app-sidebar></app-sidebar>
+    </mat-drawer>
+
+
+    <mat-drawer-content>
+        <app-navbar [drawer]="drawer"></app-navbar>
+
+        <div class="flex flex-col pt-4 w-5/6 mx-auto !h-5/6 ">
+            <div class="flex flex-row w-full h-full bg-gray-200 justify-center ">
+
+                <div class="flex flex-col">
+                    <h2 class="!text-2lg font-semibold py-6 mt-4">Create a new fork</h2>
+                    <div class="pb-4 mb-4">
+                        A fork is a copy of a repository. Forking a repository allows you to freely experiment with
+                        changes
+                        without affecting the original project.
+                        <a href="">View existing forks.</a>
+                    </div>
+                    <form [formGroup]="forkRepoForm">
+                        <div class="flex flex-row">
+                            <div [class]="'flex flex-col w-1/3 h-[13vh] pr-2'">
+                                <span class=" text-[16px]">Owner</span>
+                                <!-- <select type="text" ngModel name="org" class="custom-select" id="org">
+                                            <option selected>select...</option>
+                                            <option *ngFor="let org of myOrganizations" [ngValue]="org">
+                                                {{org.name}}</option>
+                                        </select> -->
+                                <input
+                                    class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none bg-gray-300"
+                                    id="owner" readonly=true type="text" formControlName="owner" />
+                            </div>
+                            <div [class]="'flex flex-col w-full h-[13vh] '">
+                                <app-input label="Name*" id="name" [extenseClass]="'w-full '"
+                                    [control]="forkRepoForm.controls.name" placeholder="Enter repo name"
+                                    [required]="true"
+                                    [invalid]="forkRepoForm.controls.name.invalid && forkRepoForm.controls.name.dirty"
+                                    errorMessage="Invalid name" type="text"></app-input>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p>Is repository Public?</p>
+                            <mat-slide-toggle color="warn" formControlName="isPublic" />
+                        </div>
+
+                        <div class="button-container">
+                            <app-button [text]="'Cancel'" [type]="'button'"
+                                [extenseClass]="'bg-red-500 hover:bg-red-800 disabled:hover:bg-red-600 '"
+                                (click)="onCancelClick()"></app-button>
+                            <app-button [text]="'Add new'" [disabled]="forkRepoForm.invalid || sameOwner"
+                                (buttonClick)="onSubmitClick()"></app-button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+    </mat-drawer-content>
+
+</mat-drawer-container>

@@ -1,0 +1,38 @@
+<div class="flex flex-row pt-3 space-x-4 container">
+    <div class="title">
+        <span class="repo-name">{{repo?.name}}</span>
+        <span class="rounded-2xl px-2 mx-auto text-base border">{{repo?.isPublic ? 'Public' : 'Private'}}</span>
+        <div class="forked">
+            {{repo?.forkParent ?
+            'forked from: ' +
+            repo?.forkParent?.owner?.firstName + ' ' + repo?.forkParent?.owner?.lastName + ' / ' +
+            repo?.forkParent?.name
+            : ''}}
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button class="show-button !py-1" (click)="onWatchClick()">
+            <i class="icon fa-solid fa-eye"></i>
+            {{amIWatching ? 'Unwatch' :'Watch'}}
+            <span class="activity-count">{{repo?.watchCount}}</span>
+        </button>
+
+        <button class="show-button !py-1" (click)="onStarClick()">
+            <i class="icon fa-regular fa-star" *ngIf="!haveIStarred"></i>
+            <i class="icon fa-regular fa-star text-yellow-300" *ngIf="haveIStarred"></i>
+            {{haveIStarred ? 'Starred' : 'Star'}}
+            <span class="activity-count">{{repo?.starCount}}</span>
+        </button>
+
+        <button class="show-button !py-1 " (click)="onForkClick()" [disabled]="repo?.forkParent">
+            <i class="fa-solid fa-code-fork"></i>
+            Fork
+            <span class="activity-count">{{repo?.forkCount}}</span>
+        </button>
+        <button class="down-button" (click)="onForkOptionsOpen()" *ngIf="!repo?.forkParent">
+            <i class="fa-solid fa-sort-down"></i>
+        </button>
+    </div>
+    <app-fork-options *ngIf="forkOptionOpen" (closeEvent)="onForkOptionsClose()"></app-fork-options>
+</div>

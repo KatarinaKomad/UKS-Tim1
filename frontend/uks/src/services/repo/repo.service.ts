@@ -1,4 +1,4 @@
-import { RepoUpdateRequest } from 'src/models/repo/repo';
+import { RepoForkRequest, RepoUpdateRequest } from 'src/models/repo/repo';
 import {
   EditRepoRequest,
   RepoBasicInfoDTO,
@@ -17,6 +17,7 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root',
 })
 export class RepoService {
+
   constructor(
     private httpRequestService: HttpRequestService,
     private authService: AuthService
@@ -103,5 +104,17 @@ export class RepoService {
     const repoId = localStorage.getItem('repoId');
     if (!repoId || !user?.id) return null;
     return { repoId, userId: user.id };
+  }
+
+  getAllForked(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/getAllForked/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;
+  }
+
+  newFork(forkRequest: RepoForkRequest) {
+    const url = environment.API_BASE_URL + '/repo/fork';
+    const body = JSON.stringify(forkRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
   }
 }

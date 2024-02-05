@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { ISSUE_EVENT_TYPE, IssueDTO, IssueEventDTO, IssueEventRequest, IssueRequest } from 'src/models/issue/issue';
-import { STATE, STATE_COLORS } from 'src/models/state/state';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 import { IssueService } from 'src/services/issue/issue.service';

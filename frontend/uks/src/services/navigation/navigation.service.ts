@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IssueDTO } from 'src/models/issue/issue';
+import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ export class NavigationService {
 
   repoName?: string;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+  ) {
     this.repoName = localStorage.getItem("repoName") as string;
   }
 
@@ -60,4 +63,30 @@ export class NavigationService {
     );
   }
 
+  navigateToRepo(repo: RepoBasicInfoDTO) {
+    const oldRepoName = localStorage.getItem("repoName") as string;
+
+    this.setRepoToLocalStorage(repo);
+    this.router.navigate(
+      [`/repository/${repo?.name}`],
+      { state: { repo } }
+    ).then(() => {
+      if (oldRepoName === repo.name && oldRepoName) {
+        window.location.reload();
+      }
+    });
+
+  }
+
+  navigateToNewFork() {
+    this.router.navigate(['/repository/fork']);
+  }
+  navigateToForksOverview() {
+    this.router.navigate(['/repository/forks-overview']);
+  }
+
+  private setRepoToLocalStorage(repo: RepoBasicInfoDTO) {
+    localStorage.setItem("repoId", repo.id);
+    localStorage.setItem("repoName", repo.name);
+  }
 }
