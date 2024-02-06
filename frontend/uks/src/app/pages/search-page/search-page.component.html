@@ -1,0 +1,47 @@
+<mat-drawer-container class="sidebar-container" hasBackdrop="true">
+    <mat-drawer #drawer mode="over" class="drawer">
+        <app-sidebar></app-sidebar>
+    </mat-drawer>
+
+    <mat-drawer-content class="">
+        <app-navbar [drawer]="drawer"></app-navbar>
+        <div class="flex flex-row">
+            <div class="flex flex-col w-1/6 container">
+                <app-search-filters-side-view (queryChangeEvent)="queryChangeEvent($event)" [prCount]="prCount"
+                    [repoCount]="repoCount" [userCount]="userCount"
+                    [issueCount]="issueCount"></app-search-filters-side-view>
+            </div>
+            <div class="flex flex-col w-5/6 h-full">
+                <div class="search-bar">
+                    <form>
+                        <input class="p-2 rounded-md !text-[12px] text-black !focus-visible:outline-none"
+                            id="searchRepos" placeholder="Search..." [formControl]="inputControl" />
+                        <select [formControl]="sortTypeControl" (change)="onSortTypeChange($event)">
+                            <option *ngFor="let option of sortTypes" [value]="option">{{ option }}</option>
+                        </select>
+                        <button
+                            class="!bg-green-600 rounded-lg  w-fit px-4 py-1 text-white hover:!bg-green-800 text-sm  !mr-4"
+                            (click)="search()">
+                            Go
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                    <div class="addition">
+                        {{searchRequest.query.join(' ')}}
+                        <!-- {{searchRequest.searchType === SEARCH_TYPE.REPO ? searchRequest.repoQuery.join(' ') : ''}}
+                        {{searchRequest.searchType === SEARCH_TYPE.ISSUE ? searchRequest.issueQuery.join(' ') : ''}}
+                        {{searchRequest.searchType === SEARCH_TYPE.PR ? searchRequest.prQuery.join(' ') : ''}}
+                        {{searchRequest.searchType === SEARCH_TYPE.USER ? searchRequest.userQuery.join(' ') : ''}} -->
+                    </div>
+                </div>
+
+                <div *ngFor="let res of searchResults">
+                    <app-search-result-item [item]="res"></app-search-result-item>
+                </div>
+            </div>
+        </div>
+
+
+    </mat-drawer-content>
+
+</mat-drawer-container>

@@ -74,6 +74,10 @@ import { RepoAboutSideViewComponent } from './components/molecules/repo-about-si
 import { ForkOptionsComponent } from './components/molecules/filter-overlays/fork-options/fork-options.component';
 import { NewForkPageComponent } from './pages/new-fork-page/new-fork-page.component';
 import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-overview-page.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { SearchFiltersSideViewComponent } from './components/molecules/search-filters-side-view/search-filters-side-view.component';
+import { SearchResultItemComponent } from './components/molecules/search-result-item/search-result-item.component';
+import { SearchFilterInputComponent } from './components/molecules/filter-overlays/search-filter-input/search-filter-input.component';
 
 
 @NgModule({
@@ -120,6 +124,11 @@ import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-ov
     ForkOptionsComponent,
     NewForkPageComponent,
     ForksOverviewPageComponent,
+
+    SearchPageComponent,
+    SearchFiltersSideViewComponent,
+    SearchResultItemComponent,
+    SearchFilterInputComponent,
   ],
   exports: [],
   imports: [

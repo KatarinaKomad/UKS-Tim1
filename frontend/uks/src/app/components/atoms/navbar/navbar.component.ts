@@ -14,6 +14,7 @@ import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 })
 export class NavbarComponent implements OnInit {
 
+
   @Input() drawer: any;
 
   selected!: SelectionOptions;
@@ -60,6 +61,10 @@ export class NavbarComponent implements OnInit {
 
   handleLogoutButtonClick(): void {
     this.authService.logout();
+  }
+
+  onSearch() {
+    this.router.navigate(['search'])
   }
 
 }

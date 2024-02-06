@@ -1,0 +1,94 @@
+<div class="segment">
+    <div class="title">
+        Filter by
+    </div>
+    <div class="item-row flex flex-row" [ngClass]="{'selected-style': request.searchType === SEARCH_TYPE.REPO}"
+        (click)="changeSearchType(SEARCH_TYPE.REPO)">
+        <div>
+            <i class="icon fa-solid fa-book-medical "></i>
+            Repositories
+        </div>
+        <div class="activity-count">{{repoCount}}</div>
+    </div>
+    <div class="item-row  flex flex-row" [ngClass]="{'selected-style': request.searchType === SEARCH_TYPE.ISSUE}"
+        (click)="changeSearchType(SEARCH_TYPE.ISSUE)">
+        <div>
+            <i class="icon  fa-regular fa-circle-dot"></i>
+            Issue
+        </div>
+        <div class="activity-count">{{issueCount}}</div>
+    </div>
+    <div class="item-row  flex flex-row" [ngClass]="{'selected-style': request.searchType === SEARCH_TYPE.PR}"
+        (click)="changeSearchType(SEARCH_TYPE.PR)">
+        <div>
+            <i class="icon fa-solid fa-code-pull-request"></i>
+            Pull requests
+        </div>
+        <div class="activity-count">{{prCount}}</div>
+    </div>
+    <div class="item-row  flex flex-row" [ngClass]="{'selected-style': request.searchType === SEARCH_TYPE.USER}"
+        (click)="changeSearchType(SEARCH_TYPE.USER)">
+        <div>
+            <i class="icon fa-solid fa-users"></i>
+            Users
+        </div>
+        <div class="activity-count">{{userCount}}</div>
+    </div>
+</div>
+
+
+
+
+<div class="segment">
+    <div class="title-row !flex !flex-row ">
+        <div class="title">
+            Advanced options
+        </div>
+    </div>
+    <div class="operations-row !flex !flex-row ">
+        <button (click)="addOperation(OPERATIONS.AND)" class="operation-btn" [disabled]="isLastElemOperation()">
+            AND
+        </button>
+        <button (click)="addOperation(OPERATIONS.OR)" class="operation-btn" [disabled]="isLastElemOperation()">
+            OR
+        </button>
+        <button (click)="addOperation(OPERATIONS.NOT)" class="operation-btn" [disabled]="isLastElemOperation()">
+            NOT
+        </button>
+        <button (click)="removeLastAdvanced()" class="operation-btn mx-8">
+            <i class="fa-solid fa-delete-left fa-lg"></i>
+        </button>
+        <button (click)="clearAllAdvanced()" class="operation-btn">
+            <i class="fa-solid fa-eraser fa-lg"></i>
+        </button>
+
+    </div>
+    <div *ngIf="request.searchType === SEARCH_TYPE.REPO">
+        <div *ngFor="let keyword of repoKeywords " class="keyword-row" (click)="advancedOption(keyword)">
+            <i class="icon fa-solid fa-circle-plus" *ngIf="!isSelected(keyword)"></i>
+            <i class="icon-selected fa-solid fa-circle-check" *ngIf="isSelected(keyword)"></i>
+            {{ formatRepoKeyword(keyword) }}
+        </div>
+    </div>
+    <div *ngIf="request.searchType === SEARCH_TYPE.ISSUE">
+        <div *ngFor="let keyword of issuePrKeywords " class="keyword-row" (click)="advancedOption(keyword)">
+            <i class="icon fa-solid fa-circle-plus" *ngIf="!isSelected(keyword)"></i>
+            <i class="icon-selected fa-solid fa-circle-check" *ngIf="isSelected(keyword)"></i>
+            {{ formatIssuePrKeyword(keyword) }}
+        </div>
+    </div>
+    <div *ngIf="request.searchType === SEARCH_TYPE.PR">
+        <div *ngFor="let keyword of issuePrKeywords " class="keyword-row" (click)="advancedOption(keyword)">
+            <i class="icon fa-solid fa-circle-plus" *ngIf="!isSelected(keyword)"></i>
+            <i class="icon-selected fa-solid fa-circle-check" *ngIf="isSelected(keyword)"></i>
+            {{ formatIssuePrKeyword(keyword) }}
+        </div>
+    </div>
+    <div *ngIf="request.searchType === SEARCH_TYPE.USER">
+        <div *ngFor="let keyword of userKeywords " class="keyword-row" (click)="advancedOption(keyword)">
+            <i class="icon fa-solid fa-circle-plus" *ngIf="!isSelected(keyword)"></i>
+            <i class="icon-selected fa-solid fa-circle-check" *ngIf="isSelected(keyword)"></i>
+            {{ formatUserKeyword(keyword) }}
+        </div>
+    </div>
+</div>

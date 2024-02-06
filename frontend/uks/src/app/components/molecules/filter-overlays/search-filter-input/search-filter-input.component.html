@@ -1,0 +1,37 @@
+<div class="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" (click)="closeForm(null)">
+            &times;
+        </span>
+        <div class="title-row">
+            Input {{type}} for {{keyword}}
+        </div>
+
+        <form>
+            <div class="item-row">
+                <select [formControl]="signControl" *ngIf="type === 'number' || type==='date'">
+                    <option *ngFor="let option of signs" [value]="option">{{ option }}</option>
+                </select>
+                <select [formControl]="signControl" *ngIf="type === 'string'">
+                    <option value="=">=</option>
+                    <option value="~">~</option>
+                </select>
+                <input [type]="type" [formControl]="activeControl" *ngIf="type === 'number' || type === 'string'" />
+            </div>
+            <div [class]=" 'flex flex-col w-1/4 h-[13vh]'" *ngIf="type === 'date'">
+                <span class=" text-[16px]">Date</span>
+                <div [class]="'flex flex-row item-row'">
+                    <input class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none" id="date"
+                        [matDatepicker]="dp" type="text" readonly="true" [formControl]="activeControl"
+                        placeholder="Enter date" />
+                    <mat-datepicker-toggle class="calendar-icon" matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp></mat-datepicker>
+                </div>
+            </div>
+            <app-button [text]="'Add'" type="'button'" (buttonClick)="closeForm(activeControl.value)"
+                [extenseClass]="'ml-12'"></app-button>
+
+        </form>
+
+    </div>
+</div>
