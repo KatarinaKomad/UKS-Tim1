@@ -1,3 +1,13 @@
 **.env*
 **.db
 backend/uks/src/main/resources/application-dev.properties
+
+gitolite/gitolite
+
+gitolite/gitolite.pub
+
+backend/uks/src/gitolite/gitolite
+
+backend/uks/src/gitolite/gitolite.pub
+backend/uks/src/gitolite/gitolite-admin/
+backend/uks/src/gitolite/gitolite_admin_script.log

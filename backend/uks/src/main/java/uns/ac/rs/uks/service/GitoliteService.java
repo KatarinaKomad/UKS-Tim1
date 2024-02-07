@@ -1,0 +1,93 @@
+package uns.ac.rs.uks.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import uns.ac.rs.uks.dto.response.KeyResponse;
+
+import java.io.*;
+
+@Service
+public class GitoliteService {
+
+    @Value("${app.gitolite.keydir}")
+    private String keyDirPath;
+
+    @Value("${app.gitolite.script}")
+    private String scriptName;
+
+    @Value("${app.gitolite.workingDirectory}")
+    private String scriptWorkingDirectory;
+
+    @Value("${app.gitolite.bashLocation}")
+    private String bashLocation;
+
+    @Value("${app.gitolite.configFile}")
+    private String configFile;
+
+    private static final Logger logger = LoggerFactory.getLogger(GitoliteService.class);
+
+    public KeyResponse createKey(String value, String username) {
+        if (saveKey(value, username)) {
+            commitGitoliteAdmin(String.format("Saved key for user %s", username));
+            return new KeyResponse(value);
+        }
+        throw new RuntimeException("Error saving the key");
+    }
+
+    public String createRepo(String repoName, String username) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(configFile, true))) {
+            repoName = repoName.replace(" ", "-");
+            writer.newLine();
+            writer.write("repo " + repoName);
+            writer.newLine();
+            writer.write("    RW+     =   id_rsa");
+            writer.newLine();
+            writer.write("    RW+     =   " + username);
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            return "";
+        }
+        commitGitoliteAdmin(String.format("Created repo %s for user %s", repoName, username));
+        return String.format("GIT_SSH_COMMAND='ssh -p 2222 -i <your_private_ssh>' git clone git@localhost:%s", repoName);
+    }
+
+    private boolean saveKey(String value, String username) {
+        var keyFullPath = keyDirPath + "/" + username + ".pub";
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(keyFullPath))) {
+            logger.info(String.format("Saving public key for user %s at location: %s", username, keyFullPath));
+            writer.write(value);
+            return true;
+        } catch (IOException e) {
+            logger.info(String.format("Failed saving the public key for user %s at location: %s", username, keyFullPath));
+            return false;
+        }
+    }
+
+    private void commitGitoliteAdmin(String message) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, scriptName, message);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                logger.info(line);
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", scriptName));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+    }
+}

@@ -36,6 +36,8 @@ public class RepoService {
     private BranchService branchService;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private GitoliteService gitoliteService;
 
     @Cacheable(value = "repos")
     public List<RepoBasicInfoDTO> getAllPublic() {
@@ -56,7 +58,9 @@ public class RepoService {
         repo.setDefaultBranch(branchService.createDefaultBranch(repo));
         repoRepository.save(repo);
         memberService.addNewMember(user, repo, RepositoryRole.OWNER);
-        return RepoMapper.toDTO(repo);
+        var repoDto = RepoMapper.toDTO(repo);
+        repoDto.setCloneUri(gitoliteService.createRepo(repoDto.getName(), user.getUsername()));
+        return repoDto;
     }
 
     public Repo getById(UUID repoId) {
