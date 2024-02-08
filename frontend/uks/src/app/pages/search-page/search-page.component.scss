@@ -20,7 +20,7 @@
 
     padding-top: 10px;
     padding-left: 5%;
-    width: 70%;
+    width: 100%;
 
     input {
         font-size: 12px;
@@ -66,4 +66,19 @@
 
 .addition {
     font-style: italic;
+    padding-left: 5%;
+}
+
+.pagination {
+    margin-left: 20px;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
 }

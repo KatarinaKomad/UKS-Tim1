@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ public class Repo implements Serializable {
     @Id
     private UUID id;
     private String name;
+    private String description;
     @ManyToOne
     private User owner;
 
@@ -48,4 +51,8 @@ public class Repo implements Serializable {
     private List<User> staredBy;
     @ManyToMany
     private List<User> watchers;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
 }

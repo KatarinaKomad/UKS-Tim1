@@ -46,26 +46,14 @@ export const formatKeyword = (keyword: Keyword): string => {
 }
 
 
-// export interface SearchRequest {
-//     repoKeywords: (REPO_KEYWORDS | OPERATIONS)[];
-//     repoQuery: string[];
-//     issueKeywords: (ISSUE_PR_KEYWORDS | OPERATIONS)[];
-//     issueQuery: string[];
-//     prKeywords: (ISSUE_PR_KEYWORDS | OPERATIONS)[];
-//     prQuery: string[];
-//     userKeywords: (USER_KEYWORDS | OPERATIONS)[];
-//     userQuery: string[];
-//     searchType: SEARCH_TYPE;
-//     inputValue?: string;
-//     sortType: SORT_TYPE
-// }
-
 export interface SearchRequest {
     keywords: Keyword[];
     query: string[];
     searchType: SEARCH_TYPE;
     inputValue: string;
-    sortType: SORT_TYPE
+    sortType: SORT_TYPE;
+    page: number;
+    size: number;
 }
 
 export const createEmptySearchRequest = (): SearchRequest => {
@@ -74,23 +62,11 @@ export const createEmptySearchRequest = (): SearchRequest => {
         query: [],
         searchType: SEARCH_TYPE.REPO,
         sortType: REPO_SORT_TYPE.ANY,
-        inputValue: ''
+        inputValue: '',
+        page: 0,
+        size: 10
     }
 }
-// export const createEmptySearchRequest = (): SearchRequest => {
-//     return {
-//         repoKeywords: [],
-//         repoQuery: [],
-//         issueKeywords: [],
-//         issueQuery: [],
-//         prKeywords: [],
-//         prQuery: [],
-//         userKeywords: [],
-//         userQuery: [],
-//         searchType: SEARCH_TYPE.REPO,
-//         sortType: REPO_SORT_TYPE.ANY
-//     }
-// }
 
 export interface SearchResult {
 

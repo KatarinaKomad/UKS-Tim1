@@ -22,6 +22,7 @@ import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.security.TokenProvider;
 
 import java.util.Base64;
+import java.util.Random;
 
 
 @Service
@@ -43,11 +44,24 @@ public class AuthService {
             throw new AlreadyExistsException("User already exists!");
 
         User user = UserMapper.toUserFromRequest(registrationRequest);
+        while (true){
+            String username = user.getFirstName() + user.getLastName() + generateRandomNumbers();
+            if(!userService.existsByUsername(username)){
+                user.setCustomUsername(username);
+                break;
+            }
+        }
         String password = new String(Base64.getDecoder().decode(registrationRequest.getPassword()));
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole(roleService.getRoleByName(RoleEnum.ROLE_ADMIN.getName()));
+        user.setRole(roleService.getRoleByName(RoleEnum.ROLE_USER.getName()));
         User savedUser = userService.save(user);
         return UserMapper.toDTO(savedUser);
+    }
+
+    private String generateRandomNumbers() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(9000) + 1000;
+        return String.valueOf(randomNumber);
     }
 
     public TokenResponse login(LoginRequest loginRequest) throws NotFoundException {

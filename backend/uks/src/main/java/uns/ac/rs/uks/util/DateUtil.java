@@ -27,4 +27,8 @@ public class DateUtil {
     public static LocalDateTime getLocalDateTime(Long timestamp){
         return dateToLocalDateTime(new Date(timestamp));
     }
+
+    public static LocalDateTime parseDate(String dateString) {
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
 }

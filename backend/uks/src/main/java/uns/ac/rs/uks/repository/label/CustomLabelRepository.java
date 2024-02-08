@@ -1,4 +1,4 @@
-package uns.ac.rs.uks.repository;
+package uns.ac.rs.uks.repository.label;
 
 public interface CustomLabelRepository {
 

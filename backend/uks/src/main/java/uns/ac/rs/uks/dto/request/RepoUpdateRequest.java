@@ -12,7 +12,7 @@ public class RepoUpdateRequest {
     @NotEmpty
     @NotNull
     private String name;
-
+    private String description;
     @NotNull
     private Boolean isPublic;
 

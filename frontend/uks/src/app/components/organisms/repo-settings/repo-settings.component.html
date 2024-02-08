@@ -6,6 +6,11 @@
     [required]="true" [invalid]="repoNameControl.invalid && repoNameControl.dirty"
     [errorMessage]="'Repo Name is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
 
+  <app-input [label]="'Repository description'" [id]="'repoDescription'" [control]="repoDescriptionControl"
+    [placeholder]="'Repo description'" [required]="false"
+    [invalid]="repoDescriptionControl.invalid && repoDescriptionControl.dirty" [type]="'text'"
+    defaultClass="flex items-center gap-x-4"></app-input>
+
   <div class="flex items-center gap-x-4">
     <div class="text-[16px]">Public repository</div>
     <mat-checkbox [(ngModel)]="repository.isPublic"></mat-checkbox>

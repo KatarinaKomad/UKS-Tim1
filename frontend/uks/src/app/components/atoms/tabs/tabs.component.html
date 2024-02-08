@@ -25,7 +25,7 @@
         Pull requests Content
     </mat-tab>
 
-    <mat-tab class="custom-tab">
+    <mat-tab class="custom-tab" *ngIf="canEdit">
         <ng-template mat-tab-label class="menuItem">
             <i class="icon fa-solid fa-gear fa-lg"></i>
             <span class="itemTitle">Settings</span>

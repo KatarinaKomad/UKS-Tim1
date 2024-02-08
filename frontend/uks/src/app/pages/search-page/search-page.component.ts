@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Page } from 'src/models/page/page';
 import { SEARCH_TYPE, SearchRequest, SearchResult, createEmptySearchRequest } from 'src/models/search/search';
 import { ISSUE_PR_SORT_TYPE, REPO_SORT_TYPE, SORT_TYPE, USER_SORT_TYPE } from 'src/models/search/sortType';
+import { PaginationService } from 'src/services/pagination/pagination.service';
 import { SearchService } from 'src/services/search/search.service';
 
 @Component({
@@ -16,8 +18,8 @@ export class SearchPageComponent {
   userSortTypes = Object.values(USER_SORT_TYPE);
 
   sortTypes: SORT_TYPE[] = [];
-
   SEARCH_TYPE = SEARCH_TYPE;
+
   searchResults: SearchResult[] = [];
 
   repoCount: number = 0;
@@ -25,31 +27,52 @@ export class SearchPageComponent {
   prCount: number = 0;
   userCount: number = 0;
 
-  searchRequest: SearchRequest = createEmptySearchRequest();
+  searchRequest: SearchRequest
   inputControl: FormControl<string> = new FormControl();
   sortTypeControl: FormControl<SORT_TYPE> = new FormControl();
 
+  page: Page<SearchResult> = new Page();
+
   constructor(
     private searchService: SearchService,
+    private paginationService: PaginationService,
   ) {
     this.sortTypes = this.repoSortTypes;
     this.sortTypeControl.setValue(REPO_SORT_TYPE.ANY)
+
+    const searchRequest = localStorage.getItem("searchRequest");
+    if (searchRequest != null) {
+      this.searchRequest = JSON.parse(searchRequest);
+      this.search();
+    } else {
+      this.searchRequest = createEmptySearchRequest();
+    }
+
   }
 
   search() {
-    const searchRequest = { ...this.searchRequest, inputValue: this.inputControl.value };
-    console.log(searchRequest)
-    // this.sendSearchRequest(searchRequest);
+    const searchRequest = this.createSearchRequest();
+    this.sendSearchRequest(searchRequest);
     // this.setRepoCount(searchRequest);
     // this.setIssueCount(searchRequest);
     // this.setUserCount(searchRequest);
     // this.setPrCount(searchRequest);
   }
 
+  private createSearchRequest() {
+    return {
+      ...this.searchRequest,
+      inputValue: this.inputControl.value,
+      page: this.page.pageable.pageNumber,
+      size: this.page.pageable.pageSize
+    };
+  }
+
   sendSearchRequest(searchRequest: SearchRequest) {
     this.searchService.search(searchRequest).subscribe({
-      next: (res: SearchResult[]) => {
-        this.searchResults = res;
+      next: (page: Page<SearchResult>) => {
+        this.page = page;
+        this.page.pageable.pagePerShow = page.number + 1;
       }, error: (e: any) => {
         console.log(e);
       }
@@ -103,11 +126,31 @@ export class SearchPageComponent {
         default: this.sortTypes = this.repoSortTypes; break;
       }
     }
+    if (searchRequest.keywords.length === 0) {
+      this.page = new Page();
+    }
     this.searchRequest = { ...searchRequest };
+    localStorage.setItem("searchRequest", JSON.stringify(this.searchRequest))
   }
 
   onSortTypeChange(event: Event) {
     this.searchRequest.sortType = (event.target as HTMLInputElement).value as SORT_TYPE;
   }
+
+  public getNextPage(): void {
+    this.page.pageable = this.paginationService.getNextPage(this.page);
+    this.sendSearchRequest(this.createSearchRequest());
+  }
+
+  public getPreviousPage(): void {
+    this.page.pageable = this.paginationService.getPreviousPage(this.page);
+    this.sendSearchRequest(this.createSearchRequest());
+  }
+
+  public getPageInNewSize(pageSize: any): void {
+    this.page.pageable = this.paginationService.getPageInNewSize(this.page, pageSize);
+    this.sendSearchRequest(this.createSearchRequest());
+  }
+
 }
 

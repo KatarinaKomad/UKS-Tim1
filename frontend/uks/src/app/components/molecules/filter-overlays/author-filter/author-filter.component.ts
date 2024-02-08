@@ -51,7 +51,11 @@ export class AuthorFilterComponent implements AfterViewInit, OnChanges {
 
   submitFilter() {
     const filterValue = this.filter.value as string;
-    this.shownList = this.fullList.filter(el => (el.firstName.includes(filterValue) || el.lastName.includes(filterValue)))
+    this.shownList = this.fullList.filter(el =>
+    (el.firstName.includes(filterValue) ||
+      el.lastName.includes(filterValue) ||
+      el.username.includes(filterValue)
+    ))
   }
 
   onSelectChange(selected: UserBasicInfo): void {

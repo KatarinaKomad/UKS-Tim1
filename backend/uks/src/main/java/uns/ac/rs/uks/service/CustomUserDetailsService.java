@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.repository.UserRepository;
+import uns.ac.rs.uks.repository.user.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

@@ -12,7 +12,7 @@
                     [issueCount]="issueCount"></app-search-filters-side-view>
             </div>
             <div class="flex flex-col w-5/6 h-full">
-                <div class="search-bar">
+                <div class="search-bar flex flex-row">
                     <form>
                         <input class="p-2 rounded-md !text-[12px] text-black !focus-visible:outline-none"
                             id="searchRepos" placeholder="Search..." [formControl]="inputControl" />
@@ -26,17 +26,21 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </form>
-                    <div class="addition">
-                        {{searchRequest.query.join(' ')}}
-                        <!-- {{searchRequest.searchType === SEARCH_TYPE.REPO ? searchRequest.repoQuery.join(' ') : ''}}
-                        {{searchRequest.searchType === SEARCH_TYPE.ISSUE ? searchRequest.issueQuery.join(' ') : ''}}
-                        {{searchRequest.searchType === SEARCH_TYPE.PR ? searchRequest.prQuery.join(' ') : ''}}
-                        {{searchRequest.searchType === SEARCH_TYPE.USER ? searchRequest.userQuery.join(' ') : ''}} -->
+
+                    <div class="paginator" *ngIf="page?.content && page.content.length > 0">
+                        <app-custom-pagination [page]="page" (nextPageEvent)="getNextPage()"
+                            (previousPageEvent)="getPreviousPage()" (pageSizeEvent)="getPageInNewSize($event)">
+                        </app-custom-pagination>
                     </div>
                 </div>
+                <div class="addition">
+                    {{searchRequest.query.join(' ')}}
+                </div>
 
-                <div *ngFor="let res of searchResults">
-                    <app-search-result-item [item]="res"></app-search-result-item>
+                <div class="result-container">
+                    <div *ngFor="let res of page?.content">
+                        <app-search-result-item [item]="res"></app-search-result-item>
+                    </div>
                 </div>
             </div>
         </div>

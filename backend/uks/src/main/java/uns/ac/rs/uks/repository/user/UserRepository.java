@@ -1,4 +1,4 @@
-package uns.ac.rs.uks.repository;
+package uns.ac.rs.uks.repository.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +13,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
+    Optional<User> findByCustomUsername(String username);
     Optional<User> findById(UUID uuid);
 
     @Modifying

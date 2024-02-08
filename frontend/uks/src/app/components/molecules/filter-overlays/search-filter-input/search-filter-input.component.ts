@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Keyword, SignEnum } from 'src/models/search/search';
+import { dateToString } from 'src/utils/dateUtil';
 
 @Component({
   selector: 'app-search-filter-input',
@@ -25,8 +26,14 @@ export class SearchFilterInputComponent {
   }
 
   closeForm(input: number | string | Date | null) {
-    input === null ?
-      this.dialogRef.close(null) :
+    if (input === null) {
+      this.dialogRef.close(null);
+    }
+    else {
+      if (this.type === 'date') {
+        input = dateToString(input as Date);
+      }
       this.dialogRef.close(this.signControl.value + String(input))
+    }
   }
 }

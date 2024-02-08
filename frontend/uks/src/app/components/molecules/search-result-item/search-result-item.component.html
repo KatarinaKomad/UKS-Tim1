@@ -1,1 +1,30 @@
-<p>search-result-item works!</p>
+<div class="card-container" (click)="navigateToRepo()">
+    <div class="repo-header">
+        <h4 class="repo-title">
+            {{repoItem?.owner?.username}} / {{repoItem?.name}}
+        </h4>
+        <div class="forked">
+            {{repoItem?.forkParent ?
+            'forked from: ' +
+            repoItem?.forkParent?.owner?.username + ' / ' + repoItem?.forkParent?.name
+            : ''}}
+        </div>
+    </div>
+
+    <div class="repo-stats">
+        <span class="repo-stat">
+            <i class="fa-regular fa-star fa-sm"> </i>
+            <p>{{repoItem?.starCount}}</p>
+        </span>
+        <span class="repo-stat">
+            <i class="fa-regular fa-eye fa-sm"></i>
+            <p>{{repoItem?.watchCount}}</p>
+        </span>
+        <span class="repo-stat">
+            <i class="fa-solid fa-code-fork fa-sm"></i>
+            <p>{{repoItem?.forkCount}}</p>
+        </span>
+    </div>
+
+
+</div>

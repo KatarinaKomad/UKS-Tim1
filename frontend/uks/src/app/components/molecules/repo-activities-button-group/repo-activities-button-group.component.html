@@ -5,8 +5,7 @@
         <div class="forked">
             {{repo?.forkParent ?
             'forked from: ' +
-            repo?.forkParent?.owner?.firstName + ' ' + repo?.forkParent?.owner?.lastName + ' / ' +
-            repo?.forkParent?.name
+            repo?.forkParent?.owner?.username + ' / ' + repo?.forkParent?.name
             : ''}}
         </div>
     </div>

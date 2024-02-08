@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Page } from 'src/models/page/page';
 import { SearchRequest, SearchResult } from 'src/models/search/search';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
@@ -13,11 +14,11 @@ export class SearchService {
     private httpRequestService: HttpRequestService,
   ) { }
 
-  search(searchRequest: SearchRequest): Observable<SearchResult[]> {
+  search(searchRequest: SearchRequest): Observable<Page<SearchResult>> {
     const url = environment.API_BASE_URL + '/search';
     const body = JSON.stringify(searchRequest);
 
-    return this.httpRequestService.post(url, body) as Observable<SearchResult[]>;
+    return this.httpRequestService.post(url, body) as Observable<Page<SearchResult>>;
   }
 
   getRepoCount(searchRequest: SearchRequest): Observable<number> {

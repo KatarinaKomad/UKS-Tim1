@@ -2,23 +2,27 @@ INSERT INTO ROLE (name) VALUES
 ('ROLE_ADMIN'),         --1
 ('ROLE_USER');         --2
 
-INSERT INTO USERS(id, first_name, last_name, email, password, blocked_by_admin, deleted, role_id) VALUES
+INSERT INTO USERS(id, first_name, last_name, email, custom_username, password, blocked_by_admin, deleted, role_id) VALUES
 -- password: admin123
-('af409c2d-95e0-432e-a6fc-6ef55cb4430d', 'Admin','Adminic', 'admin@gmail.com',
+('af409c2d-95e0-432e-a6fc-6ef55cb4430d', 'Admin','Adminic', 'admin@gmail.com', 'AdminAdminic1234',
 '$2a$12$XlgKd3zOFrYYrjANJQzYJOTxTtMptJ93ICmHvmrnidzWz.TbvzZMe', false, false, 1),
 -- password: pera123
-('ff1d6606-e1f5-4e26-8a32-a14800b42a27', 'Pera','Peric', 'pera@gmail.com',
+('ff1d6606-e1f5-4e26-8a32-a14800b42a27', 'Pera','Peric', 'pera@gmail.com', 'PeraPeric1234',
 '$2a$12$uIjkE3hHR5xMJFKEFcBqw.LpKXKIK7HWs6nYXC/foShQvNq673bH2', false, false, 2),
 -- password: mika123
-('0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', 'Mika','Mikic', 'mika@gmail.com',
+('0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', 'Mika','Mikic', 'mika@gmail.com', 'MikaMikic1234',
 '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, false, 2);
 
 
-INSERT INTO REPO(id, name, owner_iD, is_public) VALUES
-('a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'UKS-test', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27', false),
-('ba6dcc79-1444-4310-9e7d-9736def57f60', 'UKS-test-PUBLIC', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27', true),
-('b6677751-cc42-4fb7-a662-31dda9c4482b', 'myPublicRepo', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', true),
-('f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e', 'myPrivateRepo', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', false);
+INSERT INTO REPO(id, name, description, owner_iD, is_public, created_at) VALUES
+('a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'UKS-test', 'uks test opis',
+'ff1d6606-e1f5-4e26-8a32-a14800b42a27', false, '2024-01-25 00:00:00'),
+('ba6dcc79-1444-4310-9e7d-9736def57f60', 'UKS-test-PUBLIC', 'uks repo test public opis',
+'ff1d6606-e1f5-4e26-8a32-a14800b42a27', true, '2024-01-25 00:00:00'),
+('b6677751-cc42-4fb7-a662-31dda9c4482b', 'myPublicRepo', 'my public repo opis',
+'0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', true, '2024-01-25 00:00:00'),
+('f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e', 'myPrivateRepo', 'my private repo opis',
+'0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', false, '2024-01-25 00:00:00');
 
 INSERT INTO MEMBER(repository_id, user_id, repository_role) VALUES
 ('a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27', 'OWNER'),

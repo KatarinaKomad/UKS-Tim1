@@ -17,9 +17,8 @@ import uns.ac.rs.uks.dto.response.IssueDTO;
 import uns.ac.rs.uks.dto.response.UserIssuesDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.mapper.IssueMapper;
 import uns.ac.rs.uks.model.*;
-import uns.ac.rs.uks.repository.IssueRepository;
+import uns.ac.rs.uks.repository.issue.IssueRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.ArrayList;

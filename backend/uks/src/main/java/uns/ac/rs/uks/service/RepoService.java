@@ -19,7 +19,7 @@ import uns.ac.rs.uks.model.Member;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.RepositoryRole;
 import uns.ac.rs.uks.model.User;
-import uns.ac.rs.uks.repository.RepoRepository;
+import uns.ac.rs.uks.repository.repo.RepoRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -95,6 +95,7 @@ public class RepoService {
     public RepoBasicInfoDTO updateRepo(UUID repositoryId, RepoUpdateRequest request) {
         Repo repo = getById(repositoryId);
         repo.setName(request.getName());
+        repo.setDescription(request.getDescription());
         repo.setIsPublic(request.getIsPublic());
         repo.setDefaultBranch(branchService.getById(request.getDefaultBranch()));
 
@@ -109,6 +110,7 @@ public class RepoService {
         Repo newRepo = RepoMapper.map(repo);
         newRepo.setOwner(entityManager.getReference(User.class, forkRequest.getOwnerId()));
         newRepo.setName(forkRequest.getName());
+        newRepo.setDescription(forkRequest.getDescription());
         newRepo.setForkParent(repo);
         return RepoMapper.toDTO(repoRepository.save(newRepo));
     }

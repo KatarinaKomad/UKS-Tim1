@@ -78,6 +78,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { SearchFiltersSideViewComponent } from './components/molecules/search-filters-side-view/search-filters-side-view.component';
 import { SearchResultItemComponent } from './components/molecules/search-result-item/search-result-item.component';
 import { SearchFilterInputComponent } from './components/molecules/filter-overlays/search-filter-input/search-filter-input.component';
+import { CustomPaginationComponent } from './components/atoms/custom-pagination/custom-pagination.component';
 
 
 @NgModule({
@@ -129,6 +130,7 @@ import { SearchFilterInputComponent } from './components/molecules/filter-overla
     SearchFiltersSideViewComponent,
     SearchResultItemComponent,
     SearchFilterInputComponent,
+    CustomPaginationComponent,
   ],
   exports: [],
   imports: [

@@ -62,7 +62,7 @@ export class MyReposSideListComponent {
     const dialogRef = this.dialog.open(NewRepoDialogComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
-      height: '50%',
+      height: '70%',
       width: '50%',
       data: { user },
 

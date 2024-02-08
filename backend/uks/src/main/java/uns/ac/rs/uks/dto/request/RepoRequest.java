@@ -14,6 +14,7 @@ public class RepoRequest {
     @NotEmpty
     @NotNull
     private String name;
+    private String description;
     @NotNull
     private UUID ownerId;
 

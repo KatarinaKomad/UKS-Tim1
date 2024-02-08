@@ -1,26 +1,4 @@
 
-// enum SORT_TYPEs {
-//     // svi
-//     ANY = 'Any order',
-//     NEWEST = 'Newest',         // date asc
-//     OLDEST = 'Oldest',         // date desc
-
-//     // repo
-//     MOST_STARS = 'Most stars',     // count asc
-//     LEAST_STARS = 'Least stars',    // count desc 
-
-//     MOST_FORKS = 'Most forks',     // count asc
-//     LEAST_FORKS = 'Least forks',    // count desc 
-
-//     // issue
-//     MOST_COMMENTS = 'Most comments',     // count asc
-//     LEAST_COMMENTS = 'Least comments',    // count desc 
-
-//     // users
-//     MOST_REPOS = 'Most repositories',     // count asc
-//     LEAST_REPOS = 'Least repositories',    // count desc 
-// }
-
 export enum REPO_SORT_TYPE {
     ANY = 'Any order',
     NEWEST = 'Newest',         // date asc

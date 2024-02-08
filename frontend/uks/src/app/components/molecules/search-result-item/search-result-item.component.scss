@@ -1,0 +1,78 @@
+@import '../../../../styles.scss';
+
+.card-container {
+    width: 30vw;
+    height: fit-content;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    background-color: $white-color;
+    border-radius: 10px;
+
+    margin-left: 25px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    margin-top: 30px;
+
+    .repo-header {
+        background-color: $github-border-color;
+        height: 50px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        box-shadow: 0 3px 9px -1px lightslategray;
+
+        .repo-title {
+            color: $dark-text-color;
+            font-size: medium;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 2%;
+        }
+    }
+
+    .repo-owner {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: medium;
+    }
+
+    .repo-stats {
+        padding: 3%;
+        color: $dark-text-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .repo-stat {
+            color: $dark-text-color;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 10%;
+            padding-left: 10%;
+
+            p {
+                padding-left: 6px;
+            }
+        }
+    }
+}
+
+.card-container:hover {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.forked {
+    font-size: smaller;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 1px;
+}

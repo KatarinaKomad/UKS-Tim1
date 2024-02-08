@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SEARCH_TYPE, SearchRequest, createEmptySearchRequest, Keyword, inputRequired, OPERATIONS, isOnlyOneAllowed } from 'src/models/search/search';
 import { SearchFilterInputComponent } from '../filter-overlays/search-filter-input/search-filter-input.component';
@@ -29,7 +29,7 @@ export class SearchFiltersSideViewComponent {
   formatIssuePrKeyword = formatIssuePrKeyword;
   formatUserKeyword = formatUserKeyword;
 
-  request: SearchRequest = createEmptySearchRequest();
+  request: SearchRequest;
 
   dialogConfig = {
     width: '250px',
@@ -41,7 +41,14 @@ export class SearchFiltersSideViewComponent {
     data: {}
   }
   constructor(
-    private dialog: MatDialog) {
+    private dialog: MatDialog
+  ) {
+    const searchRequest = localStorage.getItem("searchRequest");
+    if (searchRequest != null) {
+      this.request = JSON.parse(searchRequest);
+    } else {
+      this.request = createEmptySearchRequest();
+    }
   }
 
   changeSearchType(type: SEARCH_TYPE) {

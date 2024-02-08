@@ -8,7 +8,7 @@ import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.User;
-import uns.ac.rs.uks.repository.UserRepository;
+import uns.ac.rs.uks.repository.user.UserRepository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -37,6 +37,10 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
+        return user.isPresent();
+    }
+    public boolean existsByUsername(String username) {
+        Optional<User> user = userRepository.findByCustomUsername(username);
         return user.isPresent();
     }
 

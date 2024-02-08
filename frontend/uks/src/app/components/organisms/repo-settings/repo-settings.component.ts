@@ -16,6 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class RepoSettingsComponent implements OnInit {
   repository: RepoBasicInfoDTO = getEmptyRepo();
   repoNameControl = new FormControl('', [Validators.required]);
+  repoDescriptionControl = new FormControl('');
   branches: BranchBasicInfoDTO[] = [];
 
   constructor(
@@ -31,6 +32,7 @@ export class RepoSettingsComponent implements OnInit {
       next: (response: RepoBasicInfoDTO | null) => {
         if (response) {
           this.repository = response;
+          this.repoDescriptionControl.setValue(response.description)
         }
       },
       error: (e: HttpErrorResponse) => {
@@ -53,6 +55,7 @@ export class RepoSettingsComponent implements OnInit {
     this.repoService
       .updateRepo(this.repository.id, {
         name: this.repoNameControl.value ?? this.repository.name,
+        description: this.repoDescriptionControl.value ?? this.repository.description,
         isPublic: this.repository.isPublic,
         defaultBranch: this.repository.defaultBranch,
       } as RepoUpdateRequest)

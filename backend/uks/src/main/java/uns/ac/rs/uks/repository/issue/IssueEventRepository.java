@@ -1,4 +1,4 @@
-package uns.ac.rs.uks.repository;
+package uns.ac.rs.uks.repository.issue;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

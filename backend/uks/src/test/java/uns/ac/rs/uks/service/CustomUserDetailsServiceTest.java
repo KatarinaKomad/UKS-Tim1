@@ -2,27 +2,19 @@ package uns.ac.rs.uks.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uns.ac.rs.uks.dto.request.RegistrationRequest;
-import uns.ac.rs.uks.dto.response.UserDTO;
-import uns.ac.rs.uks.exception.AlreadyExistsException;
 import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.model.Role;
-import uns.ac.rs.uks.model.RoleEnum;
 import uns.ac.rs.uks.model.User;
-import uns.ac.rs.uks.repository.UserRepository;
+import uns.ac.rs.uks.repository.user.UserRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.Optional;

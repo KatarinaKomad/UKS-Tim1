@@ -1,9 +1,6 @@
 package uns.ac.rs.uks.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,11 +10,13 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class UserDTO extends SearchResponse implements Serializable {
     private UUID id;
     private String firstName;
     private String lastName;
     private String email;
     private Boolean blockedByAdmin;
     private String name;
+    private String username;
 }

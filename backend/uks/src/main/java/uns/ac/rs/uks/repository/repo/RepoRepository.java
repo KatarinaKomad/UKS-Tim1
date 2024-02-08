@@ -1,4 +1,4 @@
-package uns.ac.rs.uks.repository;
+package uns.ac.rs.uks.repository.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface RepoRepository extends JpaRepository<Repo, UUID> {
+public interface RepoRepository extends JpaRepository<Repo, UUID>, CustomRepoRepository {
 
     List<Repo> findAllByIsPublicTrue();
 

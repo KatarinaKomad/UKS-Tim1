@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import uns.ac.rs.uks.model.Repo;
+import uns.ac.rs.uks.repository.repo.RepoRepository;
 
 import java.util.List;
 import java.util.UUID;

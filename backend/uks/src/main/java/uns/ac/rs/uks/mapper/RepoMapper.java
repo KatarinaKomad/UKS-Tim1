@@ -16,6 +16,7 @@ public class RepoMapper {
                 RepoBasicInfoDTO.builder()
                         .id(repo.getId())
                         .name(repo.getName())
+                        .description(repo.getDescription())
                         .isPublic(repo.getIsPublic())
                         .owner(UserMapper.toDTO(repo.getOwner()))
                         .forkCount(repo.getForkChildren() != null ? repo.getForkChildren().size() : 0)
@@ -23,6 +24,7 @@ public class RepoMapper {
                         .watchCount(repo.getWatchers() != null ? repo.getWatchers().size() : 0)
                         .defaultBranch(repo.getDefaultBranch() != null ? repo.getDefaultBranch().getId() : 0)
                         .forkParent(repo.getForkParent() != null ? toForkParentDTO(repo.getForkParent()): null)
+                        .createdAt(repo.getCreatedAt())
                         .build();
     }
 
@@ -35,6 +37,7 @@ public class RepoMapper {
                 Repo.builder()
                         .id(UUID.randomUUID())
                         .name(request.getName())
+                        .description(request.getDescription())
                         .owner(user)
                         .isPublic(request.getIsPublic())
                         .build();

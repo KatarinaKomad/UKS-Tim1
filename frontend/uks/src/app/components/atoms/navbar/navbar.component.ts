@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit {
     this.repoService.getById(repoId).subscribe({
       next: (res: RepoBasicInfoDTO | null) => {
         this.title = `${res?.name}`
-        this.ownerName = `${res?.owner.firstName} ${res?.owner.lastName} / `;
+        this.ownerName = `${res?.owner.username} / `;
       }, error: (e: any) => {
         console.log(e);
       }

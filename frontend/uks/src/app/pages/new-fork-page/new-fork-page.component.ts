@@ -17,6 +17,7 @@ export class NewForkPageComponent implements AfterViewInit {
   forkRepoForm = this.formBuilder.group({
     owner: new FormControl(),
     name: new FormControl(""),
+    description: new FormControl(""),
     isPublic: new FormControl(false),
   })
 
@@ -65,6 +66,7 @@ export class NewForkPageComponent implements AfterViewInit {
         if (res) {
           this.originalRepo = res;
           this.forkRepoForm.controls.name.setValue(this.originalRepo?.name)
+          this.forkRepoForm.controls.description.setValue(this.originalRepo?.description)
           this.forkRepoForm.controls.isPublic.setValue(this.originalRepo.isPublic)
         }
       }, error: (e: any) => {
@@ -104,6 +106,7 @@ export class NewForkPageComponent implements AfterViewInit {
       ownerId: this.loggedUser?.id as string,
       isPublic: this.forkRepoForm.controls.isPublic.value as boolean,
       name: this.forkRepoForm.controls.name.value as string,
+      description: this.forkRepoForm.controls.description.value as string,
       originalRepoId: this.originalRepo?.id as string
     }
   }
