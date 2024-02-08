@@ -4,13 +4,13 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import uns.ac.rs.uks.model.Issue;
 import uns.ac.rs.uks.model.Label;
-import uns.ac.rs.uks.model.Repo;
+import uns.ac.rs.uks.repository.issue.IssueRepository;
+import uns.ac.rs.uks.repository.label.LabelRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.List;

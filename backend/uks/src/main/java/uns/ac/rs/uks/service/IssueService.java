@@ -12,7 +12,7 @@ import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.IssueMapper;
 import uns.ac.rs.uks.model.*;
-import uns.ac.rs.uks.repository.IssueRepository;
+import uns.ac.rs.uks.repository.issue.IssueRepository;
 
 import java.util.ArrayList;
 import java.util.List;

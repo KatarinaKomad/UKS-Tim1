@@ -98,9 +98,7 @@ export class RepoService {
     });
     return repoRequest ? this.canEditRepoItems(repoRequest) : of(false);
   }
-  private createEditRepoRequest(
-    user: UserBasicInfo | undefined
-  ): EditRepoRequest | null {
+  private createEditRepoRequest(user: UserBasicInfo | undefined): EditRepoRequest | null {
     const repoId = localStorage.getItem('repoId');
     if (!repoId || !user?.id) return null;
     return { repoId, userId: user.id };

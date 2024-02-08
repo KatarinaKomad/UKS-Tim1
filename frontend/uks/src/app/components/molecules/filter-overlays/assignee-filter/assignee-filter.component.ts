@@ -60,6 +60,7 @@ export class AssigneeFilterComponent implements OnChanges, AfterViewInit {
     const filterValue = this.filter.value as string;
     this.shownList = this.fullList.filter(m => (
       m.email.includes(filterValue) ||
+      m.username.includes(filterValue) ||
       m.firstName.includes(filterValue) ||
       m.lastName.includes(filterValue)
     ))

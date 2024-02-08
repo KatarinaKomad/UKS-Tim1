@@ -5,8 +5,7 @@
         <div class="forked">
             {{repo?.forkParent ?
             'forked from: ' +
-            repo?.forkParent?.owner?.firstName + ' ' + repo?.forkParent?.owner?.lastName + ' / ' +
-            repo?.forkParent?.name
+            repo?.forkParent?.owner?.username + ' / ' + repo?.forkParent?.name
             : ''}}
         </div>
     </div>
@@ -25,7 +24,7 @@
             <span class="activity-count">{{repo?.starCount}}</span>
         </button>
 
-        <button class="show-button !py-1 " (click)="onForkClick()" [disabled]="repo?.forkParent">
+        <button class="show-button !py-1 " [disabled]="repo?.forkParent">
             <i class="fa-solid fa-code-fork"></i>
             Fork
             <span class="activity-count">{{repo?.forkCount}}</span>

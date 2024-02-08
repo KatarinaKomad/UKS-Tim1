@@ -14,6 +14,7 @@ import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 })
 export class NavbarComponent implements OnInit {
 
+
   @Input() drawer: any;
 
   selected!: SelectionOptions;
@@ -50,7 +51,7 @@ export class NavbarComponent implements OnInit {
     this.repoService.getById(repoId).subscribe({
       next: (res: RepoBasicInfoDTO | null) => {
         this.title = `${res?.name}`
-        this.ownerName = `${res?.owner.firstName} ${res?.owner.lastName} / `;
+        this.ownerName = `${res?.owner.username} / `;
       }, error: (e: any) => {
         console.log(e);
       }
@@ -60,6 +61,10 @@ export class NavbarComponent implements OnInit {
 
   handleLogoutButtonClick(): void {
     this.authService.logout();
+  }
+
+  onSearch() {
+    this.router.navigate(['search'])
   }
 
 }

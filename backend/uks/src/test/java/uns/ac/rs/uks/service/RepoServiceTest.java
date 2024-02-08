@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -20,9 +19,8 @@ import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.*;
-import uns.ac.rs.uks.repository.RepoRepository;
+import uns.ac.rs.uks.repository.repo.RepoRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.ArrayList;

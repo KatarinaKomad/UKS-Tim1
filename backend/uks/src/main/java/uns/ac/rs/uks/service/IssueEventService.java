@@ -8,7 +8,7 @@ import uns.ac.rs.uks.dto.response.IssueEventDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.mapper.IssueEventMapper;
 import uns.ac.rs.uks.model.*;
-import uns.ac.rs.uks.repository.IssueEventRepository;
+import uns.ac.rs.uks.repository.issue.IssueEventRepository;
 
 import java.util.ArrayList;
 import java.util.List;

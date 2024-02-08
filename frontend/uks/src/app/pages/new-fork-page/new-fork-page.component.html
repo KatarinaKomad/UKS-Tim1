@@ -39,6 +39,13 @@
                                     errorMessage="Invalid name" type="text"></app-input>
                             </div>
                         </div>
+                        <div class="'flex flex-row !w-full'">
+                            <app-input label="Description" id="description"
+                                [control]="forkRepoForm.controls.description" placeholder="Enter repo description"
+                                [extenseClass]="'!w-full '" [required]="false"
+                                [invalid]="forkRepoForm.controls.description.invalid && forkRepoForm.controls.description.dirty"
+                                errorMessage="Invalid description" type="text"></app-input>
+                        </div>
 
                         <div>
                             <p>Is repository Public?</p>

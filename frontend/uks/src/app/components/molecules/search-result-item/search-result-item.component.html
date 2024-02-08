@@ -1,0 +1,41 @@
+<div class="card-container" (click)="navigateToItem()">
+    <div class="repo-header">
+        <h4 class="repo-title">
+            <span *ngIf="repoItem">{{repoItem.owner.username}} / {{repoItem.name}}</span>
+            <span *ngIf="userItem">{{userItem.username}} - {{userItem.firstName}} {{userItem.lastName}}</span>
+            <span *ngIf="issueItem">{{issueItem.name}}</span>
+        </h4>
+        <div class="forked">
+            <span *ngIf="repoItem">
+                {{repoItem.forkParent ? 'forked from: ' + repoItem.forkParent.owner.username + ' / '
+                + repoItem.forkParent.name : ''}}
+            </span>
+
+            <span *ngIf="issueItem">{{issueItem.description}}</span>
+        </div>
+    </div>
+    <div class="repo-stats">
+        <span class="repo-stat" *ngIf="repoItem">
+            <i class="fa-regular fa-star fa-sm"> </i>
+            <p>{{repoItem.starCount}}</p>
+        </span>
+        <span class="repo-stat" *ngIf="repoItem">
+            <i class="fa-regular fa-eye fa-sm"></i>
+            <p>{{repoItem.watchCount}}</p>
+        </span>
+        <span class="repo-stat" *ngIf="repoItem">
+            <i class="fa-solid fa-code-fork fa-sm"></i>
+            <p>{{repoItem.forkCount}}</p>
+        </span>
+
+        <span class="repo-stat" *ngIf="userItem">
+            <i class="fa-solid fa-clock fa-sm"></i>
+            <p>{{userItem.createdAt ? ' Joined us on ' + (userItem.createdAt | date: 'dd.MM.yyyy.'):''}}</p>
+        </span>
+
+        <span class="repo-stat" *ngIf="issueItem">
+            <i class="fa-solid fa-clock fa-sm"></i>
+            <p>{{issueItem.createdAt ? (issueItem.createdAt | date: 'dd.MM.yyyy.'):''}}</p>
+        </span>
+    </div>
+</div>

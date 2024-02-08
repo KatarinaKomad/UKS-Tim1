@@ -21,6 +21,7 @@ export class NewRepoDialogComponent implements OnInit {
   newRepoForm = this.formBuilder.group({
     owner: new FormControl(""),
     name: new FormControl(""),
+    description: new FormControl(""),
     isPublic: new FormControl(false),
   })
 
@@ -42,7 +43,8 @@ export class NewRepoDialogComponent implements OnInit {
     return {
       ownerId: this.data.user?.id,
       isPublic: this.newRepoForm.controls.isPublic.value as boolean,
-      name: this.newRepoForm.controls.name.value as string
+      name: this.newRepoForm.controls.name.value as string,
+      description: this.newRepoForm.controls.description.value as string
     }
   }
 }

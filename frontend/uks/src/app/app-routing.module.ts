@@ -17,6 +17,7 @@ import { ProjectLabelsComponent } from './components/organisms/project-labels/pr
 import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
 import { NewForkPageComponent } from './pages/new-fork-page/new-fork-page.component';
 import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-overview-page.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
@@ -58,7 +59,11 @@ const routes: Routes = [
       { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: "issue-view" },
     ]
   },
-
+  {
+    path: 'search',
+    component: SearchPageComponent,
+    canMatch: [],
+  },
 
 
 

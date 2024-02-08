@@ -13,7 +13,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.model.User;
-import uns.ac.rs.uks.repository.UserRepository;
+import uns.ac.rs.uks.repository.user.UserRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.Optional;

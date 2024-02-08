@@ -41,6 +41,6 @@ export class PublicRepoListComponent {
 
   private checkOwnerName(repo: any, searchValue: string) {
     const ownerName = (`${repo.owner.firstName} ${repo.owner.lastName}`);
-    return ownerName.toLowerCase().includes(searchValue)
+    return ownerName.toLowerCase().includes(searchValue) || repo.owner.username.toLowerCase()
   }
 }

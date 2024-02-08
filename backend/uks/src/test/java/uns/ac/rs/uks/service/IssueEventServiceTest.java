@@ -1,6 +1,5 @@
 package uns.ac.rs.uks.service;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,12 +7,10 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uns.ac.rs.uks.dto.response.IssueDTO;
 import uns.ac.rs.uks.dto.response.IssueEventDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.model.*;
-import uns.ac.rs.uks.repository.IssueEventRepository;
-import uns.ac.rs.uks.repository.IssueRepository;
+import uns.ac.rs.uks.repository.issue.IssueEventRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.List;

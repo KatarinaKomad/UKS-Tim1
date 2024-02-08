@@ -8,7 +8,7 @@
         </div>
         <div *ngFor="let repo of forkedRepos" class="item-row">
             <div (click)="navigate(repo)">
-                {{repo.owner.firstName}} {{repo.owner.lastName}} / {{repo.name}}
+                {{repo.owner.username}} / {{repo.name}}
             </div>
         </div>
         <div *ngIf="forkedRepos.length === 0" class="no-forks-row">

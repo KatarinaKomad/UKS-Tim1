@@ -14,6 +14,7 @@ public class RepoForkRequest {
     @NotEmpty
     @NotNull
     private String name;
+    private String description;
     @NotNull
     private UUID ownerId;
     private Boolean isPublic;

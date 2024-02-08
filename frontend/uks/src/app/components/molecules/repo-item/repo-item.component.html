@@ -1,13 +1,12 @@
 <div class="card-container" (click)="navigateToRepo()">
     <div class="repo-header">
         <h4 class="repo-title">
-            {{repository?.owner?.firstName}} {{repository?.owner?.lastName}} /
-            {{repository?.name}}
+            {{repository?.owner?.username}} / {{repository?.name}}
         </h4>
         <div class="forked">
             {{repository?.forkParent ?
             'forked from: ' +
-            repository?.forkParent?.owner?.firstName + ' ' + repository?.forkParent?.owner?.lastName + ' / ' +
+            repository?.forkParent?.owner?.username + ' / ' +
             repository?.forkParent?.name
             : ''}}
         </div>

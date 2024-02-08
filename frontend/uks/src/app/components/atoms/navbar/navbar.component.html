@@ -10,6 +10,12 @@
         <span class="name">{{title}}</span>
         <span class="span-spacer"></span>
 
+        <button type="button"
+            class="!bg-green-600 rounded-lg  w-fit px-4 py-1 text-white hover:!bg-green-800 text-sm  !mr-4"
+            (click)="onSearch()" *ngIf="title!='Search'">
+            Search...
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
         <button class="!bg-zinc-400 rounded-lg  w-fit px-4 py-1 disabled:opacity-80 hover:!bg-zinc-500 text-sm"
             (click)=" handleLogoutButtonClick()">
             <i class="fa-solid fa-right-from-bracket fa-sm"></i>

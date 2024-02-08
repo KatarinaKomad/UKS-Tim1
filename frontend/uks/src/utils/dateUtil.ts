@@ -9,3 +9,8 @@ export const MY_DATE_FORMAT = {
         monthYearA11yLabel: 'MMMM YYYY'
     }
 };
+
+export const dateToString = (date: Date): string => {
+    return date.toISOString().slice(0, 19);
+
+}

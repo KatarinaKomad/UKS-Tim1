@@ -1,0 +1,19 @@
+.button-group {
+    // padding-top: 10px;
+    // padding-left: 22%;
+
+    align-items: flex-end;
+    margin-left: 10px;
+}
+
+.show-button {
+    padding-top: 10px;
+    padding: 2px 5px;
+    font-size: 12px;
+    border-radius: 6px;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #d1d5da;
+    width: 40px !important;
+    margin-left: 5px;
+}

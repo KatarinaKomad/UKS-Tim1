@@ -31,7 +31,8 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
 
       const repoRequest: RepoRequest = {
         name: repoName,
-        ownerId: user?.id
+        ownerId: user?.id,
+        description: '',
       }
 
       repoService.validateOverviewByRepoName(repoRequest).subscribe({
