@@ -4,6 +4,7 @@ export interface UserBasicInfo {
     lastName: string;
     email: string;
     username: string;
+    createdAt: Date;
 }
 
 export const getEmptyUser = (): UserBasicInfo => {
@@ -12,6 +13,7 @@ export const getEmptyUser = (): UserBasicInfo => {
         email: '',
         firstName: '',
         lastName: '',
-        username: ''
+        username: '',
+        createdAt: new Date()
     }
 }

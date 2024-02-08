@@ -17,16 +17,16 @@
                     <option value="~">~</option>
                 </select>
                 <input [type]="type" [formControl]="activeControl" *ngIf="type === 'number' || type === 'string'" />
-            </div>
-            <div [class]=" 'flex flex-col w-1/4 h-[13vh]'" *ngIf="type === 'date'">
-                <span class=" text-[16px]">Date</span>
-                <div [class]="'flex flex-row item-row'">
-                    <input class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none" id="date"
-                        [matDatepicker]="dp" type="text" readonly="true" [formControl]="activeControl"
-                        placeholder="Enter date" />
-                    <mat-datepicker-toggle class="calendar-icon" matIconSuffix [for]="dp"></mat-datepicker-toggle>
-                    <mat-datepicker #dp></mat-datepicker>
-                </div>
+
+
+                <input class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none" id="date"
+                    [matDatepicker]="dp" type="text" readonly="true" [formControl]="activeControl"
+                    placeholder="Enter date" *ngIf="type === 'date'" />
+                <mat-datepicker-toggle class="calendar-icon" matIconSuffix [for]="dp"
+                    *ngIf="type === 'date'"></mat-datepicker-toggle>
+                <mat-datepicker #dp></mat-datepicker>
+
+
             </div>
             <app-button [text]="'Add'" type="'button'" (buttonClick)="closeForm(activeControl.value)"
                 [extenseClass]="'ml-12'"></app-button>

@@ -2,6 +2,7 @@ package uns.ac.rs.uks.util;
 
 import uns.ac.rs.uks.dto.request.search.keywords.Keyword;
 import uns.ac.rs.uks.dto.request.search.keywords.Operations;
+import uns.ac.rs.uks.model.State;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -82,6 +83,17 @@ public class SearchUtil {
             return Operations.AND + " " + attributeName + " = " + !value + " ";
         }
         return operation + " " + attributeName + " = " + value + " ";
+    }
+    public static String stateCondition(Operations operation, String attributeName, State state) {
+        if(operation.equals(Operations.NOT)){
+            if(state == State.OPEN){
+                return Operations.AND + " " + attributeName + " = " + State.CLOSE + " ";
+            }
+            if(state == State.CLOSE){
+                return Operations.AND + " " + attributeName + " = " + State.OPEN + " ";
+            }
+        }
+        return operation + " " + attributeName + " = " + state + " ";
     }
 
 

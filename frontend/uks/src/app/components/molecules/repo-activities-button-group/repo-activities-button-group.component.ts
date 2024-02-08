@@ -34,9 +34,6 @@ export class RepoActivitiesButtonGroupComponent {
     this.forkOptionOpen = false;
   }
 
-  onForkClick() {
-    throw new Error('Method not implemented.');
-  }
   onStarClick() {
     throw new Error('Method not implemented.');
   }

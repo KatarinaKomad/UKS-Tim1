@@ -53,7 +53,7 @@ export class SearchFiltersSideViewComponent {
 
   changeSearchType(type: SEARCH_TYPE) {
     this.request.searchType = type;
-    this.clearAllAdvanced();
+    // this.clearAllAdvanced();
     this.queryChangeEvent.emit(this.request)
   }
 

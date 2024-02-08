@@ -2,16 +2,16 @@ INSERT INTO ROLE (name) VALUES
 ('ROLE_ADMIN'),         --1
 ('ROLE_USER');         --2
 
-INSERT INTO USERS(id, first_name, last_name, email, custom_username, password, blocked_by_admin, deleted, role_id) VALUES
+INSERT INTO USERS(id, first_name, last_name, email, custom_username, password, blocked_by_admin, deleted, role_id, created_at) VALUES
 -- password: admin123
 ('af409c2d-95e0-432e-a6fc-6ef55cb4430d', 'Admin','Adminic', 'admin@gmail.com', 'AdminAdminic1234',
-'$2a$12$XlgKd3zOFrYYrjANJQzYJOTxTtMptJ93ICmHvmrnidzWz.TbvzZMe', false, false, 1),
+'$2a$12$XlgKd3zOFrYYrjANJQzYJOTxTtMptJ93ICmHvmrnidzWz.TbvzZMe', false, false, 1, '2024-01-25 00:00:00'),
 -- password: pera123
 ('ff1d6606-e1f5-4e26-8a32-a14800b42a27', 'Pera','Peric', 'pera@gmail.com', 'PeraPeric1234',
-'$2a$12$uIjkE3hHR5xMJFKEFcBqw.LpKXKIK7HWs6nYXC/foShQvNq673bH2', false, false, 2),
+'$2a$12$uIjkE3hHR5xMJFKEFcBqw.LpKXKIK7HWs6nYXC/foShQvNq673bH2', false, false, 2, '2024-01-25 00:00:00'),
 -- password: mika123
 ('0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', 'Mika','Mikic', 'mika@gmail.com', 'MikaMikic1234',
-'$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, false, 2);
+'$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, false, 2, '2024-01-25 00:00:00');
 
 
 INSERT INTO REPO(id, name, description, owner_iD, is_public, created_at) VALUES

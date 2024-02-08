@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uns.ac.rs.uks.dto.request.search.SearchRequest;
 import uns.ac.rs.uks.dto.request.search.keywords.Keyword;
 import uns.ac.rs.uks.dto.request.search.keywords.Operations;
-import uns.ac.rs.uks.dto.request.search.sortTypes.RepoSortType;
+import uns.ac.rs.uks.dto.request.search.sortTypes.SortType;
 import uns.ac.rs.uks.dto.response.SearchResponse;
 import uns.ac.rs.uks.mapper.RepoMapper;
 import uns.ac.rs.uks.model.Repo;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static uns.ac.rs.uks.dto.request.search.keywords.RepoKeywords.*;
+import static uns.ac.rs.uks.dto.request.search.sortTypes.RepoSortType.*;
 
 public class CustomRepoRepositoryImpl implements CustomRepoRepository {
     @Autowired
@@ -30,19 +31,10 @@ public class CustomRepoRepositoryImpl implements CustomRepoRepository {
     @Override
     @Transactional
     public Page<SearchResponse> search(SearchRequest searchRequest, Pageable pageable) {
-        StringBuilder conditions  = new StringBuilder();
+
         Map<String, Object> parameterValues = new HashMap<>();
 
-        // construct conditions (e.g. AND r.name LIKE :repoName )
-        for (int i = 0; i < searchRequest.getKeywords().size(); i+=2) {
-            String condition = constructCondition(searchRequest, i, parameterValues);
-            if(i == 0){
-                condition = condition.replace(Operations.NONE.toString(), "");;
-            }
-            conditions.append(condition);
-        }
-        // construct ORDER BY condition
-        conditions.append(sortCondition((RepoSortType) searchRequest.getSortType()));
+        String conditions = constructConditions(searchRequest, parameterValues);
 
         String select = "SELECT r FROM Repo r WHERE " + conditions;
         String count = "SELECT COUNT(r) FROM Repo r WHERE " + conditions;
@@ -63,16 +55,53 @@ public class CustomRepoRepositoryImpl implements CustomRepoRepository {
         return new PageImpl<>(result, pageable, countQuery.getSingleResult());
     }
 
-    private String sortCondition(RepoSortType sortType) {
-        switch (sortType) {
-            case NEWEST -> { return " GROUP BY r.id ORDER BY r.createdAt DESC"; }
-            case OLDEST -> { return " GROUP BY r.id ORDER BY r.createdAt ASC"; }
-            case MOST_STARS -> { return " GROUP BY r.id ORDER BY SIZE(r.staredBy) DESC"; }
-            case LEAST_STARS -> { return " GROUP BY r.id ORDER BY SIZE(r.staredBy) ASC"; }
-            case MOST_FORKS -> { return " GROUP BY r.id ORDER BY SIZE(r.forkChildren) DESC"; }
-            case LEAST_FORKS -> { return " GROUP BY r.id ORDER BY SIZE(r.forkChildren) ASC"; }
-            default -> { return ""; }
+    @Override
+    @Transactional
+    public Long count(SearchRequest searchRequest) {
+        Map<String, Object> parameterValues = new HashMap<>();
+
+        String conditions = constructConditions(searchRequest, parameterValues);
+
+        String count = "SELECT COUNT(r) FROM Repo r WHERE " + conditions;
+        TypedQuery<Long> countQuery = entityManager.createQuery(count, Long.class);
+
+        // set query param values
+        for (Map.Entry<String, Object> entry : parameterValues.entrySet()) {
+            countQuery.setParameter(entry.getKey(), entry.getValue());
         }
+        return countQuery.getSingleResult();
+    }
+
+    private String constructConditions(SearchRequest searchRequest, Map<String, Object> parameterValues) {
+        StringBuilder conditions  = new StringBuilder();
+        // construct conditions (e.g. AND r.name LIKE :repoName )
+        for (int i = 0; i < searchRequest.getKeywords().size(); i+=2) {
+            String condition = constructCondition(searchRequest, i, parameterValues);
+            if(i == 0){
+                condition = condition.replace(Operations.NONE.toString(), "");;
+            }
+            conditions.append(condition);
+        }
+        // construct ORDER BY condition
+        conditions.append(sortCondition(searchRequest.getSortType()));
+        return conditions.toString();
+    }
+
+    private String sortCondition(SortType sortType) {
+        if (sortType.equals(NEWEST)) {
+            return " GROUP BY r.id ORDER BY r.createdAt DESC";
+        } else if (sortType.equals(OLDEST)) {
+            return " GROUP BY r.id ORDER BY r.createdAt ASC";
+        } else if (sortType.equals(MOST_STARS)) {
+            return " GROUP BY r.id ORDER BY SIZE(r.staredBy) DESC";
+        } else if (sortType.equals(LEAST_STARS)) {
+            return " GROUP BY r.id ORDER BY SIZE(r.staredBy) ASC";
+        } else if (sortType.equals(MOST_FORKS)) {
+            return " GROUP BY r.id ORDER BY SIZE(r.forkChildren) DESC";
+        } else if (sortType.equals(LEAST_FORKS)) {
+            return " GROUP BY r.id ORDER BY SIZE(r.forkChildren) ASC";
+        }
+        return "";
     }
 
     private String constructCondition(SearchRequest searchRequest, int i,

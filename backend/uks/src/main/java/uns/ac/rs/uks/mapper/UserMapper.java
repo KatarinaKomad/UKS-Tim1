@@ -19,6 +19,7 @@ public class UserMapper {
                 .username(user.getCustomUsername())
                 .email(user.getEmail())
                 .blockedByAdmin(user.getBlockedByAdmin())
+                .createdAt(user.getCreatedAt())
                 .build();
     }
 

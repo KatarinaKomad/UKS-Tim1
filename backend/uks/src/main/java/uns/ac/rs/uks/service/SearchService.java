@@ -28,35 +28,28 @@ public class SearchService {
 
         switch (searchRequest.getSearchType()) {
             case REPO -> { return repoRepository.search(searchRequest, pageable); }
-            case USER -> { return searchUser(searchRequest); }
-            case ISSUE -> { return searchIssue(searchRequest); }
-            case PR -> { return searchPr(searchRequest); }
+            case USER -> { return userRepository.search(searchRequest, pageable); }
+            case ISSUE -> { return issueRepository.search(searchRequest, pageable); }
+//            case PR -> { return null; }
             default -> { return null; }
         }
     }
-    private Page<SearchResponse> searchPr(SearchRequest searchRequest) {
-        return null;
-    }
-    private Page<SearchResponse> searchIssue(SearchRequest searchRequest) {
-        return null;
-    }
-    private Page<SearchResponse> searchUser(SearchRequest searchRequest) {
-        return null;
-    }
+
     public Long getUserCount(SearchRequest searchRequest) {
-        return 0L;
+        return userRepository.count(searchRequest);
     }
 
     public Long getPrCount(SearchRequest searchRequest) {
+//        return pullRequestRepository.count(searchRequest);
         return 0L;
     }
 
     public Long getRepoCount(SearchRequest searchRequest) {
-        return 0L;
+        return repoRepository.count(searchRequest);
     }
 
     public Long getIssueCount(SearchRequest searchRequest) {
-        return 0L;
+        return issueRepository.count(searchRequest);
     }
 
 }

@@ -11,4 +11,6 @@ import java.util.List;
 public interface CustomRepoRepository {
 
     Page<SearchResponse> search(SearchRequest dto, Pageable pageable);
+    Long count(SearchRequest searchRequest);
+
 }

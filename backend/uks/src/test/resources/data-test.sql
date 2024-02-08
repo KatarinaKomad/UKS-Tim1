@@ -19,16 +19,16 @@ INSERT INTO ROLE (name) VALUES
 ('ROLE_ADMIN'),         --1
 ('ROLE_USER');         --2
 
-INSERT INTO USERS(id, first_name, last_name, email, custom_username, password, blocked_by_admin, deleted, role_id) VALUES
+INSERT INTO USERS(id, first_name, last_name, email, custom_username, password, blocked_by_admin, deleted, role_id, created_at) VALUES
 -- password: admin123
-(ADMIN_USER_ID, 'Admin','Adminic', 'admin@gmail.com', 'AdminAdminic1234', '$2a$12$XlgKd3zOFrYYrjANJQzYJOTxTtMptJ93ICmHvmrnidzWz.TbvzZMe', false, false, 1),
+(ADMIN_USER_ID, 'Admin','Adminic', 'admin@gmail.com', 'AdminAdminic1234', '$2a$12$XlgKd3zOFrYYrjANJQzYJOTxTtMptJ93ICmHvmrnidzWz.TbvzZMe', false, false, 1, '2024-01-25 00:00:00'),
 -- password: pera123
-(PERA_USER_ID, 'Pera','Peric', 'pera@gmail.com', 'PeraPeric1234', '$2a$12$uIjkE3hHR5xMJFKEFcBqw.LpKXKIK7HWs6nYXC/foShQvNq673bH2', false, false, 2),
+(PERA_USER_ID, 'Pera','Peric', 'pera@gmail.com', 'PeraPeric1234', '$2a$12$uIjkE3hHR5xMJFKEFcBqw.LpKXKIK7HWs6nYXC/foShQvNq673bH2', false, false, 2, '2024-01-25 00:00:00'),
 -- password: mika123
-(MIKA_USER_ID, 'Mika','Mikic', 'mika@gmail.com', 'MikaMikic1234', '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, false, 2),
+(MIKA_USER_ID, 'Mika','Mikic', 'mika@gmail.com', 'MikaMikic1234', '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, false, 2, '2024-01-25 00:00:00'),
 
-(BLOCKED_USER_ID, 'BLOCKED','BLOCKED', 'blocked@gmail.com', 'BLOCKEDBLOCKED1234', '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', true, false, 2),
-(DELETED_USER_ID, 'DELETED','DELETED', 'deleted@gmail.com', 'DELETEDDELETED1234', '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, true, 2);
+(BLOCKED_USER_ID, 'BLOCKED','BLOCKED', 'blocked@gmail.com', 'BLOCKEDBLOCKED1234', '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', true, false, 2, '2024-01-25 00:00:00'),
+(DELETED_USER_ID, 'DELETED','DELETED', 'deleted@gmail.com', 'DELETEDDELETED1234', '$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK', false, true, 2, '2024-01-25 00:00:00');
 
 
 INSERT INTO REPO(id, name, description, owner_iD, is_public, created_at) VALUES

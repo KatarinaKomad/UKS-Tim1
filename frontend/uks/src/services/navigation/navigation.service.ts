@@ -29,7 +29,7 @@ export class NavigationService {
   navigateToIssueOverview(issue: IssueDTO) {
     this.router.navigate(
       [
-        `repository/${this.repoName}`,
+        `repository/${issue.repo.name}`,
         { outlets: { 'project-view': [], 'issue-view': ['issue', issue.id] } }
       ],
       { queryParams: { tab: 1 } },

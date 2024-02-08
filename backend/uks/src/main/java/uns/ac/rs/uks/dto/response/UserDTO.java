@@ -1,8 +1,10 @@
 package uns.ac.rs.uks.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,4 +21,6 @@ public class UserDTO extends SearchResponse implements Serializable {
     private Boolean blockedByAdmin;
     private String name;
     private String username;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime createdAt;
 }

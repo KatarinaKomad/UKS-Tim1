@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface IssueRepository extends JpaRepository<Issue, UUID> {
+public interface IssueRepository extends JpaRepository<Issue, UUID>, CustomIssueRepository {
     List<Issue> findAllByRepositoryId(UUID repoId);
 
     List<Issue> findAllByAuthorId(UUID id);

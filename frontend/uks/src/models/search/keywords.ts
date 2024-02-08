@@ -80,15 +80,12 @@ export enum USER_KEYWORDS {
     IN_NAME = "in:name",
     IN_EMAIL = "in:email",
 
-    FULLNAME = "fullname:", // fName lName -> sensitive to space
-
     REPO_COUNT = "number_repos", // n, >n, >=n, <n, <=n, n..n
     CREATED = "created:"
 }
 
 const userKeywordNames = {
     [USER_KEYWORDS.USERNAME]: 'Username...',
-    [USER_KEYWORDS.FULLNAME]: 'Full name...',
     [USER_KEYWORDS.IN_NAME]: 'In name',
     [USER_KEYWORDS.IN_EMAIL]: 'In email',
     [USER_KEYWORDS.REPO_COUNT]: 'Number of repositories...',

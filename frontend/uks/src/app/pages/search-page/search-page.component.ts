@@ -37,50 +37,64 @@ export class SearchPageComponent {
     private searchService: SearchService,
     private paginationService: PaginationService,
   ) {
-    this.sortTypes = this.repoSortTypes;
-    this.sortTypeControl.setValue(REPO_SORT_TYPE.ANY)
 
     const searchRequest = localStorage.getItem("searchRequest");
     if (searchRequest != null) {
       this.searchRequest = JSON.parse(searchRequest);
+      this.inputControl.setValue(this.searchRequest.inputValue)
+      this.setSortType();
       this.search();
     } else {
       this.searchRequest = createEmptySearchRequest();
+      this.setSortType();
     }
+  }
 
+  private setSortType() {
+    if (this.searchRequest.searchType === SEARCH_TYPE.REPO) {
+      this.sortTypes = this.repoSortTypes;
+      this.sortTypeControl.setValue(this.searchRequest.sortType)
+    } else if (this.searchRequest.searchType === SEARCH_TYPE.USER) {
+      this.sortTypes = this.userSortTypes;
+      this.sortTypeControl.setValue(this.searchRequest.sortType)
+    } else if (this.searchRequest.searchType === SEARCH_TYPE.PR || this.searchRequest.searchType === SEARCH_TYPE.ISSUE) {
+      this.sortTypes = this.issuePrSortTypes;
+      this.sortTypeControl.setValue(this.searchRequest.sortType)
+    }
   }
 
   search() {
-    const searchRequest = this.createSearchRequest();
-    this.sendSearchRequest(searchRequest);
-    // this.setRepoCount(searchRequest);
-    // this.setIssueCount(searchRequest);
-    // this.setUserCount(searchRequest);
-    // this.setPrCount(searchRequest);
+    this.createSearchRequest();
+    this.sendSearchRequest();
+    this.setRepoCount();
+    this.setIssueCount();
+    this.setUserCount();
+    this.setPrCount();
   }
 
   private createSearchRequest() {
-    return {
-      ...this.searchRequest,
-      inputValue: this.inputControl.value,
-      page: this.page.pageable.pageNumber,
-      size: this.page.pageable.pageSize
-    };
+    this.searchRequest.inputValue = this.inputControl.value;
+    this.searchRequest.page = this.page.pageable.pageNumber;
+    this.searchRequest.size = this.page.pageable.pageSize;
   }
 
-  sendSearchRequest(searchRequest: SearchRequest) {
-    this.searchService.search(searchRequest).subscribe({
+  sendSearchRequest() {
+    this.searchService.search(this.searchRequest).subscribe({
       next: (page: Page<SearchResult>) => {
-        this.page = page;
-        this.page.pageable.pagePerShow = page.number + 1;
+        if (page != null) {
+          this.page = page;
+          this.page.pageable.pagePerShow = page.number + 1;
+          localStorage.setItem("searchRequest", JSON.stringify(this.searchRequest))
+        }
+
       }, error: (e: any) => {
         console.log(e);
       }
     })
   }
 
-  setRepoCount(searchRequest: SearchRequest) {
-    this.searchService.getRepoCount(searchRequest).subscribe({
+  setRepoCount() {
+    this.searchService.getRepoCount(this.searchRequest).subscribe({
       next: (res: number) => {
         this.repoCount = res
       }, error: (e: any) => {
@@ -88,8 +102,8 @@ export class SearchPageComponent {
       }
     })
   }
-  setIssueCount(searchRequest: SearchRequest) {
-    this.searchService.getIssueCount(searchRequest).subscribe({
+  setIssueCount() {
+    this.searchService.getIssueCount(this.searchRequest).subscribe({
       next: (res: number) => {
         this.issueCount = res
       }, error: (e: any) => {
@@ -97,8 +111,8 @@ export class SearchPageComponent {
       }
     })
   }
-  setUserCount(searchRequest: SearchRequest) {
-    this.searchService.getUserCount(searchRequest).subscribe({
+  setUserCount() {
+    this.searchService.getUserCount(this.searchRequest).subscribe({
       next: (res: number) => {
         this.userCount = res
       }, error: (e: any) => {
@@ -106,8 +120,8 @@ export class SearchPageComponent {
       }
     })
   }
-  setPrCount(searchRequest: SearchRequest) {
-    this.searchService.getPrCount(searchRequest).subscribe({
+  setPrCount() {
+    this.searchService.getPrCount(this.searchRequest).subscribe({
       next: (res: number) => {
         this.prCount = res
       }, error: (e: any) => {
@@ -117,6 +131,13 @@ export class SearchPageComponent {
   }
 
   queryChangeEvent(searchRequest: SearchRequest) {
+    if (searchRequest.keywords.length === 0) {
+      this.sortTypeControl.setValue(REPO_SORT_TYPE.ANY)
+      this.inputControl.setValue("");
+      this.page.content = [];
+      this.page.pageable.pageNumber = 0;
+      this.page.pageable.pageSize = 10;
+    }
     if (this.searchRequest.searchType !== searchRequest.searchType) {
       switch (searchRequest.searchType) {
         case SEARCH_TYPE.REPO: this.sortTypes = this.repoSortTypes; break;
@@ -125,9 +146,8 @@ export class SearchPageComponent {
         case SEARCH_TYPE.PR: this.sortTypes = this.issuePrSortTypes; break;
         default: this.sortTypes = this.repoSortTypes; break;
       }
-    }
-    if (searchRequest.keywords.length === 0) {
-      this.page = new Page();
+      this.searchRequest = { ...searchRequest };
+      this.search();
     }
     this.searchRequest = { ...searchRequest };
     localStorage.setItem("searchRequest", JSON.stringify(this.searchRequest))
@@ -135,21 +155,22 @@ export class SearchPageComponent {
 
   onSortTypeChange(event: Event) {
     this.searchRequest.sortType = (event.target as HTMLInputElement).value as SORT_TYPE;
+    localStorage.setItem("searchRequest", JSON.stringify(this.searchRequest))
   }
 
   public getNextPage(): void {
     this.page.pageable = this.paginationService.getNextPage(this.page);
-    this.sendSearchRequest(this.createSearchRequest());
+    this.sendSearchRequest();
   }
 
   public getPreviousPage(): void {
     this.page.pageable = this.paginationService.getPreviousPage(this.page);
-    this.sendSearchRequest(this.createSearchRequest());
+    this.sendSearchRequest();
   }
 
   public getPageInNewSize(pageSize: any): void {
     this.page.pageable = this.paginationService.getPageInNewSize(this.page, pageSize);
-    this.sendSearchRequest(this.createSearchRequest());
+    this.sendSearchRequest();
   }
 
 }
