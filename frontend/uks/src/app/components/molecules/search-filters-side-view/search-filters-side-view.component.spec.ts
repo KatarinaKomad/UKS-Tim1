@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchFiltersSideViewComponent } from './search-filters-side-view.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('SearchFiltersSideViewComponent', () => {
   let component: SearchFiltersSideViewComponent;
@@ -8,10 +10,11 @@ describe('SearchFiltersSideViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchFiltersSideViewComponent]
+      declarations: [SearchFiltersSideViewComponent],
+      imports: [MatDialogModule]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(SearchFiltersSideViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

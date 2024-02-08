@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchPageComponent } from './search-page.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SearchPageComponent', () => {
   let component: SearchPageComponent;
@@ -8,10 +9,11 @@ describe('SearchPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchPageComponent]
+      declarations: [SearchPageComponent],
+      imports: [HttpClientModule]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(SearchPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

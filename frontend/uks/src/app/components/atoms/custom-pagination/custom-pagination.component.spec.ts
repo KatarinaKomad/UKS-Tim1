@@ -8,10 +8,10 @@ describe('CustomPaginationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CustomPaginationComponent]
+      declarations: [CustomPaginationComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(CustomPaginationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
