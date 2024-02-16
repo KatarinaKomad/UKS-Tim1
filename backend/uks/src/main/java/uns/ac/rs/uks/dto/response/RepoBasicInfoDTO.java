@@ -25,4 +25,5 @@ public class RepoBasicInfoDTO  extends SearchResponse implements Serializable {
     private ForkParentDTO forkParent;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
+    private String cloneUri;
 }

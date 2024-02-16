@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public class RepoMapper {
 
-    public static RepoBasicInfoDTO toDTO(Repo repo){
-        return repo == null ? null :
-                RepoBasicInfoDTO.builder()
+    public static RepoBasicInfoDTO toDTO(Repo repo) {
+        return repo == null ? null
+                : RepoBasicInfoDTO.builder()
                         .id(repo.getId())
                         .name(repo.getName())
                         .description(repo.getDescription())
@@ -23,18 +23,19 @@ public class RepoMapper {
                         .starCount(repo.getStaredBy() != null ? repo.getStaredBy().size() : 0)
                         .watchCount(repo.getWatchers() != null ? repo.getWatchers().size() : 0)
                         .defaultBranch(repo.getDefaultBranch() != null ? repo.getDefaultBranch().getId() : 0)
-                        .forkParent(repo.getForkParent() != null ? toForkParentDTO(repo.getForkParent()): null)
+                        .forkParent(repo.getForkParent() != null ? toForkParentDTO(repo.getForkParent()) : null)
                         .createdAt(repo.getCreatedAt())
+                        .cloneUri("")
                         .build();
     }
 
-    public static List<RepoBasicInfoDTO> toDTOs(List<Repo> repos){
+    public static List<RepoBasicInfoDTO> toDTOs(List<Repo> repos) {
         return repos.stream().map(RepoMapper::toDTO).toList();
     }
 
-    public static Repo toRepoFromRequest(RepoRequest request, User user){
-        return request == null ? null :
-                Repo.builder()
+    public static Repo toRepoFromRequest(RepoRequest request, User user) {
+        return request == null ? null
+                : Repo.builder()
                         .id(UUID.randomUUID())
                         .name(request.getName())
                         .description(request.getDescription())
