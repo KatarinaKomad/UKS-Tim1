@@ -4,9 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.KeyResponse;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GitoliteService {
@@ -15,7 +18,10 @@ public class GitoliteService {
     private String keyDirPath;
 
     @Value("${app.gitolite.script}")
-    private String scriptName;
+    private String commitAndPushScript;
+
+    @Value("${app.gitolite.readBranchesScript}")
+    private String readBranchesScript;
 
     @Value("${app.gitolite.workingDirectory}")
     private String scriptWorkingDirectory;
@@ -67,7 +73,7 @@ public class GitoliteService {
 
     private void commitGitoliteAdmin(String message) {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, scriptName, message);
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, commitAndPushScript, message);
             processBuilder.directory(new File(scriptWorkingDirectory));
             processBuilder.redirectErrorStream(true);
 
@@ -82,12 +88,55 @@ public class GitoliteService {
             int exitCode = process.waitFor();
 
             if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", scriptName));
+                logger.info(String.format("Script %s executed successfully", commitAndPushScript));
             } else {
                 logger.error("Script execution failed with exit code: " + exitCode);
             }
         } catch (IOException | InterruptedException e) {
             logger.error(e.getMessage());
+        }
+    }
+
+    public List<BranchBasicInfoDTO> readRepoBranches(String repo){
+        try {
+            var branches = new ArrayList<BranchBasicInfoDTO>();
+
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, readBranchesScript, repo);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                parseAndAddBranchOutput(branches, line);
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", commitAndPushScript));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+
+            return branches;
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+
+    private void parseAndAddBranchOutput(List<BranchBasicInfoDTO> list, String output){
+        var parts = output.split("\\t");
+        if (parts.length == 2) {
+            var dto = new BranchBasicInfoDTO();
+            dto.setId((long) list.size());
+            dto.setCode(parts[0]);
+            dto.setName(parts[1].replace("refs/heads/", ""));
+            list.add(dto);
         }
     }
 }

@@ -9,6 +9,7 @@ import uns.ac.rs.uks.mapper.RepoMapper;
 import uns.ac.rs.uks.model.Branch;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.repository.BranchRepository;
+import uns.ac.rs.uks.repository.repo.RepoRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,12 @@ public class BranchService {
 
     @Autowired
     private BranchRepository branchRepository;
+
+    @Autowired
+    private RepoRepository repoRepository;
+
+    @Autowired
+    private GitoliteService gitoliteService;
 
     public Branch createDefaultBranch(Repo repo) {
         Branch branch = new Branch();
@@ -34,5 +41,10 @@ public class BranchService {
     public List<BranchBasicInfoDTO> getRepoBranches(UUID id) {
         List<Branch> branches = branchRepository.findAllByRepositoryId(id);
         return BranchMapper.toDTOs(branches);
+    }
+
+    public List<BranchBasicInfoDTO> getGitoliteRepoBranches(UUID id){
+        var repo = repoRepository.findById(id).orElseThrow(() -> new NotFoundException("Repo not found"));
+        return gitoliteService.readRepoBranches(repo.getName().replace(" ", "-"));
     }
 }

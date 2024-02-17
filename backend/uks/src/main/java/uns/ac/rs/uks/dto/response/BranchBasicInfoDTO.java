@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BranchBasicInfoDTO {
     private Long id;
+    private String code;
     private String name;
 }

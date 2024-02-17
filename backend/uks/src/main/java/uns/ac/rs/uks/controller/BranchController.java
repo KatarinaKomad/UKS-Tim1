@@ -25,4 +25,9 @@ public class BranchController {
     public List<BranchBasicInfoDTO> getAllByRepoId(@PathVariable UUID repoId) {
         return branchService.getRepoBranches(repoId);
     }
+
+    @GetMapping("/getRepoBranchesFromGitolite/{repoId}")
+    public List<BranchBasicInfoDTO> getAllFromGitoliteByRepoId(@PathVariable UUID repoId) {
+        return branchService.getGitoliteRepoBranches(repoId);
+    }
 }
