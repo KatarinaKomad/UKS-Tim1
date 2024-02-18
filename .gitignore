@@ -11,3 +11,6 @@ backend/uks/src/gitolite/gitolite
 backend/uks/src/gitolite/gitolite.pub
 backend/uks/src/gitolite/gitolite-admin/
 backend/uks/src/gitolite/gitolite_admin_script.log
+backend/uks/src/gitolite/gitolite_admin_read_branches_script.log
+backend/uks/src/gitolite/gitolite_admin_read_commits_script.log
+backend/uks/src/gitolite/gitolite_admin_read_branches_script.log

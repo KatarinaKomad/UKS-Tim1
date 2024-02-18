@@ -1,12 +1,12 @@
 package uns.ac.rs.uks.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import uns.ac.rs.uks.dto.request.ReadCommitsRequest;
 import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
+import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.service.BranchService;
 
@@ -29,5 +29,10 @@ public class BranchController {
     @GetMapping("/getRepoBranchesFromGitolite/{repoId}")
     public List<BranchBasicInfoDTO> getAllFromGitoliteByRepoId(@PathVariable UUID repoId) {
         return branchService.getGitoliteRepoBranches(repoId);
+    }
+
+    @GetMapping("/commits")
+    public List<CommitsResponseDto> getBranchCommits(@Valid @RequestBody ReadCommitsRequest request){
+        return branchService.getCommits(request.getId(), request.getBranch());
     }
 }
