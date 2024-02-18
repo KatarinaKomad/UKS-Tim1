@@ -3,7 +3,10 @@ package uns.ac.rs.uks.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import uns.ac.rs.uks.dto.request.UserUpdateRequest;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
@@ -54,7 +57,7 @@ public class UserService {
         userRepository.updateBlockedByAdmin(id, false);
     }
 
-    public void deleteUser(UUID id)  throws NotFoundException{
+    public void deleteUserByAdmin(UUID id)  throws NotFoundException{
         logger.info("Delete user with email {}", id);
         userRepository.updateDeletedByAdmin(id, true);
     }
@@ -68,6 +71,31 @@ public class UserService {
             logger.error("Error saving user {}", user.getEmail());
             return null;
         }
+    }
+
+    @Cacheable(value = "profile", key = "#userID")
+    public UserDTO getProfileInfo(UUID userID) {
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+        return UserMapper.toDTO(user);
+    }
+
+    //@CacheEvict(value = "profile", allEntries = true)
+    public UserDTO updateMyProfile(UUID userID, UserUpdateRequest request) {
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setCustomUsername(request.getUsername());
+
+        userRepository.save(user);
+        return UserMapper.toDTO(user);
+    }
+
+    public void deleteUserByUser(UUID id)  throws NotFoundException{
+        userRepository.updateDeletedByUser(id, true);
     }
 
 }
