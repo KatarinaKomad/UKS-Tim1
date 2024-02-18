@@ -3,6 +3,7 @@ package uns.ac.rs.uks.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
+import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.BranchMapper;
 import uns.ac.rs.uks.mapper.RepoMapper;
@@ -46,5 +47,10 @@ public class BranchService {
     public List<BranchBasicInfoDTO> getGitoliteRepoBranches(UUID id){
         var repo = repoRepository.findById(id).orElseThrow(() -> new NotFoundException("Repo not found"));
         return gitoliteService.readRepoBranches(repo.getName().replace(" ", "-"));
+    }
+
+    public List<CommitsResponseDto> getCommits(UUID id, String branch){
+        var repo = repoRepository.findById(id).orElseThrow(() -> new NotFoundException("Repo not found"));
+        return gitoliteService.getCommits(repo.getName().replace(" ", "-"), branch);
     }
 }

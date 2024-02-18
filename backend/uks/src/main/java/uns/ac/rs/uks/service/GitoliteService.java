@@ -5,11 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
+import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.dto.response.KeyResponse;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class GitoliteService {
@@ -23,6 +26,9 @@ public class GitoliteService {
     @Value("${app.gitolite.readBranchesScript}")
     private String readBranchesScript;
 
+    @Value("${app.gitolite.readCommitsScript}")
+    private String readCommitsScript;
+
     @Value("${app.gitolite.workingDirectory}")
     private String scriptWorkingDirectory;
 
@@ -31,6 +37,8 @@ public class GitoliteService {
 
     @Value("${app.gitolite.configFile}")
     private String configFile;
+
+    private final String commitsDelimiter = "Commits";
 
     private static final Logger logger = LoggerFactory.getLogger(GitoliteService.class);
 
@@ -97,7 +105,7 @@ public class GitoliteService {
         }
     }
 
-    public List<BranchBasicInfoDTO> readRepoBranches(String repo){
+    public List<BranchBasicInfoDTO> readRepoBranches(String repo) {
         try {
             var branches = new ArrayList<BranchBasicInfoDTO>();
 
@@ -116,7 +124,7 @@ public class GitoliteService {
             int exitCode = process.waitFor();
 
             if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", commitAndPushScript));
+                logger.info(String.format("Script %s executed successfully", readBranchesScript));
             } else {
                 logger.error("Script execution failed with exit code: " + exitCode);
             }
@@ -129,7 +137,7 @@ public class GitoliteService {
     }
 
 
-    private void parseAndAddBranchOutput(List<BranchBasicInfoDTO> list, String output){
+    private void parseAndAddBranchOutput(List<BranchBasicInfoDTO> list, String output) {
         var parts = output.split("\\t");
         if (parts.length == 2) {
             var dto = new BranchBasicInfoDTO();
@@ -137,6 +145,58 @@ public class GitoliteService {
             dto.setCode(parts[0]);
             dto.setName(parts[1].replace("refs/heads/", ""));
             list.add(dto);
+        }
+    }
+
+    public List<CommitsResponseDto> getCommits(String repo, String branch) {
+        try {
+            var commits = new ArrayList<CommitsResponseDto>();
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, readCommitsScript, repo, branch);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            var commitsStarted = false;
+            while ((line = reader.readLine()) != null) {
+                if (commitsStarted) {
+                    parseAndAddCommit(commits, line);
+                }
+                else {
+                    commitsStarted = line.equals(commitsDelimiter);
+                }
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", readCommitsScript));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+
+            return commits;
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    private void parseAndAddCommit(List<CommitsResponseDto> commits, String line) {
+        String regex = "(\\w+) (.+?) \\((.+?)\\) \\[(.+?)]";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            var dto = new CommitsResponseDto();
+            dto.setHash(matcher.group(1));
+            dto.setMessage(matcher.group(2));
+            dto.setTimeAgo(matcher.group(3));
+            dto.setGitUser(matcher.group(4));
+            commits.add(dto);
         }
     }
 }
