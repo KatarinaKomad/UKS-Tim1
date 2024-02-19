@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import uns.ac.rs.uks.dto.request.MergeBranchesRequest;
 import uns.ac.rs.uks.dto.request.ReadCommitsRequest;
 import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.CommitsResponseDto;
@@ -34,5 +35,17 @@ public class BranchController {
     @GetMapping("/commits")
     public List<CommitsResponseDto> getBranchCommits(@Valid @RequestBody ReadCommitsRequest request){
         return branchService.getCommits(request.getId(), request.getBranch());
+    }
+
+    @GetMapping("/difference/{repoId}")
+    public String getBranchDifferences(@PathVariable UUID repoId,
+                                        @RequestParam("originBranch") String originBranch,
+                                        @RequestParam("destinationBranch") String destinationBranch){
+        return branchService.getDifferences(repoId, originBranch, destinationBranch);
+    }
+
+    @PutMapping("/mergeBranches")
+    public void mergeBranches(@Valid @RequestBody MergeBranchesRequest request){
+        branchService.mergeBranches(request.getId(), request.getOriginBranch(), request.getDestinationBranch());
     }
 }
