@@ -20,57 +20,29 @@ import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-ov
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
-  { path: 'login', component: LoginPageComponent, canMatch: [], data: {} },
-  { path: 'signUp', component: SignUpPageComponent, canMatch: [], data: {} },
-  { path: 'forgotPassword', component: ForgotPasswordPageComponent, canMatch: [], data: {} },
-  {
-    path: 'home',
-    component: HomePageComponent,
-    canMatch: [authGuard],
-    data: {},
-  },
-  {
-    path: 'issues',
-    component: MyIssuesPageComponent,
-    canMatch: [authGuard],
-    data: {},
-  },
-  {
-    path: 'repository/fork',
-    component: NewForkPageComponent,
-    canMatch: [],
-  },
-  {
-    path: 'repository/forks-overview',
-    component: ForksOverviewPageComponent,
-    canMatch: [authGuard],
-  },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', component: LoginPageComponent },
+  { path: 'signUp', component: SignUpPageComponent },
+  { path: 'forgotPassword', component: ForgotPasswordPageComponent },
+  { path: 'home', component: HomePageComponent, canActivate: [authGuard] },
+  { path: 'issues', component: MyIssuesPageComponent, canActivate: [authGuard] },
+  { path: 'repository/fork', component: NewForkPageComponent },
+  { path: 'repository/forks-overview', component: ForksOverviewPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
-    canMatch: [authGuard],
-    data: {},
+    canActivate: [authGuard],
     children: [
-      { path: 'issues', component: ProjectIssuesComponent, outlet: "project-view" },
-      { path: 'milestones', component: ProjectMilestonesComponent, outlet: "project-view" },
-      { path: 'labels', component: ProjectLabelsComponent, outlet: "project-view" },
-      { path: 'issue/new', component: NewIssueComponent, outlet: "issue-view" },
-      { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: "issue-view" },
+      { path: 'issues', component: ProjectIssuesComponent, outlet: 'project-view' },
+      { path: 'milestones', component: ProjectMilestonesComponent, outlet: 'project-view' },
+      { path: 'labels', component: ProjectLabelsComponent, outlet: 'project-view' },
+      { path: 'issue/new', component: NewIssueComponent, outlet: 'issue-view' },
+      { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: 'issue-view' },
     ]
   },
-  {
-    path: 'search',
-    component: SearchPageComponent,
-    canMatch: [],
-  },
-
-
-
-
-
-  { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },
-  { path: '**', component: PageNotFoundComponent, canMatch: [] },
+  { path: 'search', component: SearchPageComponent },
+  { path: 'not-found', component: PageNotFoundComponent },
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
