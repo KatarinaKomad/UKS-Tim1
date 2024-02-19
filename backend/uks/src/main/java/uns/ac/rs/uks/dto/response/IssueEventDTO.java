@@ -11,6 +11,7 @@ import uns.ac.rs.uks.model.Issue;
 import uns.ac.rs.uks.model.IssueEventType;
 import uns.ac.rs.uks.model.User;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueEventDTO {
+public class IssueEventDTO implements Serializable {
     private Long id;
     private UserDTO author;
     private String value;

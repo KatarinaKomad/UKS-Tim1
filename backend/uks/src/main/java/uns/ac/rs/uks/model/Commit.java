@@ -30,6 +30,6 @@ public class Commit implements Serializable {
 
     @ManyToMany
     private List<Branch> branches;
-    @OneToMany(mappedBy = "commit", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)   // mappedBy = "commit",
     private List<Comment> comments;
 }

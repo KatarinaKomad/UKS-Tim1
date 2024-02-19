@@ -39,7 +39,7 @@ public class RepoService {
     @Autowired
     private GitoliteService gitoliteService;
 
-    @Cacheable(value = "repos")
+//    @Cacheable(value = "repos")
     public List<RepoBasicInfoDTO> getAllPublic() {
         List<Repo> allPublic = repoRepository.findAllByIsPublicTrue();
         return RepoMapper.toDTOs(allPublic);

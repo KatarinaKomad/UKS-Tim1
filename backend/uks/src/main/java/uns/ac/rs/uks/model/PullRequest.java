@@ -1,6 +1,7 @@
 package uns.ac.rs.uks.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,14 +13,13 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class PullRequest extends Item implements Serializable {
 
-    @OneToOne
-    private Branch origin;
-    @OneToOne
-    private Branch target;
+    private String origin;
+    private String target;
 
-    @OneToMany(mappedBy = "pullRequest")
+    @OneToMany  // (mappedBy = "pullRequest")
     private List<Review> reviews;
 }

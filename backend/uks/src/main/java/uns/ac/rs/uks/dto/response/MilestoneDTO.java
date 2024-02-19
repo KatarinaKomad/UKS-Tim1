@@ -11,6 +11,7 @@ import uns.ac.rs.uks.model.Item;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.State;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MilestoneDTO {
+public class MilestoneDTO implements Serializable {
     private Long id;
     private String name;
     private String description;

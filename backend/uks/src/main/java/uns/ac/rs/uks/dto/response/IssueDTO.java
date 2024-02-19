@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import uns.ac.rs.uks.model.State;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueDTO extends SearchResponse{
+public class IssueDTO extends SearchResponse implements Serializable {
     private UUID id;
     private Long counter;
     private String name;
