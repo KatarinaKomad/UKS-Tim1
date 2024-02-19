@@ -29,6 +29,12 @@ public class GitoliteService {
     @Value("${app.gitolite.readCommitsScript}")
     private String readCommitsScript;
 
+    @Value("${app.gitolite.getDifferencesScript}")
+    private String getDifferencesScript;
+
+    @Value("${app.gitolite.mergeScript}")
+    private String mergeScript;
+
     @Value("${app.gitolite.workingDirectory}")
     private String scriptWorkingDirectory;
 
@@ -39,6 +45,8 @@ public class GitoliteService {
     private String configFile;
 
     private final String commitsDelimiter = "Commits";
+
+    private final String differencesDelimiter = "Differences";
 
     private static final Logger logger = LoggerFactory.getLogger(GitoliteService.class);
 
@@ -163,8 +171,7 @@ public class GitoliteService {
             while ((line = reader.readLine()) != null) {
                 if (commitsStarted) {
                     parseAndAddCommit(commits, line);
-                }
-                else {
+                } else {
                     commitsStarted = line.equals(commitsDelimiter);
                 }
             }
@@ -197,6 +204,77 @@ public class GitoliteService {
             dto.setTimeAgo(matcher.group(3));
             dto.setGitUser(matcher.group(4));
             commits.add(dto);
+        }
+    }
+
+    public String getDifferences(String repo, String originBranch, String destinationBranch) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, getDifferencesScript, repo, destinationBranch, originBranch);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder changes = new StringBuilder();
+            var differencesStarted = false;
+            while ((line = reader.readLine()) != null) {
+                if (differencesStarted) {
+                    changes.append(parseGitDiffOutput(line));
+                } else {
+                    differencesStarted = line.equals(differencesDelimiter);
+                }
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", getDifferencesScript));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+            return changes.toString();
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        return "";
+    }
+
+    private String parseGitDiffOutput(String line) {
+        line = line.replaceAll("\u001B\\[[;\\d]*m", "");
+
+        if (line.startsWith("diff --git")) {
+            return "";
+        }
+
+        String substring = line.substring(2, line.length() - 2);
+        if (line.startsWith("{+")) {
+            return ("+ " + substring) + "\n";
+        } else if (line.startsWith("{-")) {
+            return "- " + substring + "\n";
+        }else if (line.startsWith("+++")){
+            return "File " + line.substring(6) + "\n";
+        }
+        return "";
+    }
+
+    public void mergeBranches(String repo, String originBranch, String destinationBranch) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, mergeScript, repo, originBranch, destinationBranch);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", mergeScript));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
         }
     }
 }
