@@ -1,15 +1,14 @@
-Cloning into 'UKS-REPO-5'...
-From localhost:UKS-REPO-5
- * branch            dev        -> FETCH_HEAD
-Updating a515a78..1c5fd8c
+Cloning into 'UKS-REPO-11'...
+warning: remote HEAD refers to nonexistent ref, unable to checkout
+From localhost:UKS-REPO-11
+ * branch            to-delete  -> FETCH_HEAD
+branch 'dev' set up to track 'origin/dev'.
+Switched to a new branch 'dev'
+Updating 66d2d8b..e951634
 Fast-forward
- text 5.txt | 3 +++
- 1 file changed, 3 insertions(+)
- create mode 100644 text 5.txt
-Your branch is ahead of 'origin/master' by 1 commit.
-  (use "git push" to publish your local commits)
-Already on 'master'
-Already up to date.
-To localhost:UKS-REPO-5
-   a515a78..1c5fd8c  master -> master
+ New Text Document.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 New Text Document.txt
+To localhost:UKS-REPO-11
+   66d2d8b..e951634  dev -> dev
 Merge completed successfully.

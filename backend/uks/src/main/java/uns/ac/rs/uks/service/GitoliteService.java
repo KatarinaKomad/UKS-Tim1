@@ -35,6 +35,9 @@ public class GitoliteService {
     @Value("${app.gitolite.mergeScript}")
     private String mergeScript;
 
+    @Value("${app.gitolite.deleteScript}")
+    private String deleteScript;
+
     @Value("${app.gitolite.workingDirectory}")
     private String scriptWorkingDirectory;
 
@@ -270,6 +273,25 @@ public class GitoliteService {
 
             if (exitCode == 0) {
                 logger.info(String.format("Script %s executed successfully", mergeScript));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public void deleteBranch(String repo, String branch) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, deleteScript, repo, branch);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", deleteScript));
             } else {
                 logger.error("Script execution failed with exit code: " + exitCode);
             }

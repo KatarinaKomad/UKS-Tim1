@@ -26,7 +26,7 @@ GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git pull origin "$origin_branch"
 git checkout "$destination_branch"
 
 echo "Differences"
-git diff -U3 --color --word-diff-regex=. "$origin_branch".."$destination_branch"
+git diff -U3 --color --word-diff-regex=. origin/"$origin_branch"..origin/"$destination_branch"
 
 cd ..
 
