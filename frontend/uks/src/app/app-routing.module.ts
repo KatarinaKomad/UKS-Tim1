@@ -18,6 +18,8 @@ import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.com
 import { NewForkPageComponent } from './pages/new-fork-page/new-fork-page.component';
 import { ForksOverviewPageComponent } from './pages/forks-overview-page/forks-overview-page.component';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', canMatch: [], pathMatch: 'full' },
@@ -60,14 +62,24 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'profile',
+    component: ProfilePageComponent,
+    canMatch: [authGuard],
+    data: {},
+  },
+  {
+    path: 'sshkey',
+    component: AddSshKeyPageComponent,
+    canMatch: [authGuard],
+    data: {},
+  },
+  {
     path: 'search',
     component: SearchPageComponent,
     canMatch: [],
   },
 
-
-
-
+  
 
   { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },
   { path: '**', component: PageNotFoundComponent, canMatch: [] },

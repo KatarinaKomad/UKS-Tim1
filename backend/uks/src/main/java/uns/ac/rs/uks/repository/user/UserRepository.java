@@ -23,4 +23,8 @@ public interface UserRepository extends JpaRepository<User, UUID>, CustomUserRep
     @Modifying
     @Query("UPDATE User u SET u.deleted = ?2 WHERE u.id = ?1")
     void updateDeletedByAdmin(UUID id, boolean deleted);
+
+    @Modifying
+    @Query("UPDATE User u SET u.deleted = ?2 WHERE u.id = ?1")
+    void updateDeletedByUser(UUID id, boolean deleted);
 }
