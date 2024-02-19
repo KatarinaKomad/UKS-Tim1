@@ -59,7 +59,7 @@ public class RepoService {
         repoRepository.save(repo);
         memberService.addNewMember(user, repo, RepositoryRole.OWNER);
         var repoDto = RepoMapper.toDTO(repo);
-       // repoDto.setCloneUri(gitoliteService.createRepo(repoDto.getName(), user.getUsername()));
+        repoDto.setCloneUri(gitoliteService.createRepo(repoDto.getName(), user.getUsername()));
         return repoDto;
     }
 
