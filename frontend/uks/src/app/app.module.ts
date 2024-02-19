@@ -79,6 +79,7 @@ import { SearchFiltersSideViewComponent } from './components/molecules/search-fi
 import { SearchResultItemComponent } from './components/molecules/search-result-item/search-result-item.component';
 import { SearchFilterInputComponent } from './components/molecules/filter-overlays/search-filter-input/search-filter-input.component';
 import { CustomPaginationComponent } from './components/atoms/custom-pagination/custom-pagination.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 
 
 @NgModule({
@@ -88,6 +89,7 @@ import { CustomPaginationComponent } from './components/atoms/custom-pagination/
     LoginPageComponent,
     HomePageComponent,
     RepositoryPageComponent,
+    ProfilePageComponent,
     SidebarComponent,
     PageNotFoundComponent,
     TabsComponent,

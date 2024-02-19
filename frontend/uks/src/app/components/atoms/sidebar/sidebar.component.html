@@ -22,7 +22,7 @@
     </li>
 </ul>
 
-<div class="logged-user">
+<div class="logged-user menuItem" (click)="navigate(SelectionOptions.PROFILE)">
     <i class="icon fa-solid fa-user fa-xl"></i>
     <p class="itemTitle">{{loggedUser?.firstName}} {{loggedUser?.lastName}}</p>
 </div>
