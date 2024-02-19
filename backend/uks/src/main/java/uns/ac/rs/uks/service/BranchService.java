@@ -63,4 +63,9 @@ public class BranchService {
         var repo = repoRepository.findById(repoId).orElseThrow(() -> new NotFoundException("Repo not found"));
         gitoliteService.mergeBranches(repo.getName().replace(" ", "-"), originBranch, destinationBranch);
     }
+
+    public void deleteBranch(UUID repoId, String branchName){
+        var repo = repoRepository.findById(repoId).orElseThrow(() -> new NotFoundException("Repo not found"));
+        gitoliteService.deleteBranch(repo.getName().replace(" ", "-"), branchName);
+    }
 }

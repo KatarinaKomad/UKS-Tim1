@@ -48,4 +48,9 @@ public class BranchController {
     public void mergeBranches(@Valid @RequestBody MergeBranchesRequest request){
         branchService.mergeBranches(request.getId(), request.getOriginBranch(), request.getDestinationBranch());
     }
+
+    @DeleteMapping("/{repoId}")
+    public void deleteBranch(@PathVariable UUID repoId, @RequestParam String branchName){
+        branchService.deleteBranch(repoId, branchName);
+    }
 }
