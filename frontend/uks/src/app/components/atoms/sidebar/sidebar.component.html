@@ -1,28 +1,40 @@
 <div class="logo">
-    <img class="logoIcon" src='../../../../assets/image/github-logo.png' alt="logo" />
+  <img
+    class="logoIcon"
+    src="../../../../assets/image/github-logo.png"
+    alt="logo"
+  />
 </div>
 <ul class="menuItems">
-    <li class="menuItem" (click)="navigate(SelectionOptions.HOME)">
-        <i class="icon fa-solid fa-house fa-xl"></i>
-        <p class="itemTitle">Home</p>
-    </li>
-    <li class="menuItem" (click)="navigate(SelectionOptions.ISSUES)">
-        <i class="icon fa-regular fa-circle-dot fa-xl"></i>
-        <p class="itemTitle">Issues</p>
-    </li>
+  <li class="menuItem" (click)="navigate(SelectionOptions.HOME)">
+    <i class="icon fa-solid fa-house fa-xl"></i>
+    <p class="itemTitle">Home</p>
+  </li>
+  <li class="menuItem" (click)="navigate(SelectionOptions.ISSUES)">
+    <i class="icon fa-regular fa-circle-dot fa-xl"></i>
+    <p class="itemTitle">Issues</p>
+  </li>
 
-    <li class="menuItem" (click)="navigate(SelectionOptions.PULL_REQUESTS)">
-        <i class="icon fa-solid fa-code-pull-request fa-xl"></i>
-        <p class="itemTitle">Pull requests</p>
-    </li>
+  <li class="menuItem" (click)="navigate(SelectionOptions.PULL_REQUESTS)">
+    <i class="icon fa-solid fa-code-pull-request fa-xl"></i>
+    <p class="itemTitle">Pull requests</p>
+  </li>
 
-    <li class="menuItem" (click)="navigate(SelectionOptions.REPOSITORIES)">
-        <i class="icon fa-regular fa-file-code fa-xl"></i>
-        <p class="itemTitle">My repositories</p>
-    </li>
+  <li class="menuItem" (click)="navigate(SelectionOptions.REPOSITORIES)">
+    <i class="icon fa-regular fa-file-code fa-xl"></i>
+    <p class="itemTitle">My repositories</p>
+  </li>
 </ul>
 
 <div class="logged-user menuItem" (click)="navigate(SelectionOptions.PROFILE)">
-    <i class="icon fa-solid fa-user fa-xl"></i>
-    <p class="itemTitle">{{loggedUser?.firstName}} {{loggedUser?.lastName}}</p>
+  <i class="icon fa-solid fa-user fa-xl"></i>
+  <p class="itemTitle">
+    {{ loggedUser?.firstName }} {{ loggedUser?.lastName }}
+  </p>
 </div>
+<ul class="menuItems">
+  <li class="menuItem" (click)="navigate(SelectionOptions.SSHKEY)">
+    <i class="icon fa-solid fa-key fa-xl"></i>
+    <p class="itemTitle">Add new SSH key</p>
+  </li>
+</ul>

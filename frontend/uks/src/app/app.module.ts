@@ -80,6 +80,7 @@ import { SearchResultItemComponent } from './components/molecules/search-result-
 import { SearchFilterInputComponent } from './components/molecules/filter-overlays/search-filter-input/search-filter-input.component';
 import { CustomPaginationComponent } from './components/atoms/custom-pagination/custom-pagination.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
 
 
 @NgModule({
@@ -90,6 +91,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
     HomePageComponent,
     RepositoryPageComponent,
     ProfilePageComponent,
+    AddSshKeyPageComponent,
     SidebarComponent,
     PageNotFoundComponent,
     TabsComponent,

@@ -73,24 +73,22 @@ public class UserService {
         }
     }
 
-    @Cacheable(value = "profile", key = "#userID")
+    //@Cacheable(value = "profile", key = "#userID")
     public UserDTO getProfileInfo(UUID userID) {
-        User user = userRepository.findById(userID)
-                .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+        User user = getById(userID);
         return UserMapper.toDTO(user);
     }
 
     //@CacheEvict(value = "profile", allEntries = true)
     public UserDTO updateMyProfile(UUID userID, UserUpdateRequest request) {
-        User user = userRepository.findById(userID)
-                .orElseThrow(() -> new RuntimeException("Error: User is not found."));
+        User user = getById(userID);
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setCustomUsername(request.getUsername());
 
-        userRepository.save(user);
+        save(user);
         return UserMapper.toDTO(user);
     }
 

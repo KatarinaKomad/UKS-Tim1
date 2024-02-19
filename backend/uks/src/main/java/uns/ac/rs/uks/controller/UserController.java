@@ -25,7 +25,7 @@ public class UserController {
 
     @PutMapping("/updateMyProfile/{userID}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public UserDTO updateMyProfile(@RequestBody UserUpdateRequest request, @PathVariable UUID userID) {
+    public UserDTO updateMyProfile(@PathVariable UUID userID, @RequestBody UserUpdateRequest request) {
         return userService.updateMyProfile(userID, request);
     }
 

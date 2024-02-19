@@ -1,33 +1,66 @@
 <mat-drawer-container class="sidebar-container" hasBackdrop="true">
-    <mat-drawer #drawer mode="over" class="drawer">
-        <app-sidebar></app-sidebar>
-    </mat-drawer>
+  <mat-drawer #drawer mode="over" class="drawer">
+    <app-sidebar></app-sidebar>
+  </mat-drawer>
 
-    <mat-drawer-content>
-        <app-navbar [drawer]="drawer"></app-navbar>
+  <mat-drawer-content>
+    <app-navbar [drawer]="drawer"></app-navbar>
 
-        <div class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200">
-            <div class="text-xl font-semibold mx-auto mb-5">My profile</div>
-            <app-input [label]="'First name'" [id]="'userFirstName'" [control]="userFirstNameControl" [placeholder]="'First name'"
-              [required]="true" [invalid]="userFirstNameControl.invalid && userFirstNameControl.dirty"
-              [errorMessage]="'First name is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
+    <div
+      class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200"
+    >
+      <div class="text-xl font-semibold mx-auto mb-5">My profile</div>
+      <app-input
+        [label]="'First name'"
+        [id]="'userFirstName'"
+        [control]="userFirstNameControl"
+        [placeholder]="'First name'"
+        [required]="true"
+        [invalid]="userFirstNameControl.invalid && userFirstNameControl.dirty"
+        [errorMessage]="'First name is required'"
+        [type]="'text'"
+        defaultClass="flex items-center gap-x-4"
+      ></app-input>
 
-            <app-input [label]="'Last name'" [id]="'userLastName'" [control]="userLastNameControl" [placeholder]="'Last name'"
-              [required]="true" [invalid]="userLastNameControl.invalid && userLastNameControl.dirty"
-              [errorMessage]="'Last name is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
+      <app-input
+        [label]="'Last name'"
+        [id]="'userLastName'"
+        [control]="userLastNameControl"
+        [placeholder]="'Last name'"
+        [required]="true"
+        [invalid]="userLastNameControl.invalid && userLastNameControl.dirty"
+        [errorMessage]="'Last name is required'"
+        [type]="'text'"
+        defaultClass="flex items-center gap-x-4"
+      ></app-input>
 
-            <app-input [label]="'Email address'" [id]="'userEmail'" [control]="userEmailControl" [placeholder]="'Email address'"
-              [required]="true" [invalid]="userEmailControl.invalid && userEmailControl.dirty"
-              [errorMessage]="'Email address is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
+      <app-input
+        [label]="'Email address'"
+        [id]="'userEmail'"
+        [control]="userEmailControl"
+        [placeholder]="'Email address'"
+        [required]="true"
+        [invalid]="userEmailControl.invalid && userEmailControl.dirty"
+        [errorMessage]="'Email address is required'"
+        [type]="'text'"
+        defaultClass="flex items-center gap-x-4"
+      ></app-input>
 
-            <app-input [label]="'Username'" [id]="'userUsername'" [control]="userUsernameControl" [placeholder]="'Username'"
-              [required]="true" [invalid]="userUsernameControl.invalid && userUsernameControl.dirty"
-              [errorMessage]="'Username is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
-          
-            <div class="w-fit mx-auto mt-10">
-              <app-button text="Save" (buttonClick)="handleSave()" />
-            </div>
-          </div>
-    </mat-drawer-content>
+      <app-input
+        [label]="'Username'"
+        [id]="'userUsername'"
+        [control]="userUsernameControl"
+        [placeholder]="'Username'"
+        [required]="true"
+        [invalid]="userUsernameControl.invalid && userUsernameControl.dirty"
+        [errorMessage]="'Username is required'"
+        [type]="'text'"
+        defaultClass="flex items-center gap-x-4"
+      ></app-input>
 
+      <div class="w-fit mx-auto mt-10">
+        <app-button text="Save" (buttonClick)="handleSave()" />
+      </div>
+    </div>
+  </mat-drawer-content>
 </mat-drawer-container>
