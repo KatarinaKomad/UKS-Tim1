@@ -194,18 +194,6 @@ public class RepoControllerTest {
         ResponseEntity<?> responseEntity =
                 restTemplate.exchange(url, HttpMethod.GET,  entity, responseType);
 
-        String testName= "testName";
-        RepoRequest repoRequest = new RepoRequest();
-        repoRequest.setName(testName);
-        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
-        repoRequest.setIsPublic(true);
-
-        HttpEntity<RepoRequest> entity1 = new HttpEntity<>(repoRequest,headers);
-
-        ResponseEntity<RepoBasicInfoDTO> responseEntity1 = restTemplate
-                .exchange("/repo/create", HttpMethod.POST, entity1, RepoBasicInfoDTO.class);
-
-        assertNotNull(responseEntity1.getBody());
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         List<RepoBasicInfoDTO> repos = (List<RepoBasicInfoDTO>) responseEntity.getBody();
         assertNotNull(repos);
