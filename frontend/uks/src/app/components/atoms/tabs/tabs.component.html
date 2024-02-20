@@ -4,7 +4,7 @@
             <i class="icon fa-solid fa-code fa-lg"></i>
             <span class="itemTitle">Code</span>
         </ng-template>
-        Code Content
+        <app-code-overview></app-code-overview>
     </mat-tab>
 
     <mat-tab class="custom-tab">
@@ -12,9 +12,9 @@
             <i class="icon fa-regular fa-circle-dot fa-lg"></i>
             <span class="itemTitle">Issues</span>
         </ng-template>
-        <app-project-issues *ngIf="view === 'issues'"></app-project-issues>
-        <app-project-labels *ngIf="view === 'labels'"></app-project-labels>
-        <!-- <app-project-milestones *ngIf="activeIssuesView === 'milestones'"></app-project-milestones> -->
+
+        <router-outlet name="project-view"></router-outlet>
+        <router-outlet name="issue-view"></router-outlet>
     </mat-tab>
 
     <mat-tab class="custom-tab">
@@ -22,15 +22,17 @@
             <i class="icon fa-solid fa-code-pull-request fa-lg"></i>
             <span class="itemTitle">Pull requests</span>
         </ng-template>
-        Pull requests Content
+
+        <router-outlet name="project-view"></router-outlet>
+        <router-outlet name="pull-request-view"></router-outlet>
     </mat-tab>
 
-    <mat-tab class="custom-tab">
+    <mat-tab class="custom-tab" *ngIf="canEdit">
         <ng-template mat-tab-label class="menuItem">
             <i class="icon fa-solid fa-gear fa-lg"></i>
             <span class="itemTitle">Settings</span>
         </ng-template>
-        Settings Content
+        <app-repo-settings></app-repo-settings>
     </mat-tab>
 
 </mat-tab-group>

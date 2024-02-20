@@ -1,39 +1,45 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NavigationService } from 'src/services/navigation/navigation.service';
+import { RepoService } from 'src/services/repo/repo.service';
 
 @Component({
   selector: 'app-issues-button-group',
   templateUrl: './issues-button-group.component.html',
   styleUrl: './issues-button-group.component.scss'
 })
-export class IssuesButtonGroupComponent {
-
-  repoName: string = '';
+export class IssuesButtonGroupComponent implements OnInit, AfterViewInit {
 
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
+  @Input() showSearch?: boolean;
 
   openView: string = '';
+  canEdit: boolean = false;
 
-  constructor(private router: Router,
-    private route: ActivatedRoute) { }
+  constructor(
+    private route: ActivatedRoute,
+    private repoService: RepoService,
+    private navigationService: NavigationService
+  ) { }
 
   ngOnInit(): void {
-    this.repoName = this.route.snapshot.paramMap.get('repoName') as string;
-    this.route.queryParams.subscribe(params => {
-      if (params['view']) {
-        this.openView = params['view'];
+    this.route.url.subscribe((segments) => {
+      this.openView = segments.map((segment) => segment.path).join('/');
+    });
+  }
+  ngAfterViewInit(): void {
+    this.repoService.getCanEditRepoItems().subscribe({
+      next: (canEdit: boolean) => {
+        this.canEdit = true; //*FIX*
+      }, error: (e: any) => {
+        console.log(e);
       }
     })
   }
 
   showView(viewName: string) {
     this.openView = viewName;
-
-    this.router.navigate(
-      [`repository/${this.repoName}`],
-      {
-        queryParams: { tab: 1, view: viewName }
-      });
+    this.navigationService.navigateToProjectViewFromIssueView(viewName);
   }
   handleAddNewClick() {
     this.buttonClick.emit();

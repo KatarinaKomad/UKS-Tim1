@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="segment">
+        <div class="header">
+            About
+        </div>
+        <div class="description" *ngIf="!repo?.description">
+            No description provided.
+        </div>
+        <div class="description" *ngIf="repo?.description">
+            Description: {{repo?.description}}
+            <div *ngIf="repo?.createdAt">
+                Created at: {{repo?.createdAt | date:'dd.MM.yyyy.'}}
+            </div>
+        </div>
+
+        <div class="show-button !py-1" (click)="onWatchClick()">
+            <i class="icon fa-solid fa-eye  fa-lg"></i>
+            <span class="activity-count">{{repo?.watchCount}}</span>
+            Watchers
+        </div>
+        <div class="show-button !py-1" (click)="onStarClick()">
+            <i class="icon fa-regular fa-star fa-lg"></i>
+            <span class="activity-count">{{repo?.starCount}}</span>
+            Stars
+        </div>
+        <div class="show-button !py-1 " (click)="onForkClick()">
+            <i class="icon fa-solid fa-code-fork  fa-lg"></i>
+            <span class="activity-count">{{repo?.forkCount}}</span>
+            Forks
+        </div>
+    </div>
+
+    <div class="segment">
+        <div class="header">
+            Contributors
+            <span class="activity-count">{{members.length}}</span>
+        </div>
+
+        <div *ngFor="let member of members; let index = index" class="contributor">
+            <div (click)="showUserProfile(member)">{{index + 1}}. {{member.firstName}} {{member.lastName}}</div>
+        </div>
+    </div>
+</div>

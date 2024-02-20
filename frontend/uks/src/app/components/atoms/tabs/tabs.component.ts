@@ -1,45 +1,54 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationService } from 'src/services/navigation/navigation.service';
+
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute } from '@angular/router';
+import { RepoService } from 'src/services/repo/repo.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.component.html',
-  styleUrls: ['./tabs.component.scss']
+  styleUrls: ['./tabs.component.scss'],
 })
-export class TabsComponent implements OnInit {
-
-
+export class TabsComponent implements OnInit, AfterViewInit {
   activeTab: number = 0;
   repoName: string = '';
-
-  view: string = 'issues';
+  canEdit: boolean = true;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navigationService: NavigationService,
+    private repoService: RepoService
   ) { }
 
+  ngAfterViewInit(): void {
+    // this.repoService.getCanEditRepoItems().subscribe({
+    //   next: (canEdit: boolean) => {
+    //     this.canEdit = canEdit;
+    //   }, error: (e: any) => {
+    //     console.log(e);
+    //   }
+    // })
+  }
+
   ngOnInit(): void {
-    this.repoName = this.route.snapshot.paramMap.get('repoName') as string;
-    this.route.queryParams.subscribe(params => {
+    this.repoName = localStorage.getItem('repoName') as string;
+    this.route.queryParams.subscribe((params) => {
       if (params['tab']) {
         this.activeTab = params['tab'];
       }
-      if (params['view']) {
-        this.view = params['view'];
-      }
-    })
+    });
   }
 
   onTabChange(event: MatTabChangeEvent) {
     const index = event.index;
-    this.router.navigate(
-      [`repository/${this.repoName}`],
-      {
-        queryParams: { tab: index, view: (index !== 1) ? undefined : 'issues' }
-      });
+    // issue tab == 1
+    if (index === 1) {
+      this.navigationService.navigateToProjectIssues();
+    } else if (index === 2) {
+      this.navigationService.navigateToProjectPRs();
+    } else {
+      this.navigationService.navigateToTab(index);
+    }
   }
-
-
 }

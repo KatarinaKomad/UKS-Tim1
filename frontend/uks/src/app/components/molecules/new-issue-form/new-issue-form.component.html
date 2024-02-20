@@ -1,0 +1,27 @@
+<h2 class="!text-lg text-bold pb-2">{{this.issue ? 'Update issue #' + this.issue.counter : 'Create new issue'}}</h2>
+<form [formGroup]="newIssueForm">
+    <div class="flex flex-row">
+        <div [class]="'flex flex-col w-full h-[13vh] pr-2'">
+            <span class=" text-[16px]">Name*</span>
+            <input class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none border" id="name"
+                type="text" formControlName="name" placeholder="Enter issue name" />
+        </div>
+    </div>
+
+    <div class="flex flex-row">
+        <div [class]=" 'flex flex-col w-full max-h-full' ">
+            <span class=" text-[16px]">Description</span>
+            <textarea class="p-2 rounded-md text-[16px] my-2 text-black focus-visible:outline-none border !resize-y "
+                id="description" formControlName="description" placeholder="Enter issue description"
+                rows="4"> </textarea>
+        </div>
+    </div>
+
+
+    <div class="button-container">
+        <app-button [type]="'button'" [text]="'Cancel'"
+            [extenseClass]="'bg-red-500 hover:bg-red-800 disabled:hover:bg-red-600 '"
+            (buttonClick)="onCancelClick()"></app-button>
+        <app-button [text]="'Confirm'" [disabled]="newIssueForm.invalid" (buttonClick)="onSubmitClick()"></app-button>
+    </div>
+</form>

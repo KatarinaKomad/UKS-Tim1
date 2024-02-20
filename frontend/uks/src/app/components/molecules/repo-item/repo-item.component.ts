@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { RepoBasicInfoDTO } from 'src/models/repo/repo';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 @Component({
   selector: 'app-repo-item',
@@ -11,12 +11,11 @@ export class RepoItemComponent {
 
   @Input() repository: RepoBasicInfoDTO | undefined;
 
-  constructor(private router: Router) { }
+  constructor(private navigationService: NavigationService) { }
 
   navigateToRepo() {
-    const repository = this.repository;
-    localStorage.setItem("repoId", repository?.id as string);
-    const link = `/repository/${repository?.name}`
-    this.router.navigate([link], { state: { repository } })
+    if (this.repository) {
+      this.navigationService.navigateToRepo(this.repository);
+    }
   }
 }

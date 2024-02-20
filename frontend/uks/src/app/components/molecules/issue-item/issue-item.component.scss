@@ -1,0 +1,70 @@
+@import '../../../../styles.scss';
+
+.card-container {
+    width: 82vw;
+    height: 11vh;
+
+    display: flex;
+    flex-direction: row;
+    background-color: $white-color;
+
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 1px solid #d0d7de;
+
+    position: relative;
+}
+
+.issue-left-container {
+    height: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+    padding-top: 1%;
+    padding-left: 2%;
+
+    width: 85%;
+
+    .issue-title {
+        color: $dark-text-color;
+        font-size: x-large;
+        padding-bottom: 1%;
+
+        cursor: pointer;
+    }
+
+    .issue-title:hover {
+        color: cornflowerblue;
+    }
+
+    .issue-description {
+        color: $dark-text-color;
+        padding-bottom: 2%;
+        font-size: small;
+    }
+}
+
+
+.issue-right-container {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: right;
+    align-items: right;
+
+    padding-top: 2%;
+    padding-right: 2%;
+
+
+    .assignees {
+        color: $dark-text-color;
+        display: flex;
+        justify-content: right;
+        padding-top: 1%;
+    }
+}
+
+.card-container:hover {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}

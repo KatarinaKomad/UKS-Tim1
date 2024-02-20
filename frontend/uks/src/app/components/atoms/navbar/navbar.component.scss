@@ -3,7 +3,7 @@
 
 .navbar-container {
     color: $github-light-gray-color;
-    border: 1px solid $github-border-color;
+    border-bottom: 1px solid $github-border-color;
     height: 20px !important;
 }
 
@@ -41,9 +41,16 @@
     }
 }
 
-.title {
+.name {
     font-size: 16px;
     font-family: $font;
     color: $black-color;
+    margin: 30px 0px;
+}
+
+.owner {
+    font-size: 16px;
+    color: $grey-color;
+    font-family: $font;
     margin: 30px 0px;
 }

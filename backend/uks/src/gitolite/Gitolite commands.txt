@@ -1,0 +1,12 @@
+Inside docker image 
+chmod  600 /home/git/.ssh/id_rsa
+ssh -i /home/git/.ssh/id_rsa -p 22 git@localhost
+
+Host
+docker build -t uks-gitolite .
+docker run -d --name gitolite -p 2222:22 -v gitolite-sshkeys:/etc/ssh/keys -v gitolite-git:/var/lib/git uks-gitolite
+
+eval $(ssh-agent)
+ssh-add gitolite
+ssh-keygen -R "[localhost]:2222"
+GIT_SSH_COMMAND="ssh -p 2222 -i gitolite" git clone git@localhost:gitolite-admin

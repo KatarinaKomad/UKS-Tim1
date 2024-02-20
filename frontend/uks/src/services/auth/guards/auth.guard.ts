@@ -2,11 +2,10 @@ import { RepoBasicInfoDTO, RepoRequest } from 'src/models/repo/repo';
 import { UserBasicInfo } from 'src/models/user/user';
 
 import { inject } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from '../auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
-import { catchError, map, of } from 'rxjs';
 
 export const authGuard = () => {
   const authService = inject(AuthService);
@@ -27,19 +26,13 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
 
   authService.getLoggedUser().subscribe({
     next: (user: UserBasicInfo | undefined) => {
-      let repoName = '';
-      try {
-        console.log(state.toString())
-        console.log(route.url)
-        console.log(router.url)
+      const repoName = localStorage.getItem("repoName") as string;
+      if (!repoName || !user?.id) return true;
 
-        repoName = state.toString().replace('repository,', '').trim();
-      } catch (error) {
-        return true;
-      }
       const repoRequest: RepoRequest = {
         name: repoName,
-        ownerId: user?.id
+        ownerId: user?.id,
+        description: '',
       }
 
       repoService.validateOverviewByRepoName(repoRequest).subscribe({
@@ -60,3 +53,11 @@ export const repoGuard: CanActivateFn = async (route: ActivatedRouteSnapshot,
   return true;
 };
 
+
+// function getRepoName(state: RouterStateSnapshot): string {
+//   try {
+//     return state.toString().replace('repository,', '').trim();
+//   } catch (error) {
+//     return '';
+//   }
+// }

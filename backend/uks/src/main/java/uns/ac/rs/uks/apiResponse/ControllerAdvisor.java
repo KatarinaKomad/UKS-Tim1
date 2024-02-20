@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uns.ac.rs.uks.exception.AlreadyExistsException;
+import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 
 import java.util.HashMap;
@@ -52,17 +53,23 @@ public class ControllerAdvisor {
     public ResponseEntity<String> notFoundException(Exception e) {
         return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.NOT_FOUND);
     }
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> unknownError(Exception e) {
         e.printStackTrace();
         log.error("Unknown error: {}", e.getLocalizedMessage());
-        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<String> alreadyExistsException(Exception e) {
         return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(NotAllowedException.class)
+    public ResponseEntity<String> notAllowedException(Exception e) {
+        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
     }
 }

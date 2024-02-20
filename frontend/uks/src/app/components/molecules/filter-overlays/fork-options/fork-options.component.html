@@ -1,0 +1,21 @@
+<div class="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" (click)="closeForm()">
+            &times;
+        </span>
+        <div class="title-row">
+            Existing forks
+        </div>
+        <div *ngFor="let repo of forkedRepos" class="item-row">
+            <div (click)="navigate(repo)">
+                {{repo.owner.username}} / {{repo.name}}
+            </div>
+        </div>
+        <div *ngIf="forkedRepos.length === 0" class="no-forks-row">
+            You don't have any forks of this repository.
+        </div>
+        <div class="item-row" (click)="navigate(null)">
+            + Create new fork
+        </div>
+    </div>
+</div>

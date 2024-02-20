@@ -8,7 +8,7 @@ import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.LabelMapper;
 import uns.ac.rs.uks.model.Label;
 import uns.ac.rs.uks.model.Repo;
-import uns.ac.rs.uks.repository.LabelRepository;
+import uns.ac.rs.uks.repository.label.LabelRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +47,7 @@ public class LabelService {
     }
 
     public void deleteLabel(Long labelId) {
+        labelRepository.deleteLabelRelations(labelId);
         labelRepository.deleteById(labelId);
     }
 

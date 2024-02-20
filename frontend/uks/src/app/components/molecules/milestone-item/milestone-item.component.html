@@ -1,0 +1,58 @@
+<div class="card-container">
+    <div class="milestone-left-container !w-2/5 ">
+        <h2 class="milestone-title" (click)="navigateToIssues()">
+            {{milestone?.name}}
+        </h2>
+        <p *ngIf="!milestone?.dueDate">
+            No due date
+        </p>
+        <p *ngIf="milestone?.dueDate">
+            <i class="fa-regular fa-clock"></i>
+            {{milestone?.dueDate | date:'dd.MM.yyyy.'}}
+        </p>
+
+        <h4 class="milestone-description">
+            {{milestone?.description}}
+        </h4>
+    </div>
+
+    <div class="milestone-right-container !w-3/5">
+
+        <div>
+            <mat-progress-bar mode="determinate" [value]="completePercentage" color="primary"></mat-progress-bar>
+        </div>
+        <div class="milestone-stats">
+            <span class="milestone-stat">
+                <p>{{completePercentage}}% complete</p>
+            </span>
+            <span class="milestone-stat">
+                <p>{{openIssues.length}} open</p>
+            </span>
+            <span class="milestone-stat">
+                <p>{{closedIssues.length}} closed</p>
+            </span>
+        </div>
+
+        <div class="button-group" *ngIf="canEdit">
+            <button class="show-button !py-1" (click)="editMilestone()">
+                <i class="fa-solid fa-pen"></i>
+                Edit
+            </button>
+            <button class="show-button !py-1" *ngIf="milestone?.state == STATE.OPEN" (click)="changeState(STATE.CLOSE)">
+                <i class="fa-solid fa-check"></i>
+                Close
+            </button>
+            <button class="show-button !py-1" *ngIf="milestone?.state == STATE.CLOSE" (click)="changeState(STATE.OPEN)">
+                <i class="fa-regular fa-flag"></i>
+                Reopen
+            </button>
+            <button class="show-button !py-1" (click)="deleteMilestone()">
+                <i class="fa-solid fa-trash "></i>
+                Delete
+            </button>
+        </div>
+
+
+
+
+    </div>

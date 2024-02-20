@@ -1,13 +1,23 @@
 version: "3.2"
 
 services:
-  # Postres as a main storage
+  # Gitolite
+  gitolite:
+    build:
+      context: .
+      dockerfile: backend/uks/src/gitolite/Dockerfile
+    container_name: gitolite
+    ports:
+      - "2222:22"
+    volumes:
+      - gitolite-sshkeys:/etc/ssh/keys
+      - gitolite-git:/var/lib/git
+
+  # Postgres as a main storage
   db:
     restart: always
-    image: postgres
+    image: postgres:15-alpine
     container_name: db
-    # volumes:
-    #   - ./pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     expose:
@@ -16,22 +26,26 @@ services:
       - POSTGRES_DB=uks
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=postgres
+    networks:
+      - uks
 
   # redis as a cache store
   redis:
     image: redis
+    container_name: redis
     ports:
       - "6379:6379"
+    networks:
+      - uks
+
   api:
     image: ${REGISTRY:-uks}/api:${TAG:-latest}
+    container_name: api
     build:
       context: ./backend/uks
-    container_name: api
     depends_on:
       - db
       - redis
-    # links:
-    #   - db:db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/uks
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -42,27 +56,38 @@ services:
     ports:
       - "8881:8881"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/uks/src/main/resources/data-postgres.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - uks
 
   front:
     image: ${REGISTRY:-uks}/webapp:${TAG:-latest}
+    container_name: front
     build:
-      context: .
-      dockerfile: frontend/uks/Dockerfile
-    ports:
-      - "4200:80" # only for test purpouses
+      context: ./frontend/uks
+    networks:
+      - uks
 
-  # Nginx as a web server and reverse proxy
-
+  # Nginx as a reverse proxy (gateway)
   nginx:
-    image: nginx
-    container_name: uks_nginx
+    image: nginx:alpine
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - ./config/nginx.conf:/etc/nginx/conf.d
-      - ./static:/code/app/static #must be same as web!
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - api
-      # - front
+      - front
+    networks:
+      - uks
+
+networks:
+  uks:
+    driver: bridge
+
+volumes:
+  gitolite-sshkeys:
+  gitolite-git:
+
 

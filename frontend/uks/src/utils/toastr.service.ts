@@ -6,9 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 
 export class Toastr {
-    private config = {timeOut: 4000}
+    private config = { timeOut: 4000 }
 
-    constructor(private toastr: ToastrService) {}
+    constructor(private toastr: ToastrService) { }
 
     success(message: string, title?: string) {
         this.toastr.success(message, title, this.config);
@@ -20,5 +20,8 @@ export class Toastr {
 
     info(message: string, title?: string) {
         this.toastr.info(message, title, this.config);
+    }
+    warn(message: string, title?: string) {
+        this.toastr.warning(message, title, this.config);
     }
 }

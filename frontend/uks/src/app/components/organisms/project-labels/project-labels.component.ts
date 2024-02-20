@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NewLabelDialogComponent } from '../../molecules/dialogs/new-label-dialog/new-label-dialog.component';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -7,6 +7,9 @@ import { LabelService } from 'src/services/label/label.service';
 import { LabelDTO, LabelRequest } from 'src/models/label/label';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Toastr } from 'src/utils/toastr.service';
+import { AuthService } from 'src/services/auth/auth.service';
+import { RepoService } from 'src/services/repo/repo.service';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 
 @Component({
@@ -14,12 +17,14 @@ import { Toastr } from 'src/utils/toastr.service';
   templateUrl: './project-labels.component.html',
   styleUrl: './project-labels.component.scss'
 })
-export class ProjectLabelsComponent implements OnInit {
+export class ProjectLabelsComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['name', 'description', 'issues', 'actions'];
+  displayedColumns: string[] = ['name', 'description', 'issues'];
+
   dataSource: any;
 
   repoId: string = "";
+  canEdit: boolean = false;
 
   @ViewChild(MatSort)
   sort: MatSort = new MatSort;
@@ -27,8 +32,11 @@ export class ProjectLabelsComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private labelService: LabelService,
+    private navigationService: NavigationService,
+    private repoService: RepoService,
     private _liveAnnouncer: LiveAnnouncer,
     private toastr: Toastr) {
+
   }
   ngOnInit(): void {
     this.repoId = localStorage.getItem("repoId") as string
@@ -41,6 +49,18 @@ export class ProjectLabelsComponent implements OnInit {
     })
   }
 
+  ngAfterViewInit(): void {
+    this.repoService.getCanEditRepoItems().subscribe({
+      next: (canEdit: boolean) => {
+        this.canEdit = canEdit;
+        if (canEdit) {
+          this.displayedColumns = ['name', 'description', 'issues', 'actions'];
+        }
+      }, error: (e: any) => {
+        console.log(e);
+      }
+    })
+  }
 
   addNewLabel() {
     const dialogRef = this.dialog.open(NewLabelDialogComponent, {
@@ -118,5 +138,10 @@ export class ProjectLabelsComponent implements OnInit {
     this.dataSource.data = this.dataSource.data.filter((elem: { id: number; }) => elem.id !== labelId);
     this.dataSource.data = [...this.dataSource.data];
   }
+
+  navigateToIssues() {
+    this.navigationService.navigateToProjectIssues();
+  }
+
 
 }

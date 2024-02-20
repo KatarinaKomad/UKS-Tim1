@@ -10,32 +10,28 @@ import { RepoService } from 'src/services/repo/repo.service';
   styleUrl: './public-repo-list.component.scss'
 })
 export class PublicRepoListComponent {
+
+  @Input() repos: RepoBasicInfoDTO[] = [];
+  @Input() title: string = '';
+
   search = new FormControl('', []);
 
-  allPublicRepos: RepoBasicInfoDTO[] = [];
+  allRepos: RepoBasicInfoDTO[] = [];
   shownRepos: RepoBasicInfoDTO[] = [];
 
   constructor(
-    private repoService: RepoService,
-  ) {
-    this.setPublicRepos();
-  }
+  ) { }
 
-  setPublicRepos() {
-    this.repoService.getAllPublic().subscribe({
-      next: (response: RepoBasicInfoDTO[]) => {
-        this.allPublicRepos = response;
-        this.shownRepos = response;
-      },
-      error: (e: HttpErrorResponse) => {
-        console.log(e);
-      }
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['repos'].currentValue) {
+      this.allRepos = [...changes['repos'].currentValue];
+      this.shownRepos = [...changes['repos'].currentValue];
+    }
   }
 
   onSearch() {
     const searchValue = (this.search.value as string).toLowerCase();
-    let allCopy = this.allPublicRepos.slice();
+    let allCopy = this.allRepos.slice();
     this.shownRepos = allCopy.filter(repo => this.checkRepoName(repo, searchValue) || this.checkOwnerName(repo, searchValue))
   }
 
@@ -45,6 +41,6 @@ export class PublicRepoListComponent {
 
   private checkOwnerName(repo: any, searchValue: string) {
     const ownerName = (`${repo.owner.firstName} ${repo.owner.lastName}`);
-    return ownerName.toLowerCase().includes(searchValue)
+    return ownerName.toLowerCase().includes(searchValue) || repo.owner.username.toLowerCase()
   }
 }

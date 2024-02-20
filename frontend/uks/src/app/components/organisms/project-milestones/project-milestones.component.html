@@ -1,0 +1,24 @@
+<app-issues-button-group (buttonClick)="addNewMilestone()" [showSearch]="false"></app-issues-button-group>
+<div class="flex flex-col pt-4 w-5/6 mx-auto milestone-container">
+    <div class="flex flex-row space-x-4 milestones-header">
+        <button class="show-button !py-1 " (click)="changeShownMilestones(true)" [ngStyle]="{'background-color': shownOpen  ? '#d1d5da' : '#f6f8fa', 
+                                'color': shownOpen ? 'white' : 'black'}">
+            <i class="fa-regular fa-flag"></i>
+            Open
+        </button>
+
+        <button class="show-button !py-1" (click)="changeShownMilestones(false)"
+            [ngStyle]="{'background-color': !shownOpen ? '#d1d5da' : '#f6f8fa', 'color': !shownOpen ? 'white' : 'black'}">
+            <i class="fa-solid fa-check"></i>
+            Closed
+        </button>
+
+    </div>
+    <div class="flex flex-row" *ngFor="let milestone of shownMilestones">
+        <app-milestone-item [milestone]="milestone" (deleteEvent)="deleteMilestone($event)"
+            (editEvent)="updateMilestone($event)"></app-milestone-item>
+    </div>
+    <div *ngIf="shownMilestones.length === 0" class="flex flex-row">
+        No milestones
+    </div>
+</div>

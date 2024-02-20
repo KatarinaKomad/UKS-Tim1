@@ -28,11 +28,14 @@ public class User implements UserDetails, Serializable {
     // ******************************************/
     @Column(unique = true, nullable = false)
     private String email;
+    @Column(unique = true) //nullable = false)
+    private String customUsername;
     @JsonIgnore
     @Column(nullable = false)
     private String password;
     private String firstName;
     private String lastName;
+    private String sshKeyValue;
     @ManyToOne
     private Role role; // Admin / User
     private Boolean blockedByAdmin;

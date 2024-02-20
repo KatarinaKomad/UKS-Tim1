@@ -16,6 +16,7 @@ import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.repository.MemberRepository;
 import uns.ac.rs.uks.util.Constants;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -94,6 +95,22 @@ public class MemberServiceTest {
         when(memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId)).thenReturn(Optional.empty());
         Member member = memberService.findMemberByUserIdAndRepositoryId(userId, repositoryId);
         assertNull(member);
+    }
+
+    @Test
+    void testFindMemberByRepositoryId() {
+        // Mocking
+        UUID userId = Constants.MIKA_USER_ID;
+        UUID repositoryId = Constants.REPOSITORY_ID_1_UKS_TEST;
+        Member memberTest = createMember(Constants.MIKA_EMAIL, repositoryId);
+        memberTest.getUser().setId(userId);
+
+        when(memberRepository.findAllMembersByRepositoryId(repositoryId))
+                .thenReturn(List.of(memberTest));
+
+        List<Member> members = memberService.findAllMembersByRepositoryId(repositoryId);
+        assertEquals(1, members.size());
+        assertEquals(members.get(0).getUser().getId(), userId);
     }
 
     private Member createMember(String email, UUID repoId) {

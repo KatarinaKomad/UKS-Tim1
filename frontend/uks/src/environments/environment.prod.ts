@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8881/uks';
+const API_BASE_URL = '/api';
 
 export const environment = {
   production: true,

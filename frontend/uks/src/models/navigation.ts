@@ -3,7 +3,10 @@ export enum SelectionOptions {
     ISSUES = '/issues',
     PULL_REQUESTS = '/pull-requests',
     REPOSITORIES = '/repositories',
-    REPOSITORY = '/repository/'
+    REPOSITORY = '/repository/',
+    PROFILE = '/profile/',
+    SSHKEY = '/sshkey/',
+    SEARCH = '/search',
 }
 
 export const titleMapper = (selection: SelectionOptions): string => {
@@ -12,6 +15,9 @@ export const titleMapper = (selection: SelectionOptions): string => {
         case SelectionOptions.ISSUES: return 'Issues';
         case SelectionOptions.PULL_REQUESTS: return 'Pull Requests';
         case SelectionOptions.REPOSITORIES: return 'Repositories';
+        case SelectionOptions.PROFILE: return 'Profile';
+        case SelectionOptions.SSHKEY: return 'SSH key';
+        case SelectionOptions.SEARCH: return 'Search';
         default: return '';
     }
 }

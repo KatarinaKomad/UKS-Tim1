@@ -1,20 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 import { RepoService } from 'src/services/repo/repo.service';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
-  MatDialogActions,
-  MatDialogClose,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { NewRepoDialogComponent } from 'src/app/components/molecules/dialogs/new-repo-dialog/new-repo-dialog.component';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 
 @Component({
   selector: 'app-my-repos-side-list',
@@ -29,7 +21,7 @@ export class MyReposSideListComponent {
 
   constructor(
     public dialog: MatDialog,
-    private router: Router,
+    private navigationService: NavigationService,
     private repoService: RepoService,
     private authService: AuthService
   ) {
@@ -62,9 +54,7 @@ export class MyReposSideListComponent {
   }
 
   navigateToRepo(repository: RepoBasicInfoDTO) {
-    localStorage.setItem("repoId", repository.id);
-    const link = `/repository/${repository?.name}`
-    this.router.navigate([link], { state: { repository } })
+    this.navigationService.navigateToRepo(repository);
   }
 
   addNewRepository() {
@@ -72,7 +62,7 @@ export class MyReposSideListComponent {
     const dialogRef = this.dialog.open(NewRepoDialogComponent, {
       maxWidth: '100vw',
       maxHeight: '100vh',
-      height: '50%',
+      height: '70%',
       width: '50%',
       data: { user },
 

@@ -1,0 +1,11 @@
+<div class="flex flex-row">
+    <div class="flex flex-col w-1/6 p-5"></div>
+    <div class="flex flex-col w-3/6 p-5">
+        <app-new-issue-form (newIssueEvent)="handleSubmitForm($event)"></app-new-issue-form>
+    </div>
+
+    <div class="flex flex-col w-2/6 p-5 ml-5">
+        <app-issue-properties-side-view [issuePropertiesInput]="issueProperties"
+            (changeEvent)="handleIssuePropertiesChange($event)"></app-issue-properties-side-view>
+    </div>
+</div>

@@ -3,6 +3,7 @@ package uns.ac.rs.uks.repository;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -54,6 +55,16 @@ public class MemberRepositoryTest {
     public void noMembersByUserIdAndRepositoryId(UUID userId, UUID repositoryId) {
         Optional<Member> optionalMember = memberRepository.findMemberByUserIdAndRepositoryId(userId, repositoryId);
         assertTrue(optionalMember.isEmpty());
+    }
+
+    @ParameterizedTest(name = "Finding repository member by repository id {1}")
+    @ValueSource(strings = {"a3826e27-77d8-465c-9d9f-87ccbb04ecaf"})
+    public void membersByRepositoryId(String repositoryId) {
+        UUID id = UUID.fromString(repositoryId);
+        List<Member> members = memberRepository.findAllMembersByRepositoryId(id);
+        assertFalse(members.isEmpty());
+        Member member = members.get(0);
+        assertEquals(id, member.getRepository().getId());
     }
 
     static List<Arguments> memberExistsProvider() {

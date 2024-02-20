@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SelectionOptions, titleMapper } from 'src/models/navigation';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth/auth.service';
+import { RepoService } from 'src/services/repo/repo.service';
+import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 
 
 
@@ -12,16 +14,18 @@ import { AuthService } from 'src/services/auth/auth.service';
 })
 export class NavbarComponent implements OnInit {
 
+
   @Input() drawer: any;
 
   selected!: SelectionOptions;
   SelectionOptions = SelectionOptions;
   title: string = '';
+  ownerName: string = '';
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private repoService: RepoService,
   ) {
     this.getCurrentHref();
   }
@@ -39,13 +43,28 @@ export class NavbarComponent implements OnInit {
     this.selected = href as SelectionOptions;
     this.title = titleMapper(this.selected);
     if (this.title === '' && href.includes(SelectionOptions.REPOSITORY)) {
-      this.title = this.route.snapshot.paramMap.get('repoName') as string;
+      this.getRepoTitle();
     }
+  }
+  private getRepoTitle() {
+    const repoId = localStorage.getItem("repoId") as string;
+    this.repoService.getById(repoId).subscribe({
+      next: (res: RepoBasicInfoDTO | null) => {
+        this.title = `${res?.name}`
+        this.ownerName = `${res?.owner.username} / `;
+      }, error: (e: any) => {
+        console.log(e);
+      }
+    })
   }
 
 
   handleLogoutButtonClick(): void {
     this.authService.logout();
+  }
+
+  onSearch() {
+    this.router.navigate(['search'])
   }
 
 }

@@ -1,0 +1,30 @@
+<div *ngIf="page" class="paginator flex flex-row">
+    <form class="paginator-select">
+        <select (selectionChange)="updatePageSize()" [value]="pageSizeStr">
+            <option [value]="10">10</option>
+            <option [value]="20">20</option>
+            <option [value]="30">30</option>
+        </select>
+    </form>
+    <div class="button-group">
+        <span>
+            {{ page.number * pageSizeStr + 1 }} – {{ page.number * pageSizeStr + page.numberOfElements }}
+            of {{ page.totalElements }}
+        </span>
+        <button mat-icon-button aria-label="'first'" (click)="firstPage()" [disabled]="page.first" class="show-button">
+            <i class="fa-solid fa-backward-fast"></i>
+        </button>
+        <button mat-icon-button aria-label="'previous'" (click)="previousPage()" [disabled]="page.first"
+            class="show-button">
+            <i class="fa-solid fa-backward-step"></i>
+        </button>
+        <button button mat-icon-button aria-label="'next'" (click)="nextPage()" [disabled]="page.last"
+            class="show-button">
+            <i class="fa-solid fa-forward-step"></i>
+        </button>
+        <button button mat-icon-button aria-label="'last'" (click)="lastPage()" [disabled]="page.last"
+            class="show-button">
+            <i class="fa-solid fa-forward-fast"></i>
+        </button>
+    </div>
+</div>

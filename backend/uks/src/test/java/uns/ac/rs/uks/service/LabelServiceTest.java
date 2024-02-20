@@ -15,7 +15,7 @@ import uns.ac.rs.uks.dto.response.LabelDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.model.Label;
 import uns.ac.rs.uks.model.Repo;
-import uns.ac.rs.uks.repository.LabelRepository;
+import uns.ac.rs.uks.repository.label.LabelRepository;
 import uns.ac.rs.uks.util.Constants;
 
 import java.util.List;

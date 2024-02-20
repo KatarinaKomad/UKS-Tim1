@@ -1,6 +1,6 @@
 <div class="flex flex-row pt-3 space-x-4 ">
     <div class="search-bar">
-        <form>
+        <form *ngIf="showSearch">
             <input class="p-2 rounded-md !text-[12px] text-black !focus-visible:outline-none" id="searchRepos"
                 placeholder="Search..." />
             <button type="submit"
@@ -28,7 +28,7 @@
             Milestones
         </button>
 
-        <span class="pl-5">
+        <span class="pl-5" *ngIf="canEdit">
             <button class="!bg-green-600 rounded-lg w-fit px-4 py-1 text-white hover:!bg-green-800 text-sm"
                 (click)="handleAddNewClick()">
                 Add New
