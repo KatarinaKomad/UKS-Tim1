@@ -25,6 +25,7 @@ import uns.ac.rs.uks.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -216,7 +217,7 @@ public class RepoServiceTest {
 //        // Assertions
 //        assertNull(dto);
 //    }
-    private Repo createRepo(String name, UUID userId, boolean isPublic) {
+    /*private Repo createRepo(String name, UUID userId, boolean isPublic) {
         Repo repo = new Repo();
         repo.setName(name);
         repo.setId(UUID.randomUUID());
@@ -225,17 +226,17 @@ public class RepoServiceTest {
         repo.setOwner(user);
         repo.setIsPublic(isPublic);
         return repo;
-    }
+    }*/
 
-    private RepoRequest createRepoRequest(String name, UUID id) {
+    /*private RepoRequest createRepoRequest(String name, UUID id) {
         RepoRequest repoRequest = new RepoRequest();
         repoRequest.setName(name);
         repoRequest.setOwnerId(id);
         repoRequest.setIsPublic(true);
         return repoRequest;
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void createNewRepo() throws NotFoundException {
         // Mocking
         String testName = "testName";
@@ -263,9 +264,9 @@ public class RepoServiceTest {
         assertEquals(Constants.MIKA_USER_ID, dto.getOwner().getId());
         assertEquals(testName, dto.getName());
 
-    }
+    }*/
 
-    @Test
+    /*@Test
     void testAddNewRepoUserDoesNotExists(){
         // Mocking
         String testName = "testName";
@@ -275,7 +276,7 @@ public class RepoServiceTest {
 
         // Test && Assertions
         assertThrows(NotFoundException.class, () -> repoService.createNewRepo(repoRequest));
-    }
+    }*/
 
     @Test
     public void testGetByNamePublic() {

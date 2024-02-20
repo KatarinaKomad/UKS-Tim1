@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface LabelRepository extends JpaRepository<Label, Long> {
+public interface LabelRepository1 extends JpaRepository<Label, Long> {
     List<Label> findAllByRepositoryId(UUID repoId);
 }
