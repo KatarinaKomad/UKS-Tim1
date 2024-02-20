@@ -32,6 +32,7 @@ public class PullRequestDTO implements Serializable {
     private String description;
     private String origin;
     private String target;
+    private String repo;
     private List<Comment> comments;
     private List<Review> reviews;
 }

@@ -13,7 +13,7 @@ public class PullRequestMapper {
     public static PullRequestDTO toDTO(PullRequest pr) {
         List<String> assignees = pr.getAssignees().stream().map(User::getEmail).toList();
         List<Map<String, String>> labels = pr.getLabels().stream()
-                .map(label -> Map.of("name", label.getName(), "color", label.getColor())).toList();
+                .map(label -> Map.of("id", label.getId().toString(),"name", label.getName(), "color", label.getColor())).toList();
         return PullRequestDTO.builder()
                 .id(pr.getId())
                 .name(pr.getName())
@@ -27,6 +27,7 @@ public class PullRequestMapper {
                 .description(pr.getDescription())
                 .origin(pr.getOrigin())
                 .target(pr.getTarget())
+                .repo(pr.getRepository().getName())
                 .build();
     }
 

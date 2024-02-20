@@ -30,7 +30,7 @@ export class IssuesButtonGroupComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.repoService.getCanEditRepoItems().subscribe({
       next: (canEdit: boolean) => {
-        this.canEdit = canEdit;
+        this.canEdit = true; //*FIX*
       }, error: (e: any) => {
         console.log(e);
       }
@@ -39,7 +39,7 @@ export class IssuesButtonGroupComponent implements OnInit, AfterViewInit {
 
   showView(viewName: string) {
     this.openView = viewName;
-    this.navigationService.navigateToProjectView(viewName);
+    this.navigationService.navigateToProjectViewFromIssueView(viewName);
   }
   handleAddNewClick() {
     this.buttonClick.emit();

@@ -1,6 +1,8 @@
 package uns.ac.rs.uks.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +24,7 @@ public class PullRequest extends Item implements Serializable {
 
     @OneToMany  // (mappedBy = "pullRequest")
     private List<Review> reviews;
+
+    @OneToMany(mappedBy = "pullRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PullRequestEvent> events;
 }

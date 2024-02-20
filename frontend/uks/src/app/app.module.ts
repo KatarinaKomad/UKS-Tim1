@@ -79,6 +79,12 @@ import { SearchFiltersSideViewComponent } from './components/molecules/search-fi
 import { SearchResultItemComponent } from './components/molecules/search-result-item/search-result-item.component';
 import { SearchFilterInputComponent } from './components/molecules/filter-overlays/search-filter-input/search-filter-input.component';
 import { CustomPaginationComponent } from './components/atoms/custom-pagination/custom-pagination.component';
+import { PrPageComponent } from './pages/pr-page/pr-page.component';
+import { PrItemComponent } from './components/molecules/pr-item/pr-item.component';
+import { PrOverviewComponent } from './components/organisms/pr-overview/pr-overview.component';
+import { ProjectPrsComponent } from './components/organisms/project-prs/project-prs.component';
+import { NewPrFormComponent } from './components/molecules/new-pr-form/new-pr-form.component';
+import { PrPropertiesSideViewComponent } from './components/molecules/pr-properties-side-view/pr-properties-side-view.component';
 
 
 @NgModule({
@@ -131,6 +137,12 @@ import { CustomPaginationComponent } from './components/atoms/custom-pagination/
     SearchResultItemComponent,
     SearchFilterInputComponent,
     CustomPaginationComponent,
+    PrPageComponent,
+    PrItemComponent,
+    PrOverviewComponent,
+    ProjectPrsComponent,
+    NewPrFormComponent,
+    PrPropertiesSideViewComponent,
   ],
   exports: [],
   imports: [

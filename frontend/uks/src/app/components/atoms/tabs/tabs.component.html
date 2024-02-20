@@ -22,7 +22,9 @@
             <i class="icon fa-solid fa-code-pull-request fa-lg"></i>
             <span class="itemTitle">Pull requests</span>
         </ng-template>
-        Pull requests Content
+
+        <router-outlet name="project-view"></router-outlet>
+        <router-outlet name="pull-request-view"></router-outlet>
     </mat-tab>
 
     <mat-tab class="custom-tab" *ngIf="canEdit">
