@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IssueDTO } from 'src/models/issue/issue';
+import { PullRequestDTO } from 'src/models/pull-request/pull-request';
 import { RepoBasicInfoDTO } from 'src/models/repo/repo';
 
 @Injectable({
@@ -26,6 +27,16 @@ export class NavigationService {
     );
   }
 
+  navigateToNewPR() {
+    this.router.navigate(
+      [
+        `repository/${this.repoName}`,
+        { outlets: { 'project-view': [], 'pull-request-view': ['pull-request', 'new'] } }
+      ],
+      { queryParams: { tab: 2 } },
+    );
+  }
+
   navigateToIssueOverview(issue: IssueDTO) {
     this.router.navigate(
       [
@@ -36,13 +47,33 @@ export class NavigationService {
     );
   }
 
-  navigateToProjectView(viewName: string) {
+  navigateToPROverview(pr: PullRequestDTO) {
+    this.router.navigate(
+      [
+        `repository/${pr.repo}`,
+        { outlets: { 'project-view': [], 'pull-request-view': ['pull-request', pr.id] } }
+      ],
+      { queryParams: { tab: 2 } },
+    );
+  }
+
+  navigateToProjectViewFromIssueView(viewName: string) {
     this.router.navigate(
       [
         `repository/${this.repoName}`,
         { outlets: { 'project-view': [viewName], 'issue-view': [] } }
       ],
       { queryParams: { tab: 1 } }
+    );
+  }
+
+  navigateToProjectViewFromPRView(viewName: string) {
+    this.router.navigate(
+      [
+        `repository/${this.repoName}`,
+        { outlets: { 'project-view': [viewName], 'pull-request-view': [] } }
+      ],
+      { queryParams: { tab: 2 } }
     );
   }
 
@@ -53,6 +84,16 @@ export class NavigationService {
         { outlets: { 'project-view': ['issues'], 'issue-view': [] } }
       ],
       { queryParams: { tab: 1 } }
+    );
+  }
+
+  navigateToProjectPRs() {
+    this.router.navigate(
+      [
+        `repository/${this.repoName}`,
+        { outlets: { 'project-view': ['pull-requests'], 'pull-request-view': [] } }
+      ],
+      { queryParams: { tab: 2 } }
     );
   }
 

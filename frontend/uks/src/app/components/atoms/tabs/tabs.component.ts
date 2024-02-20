@@ -22,13 +22,13 @@ export class TabsComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-    this.repoService.getCanEditRepoItems().subscribe({
-      next: (canEdit: boolean) => {
-        this.canEdit = canEdit;
-      }, error: (e: any) => {
-        console.log(e);
-      }
-    })
+    // this.repoService.getCanEditRepoItems().subscribe({
+    //   next: (canEdit: boolean) => {
+    //     this.canEdit = canEdit;
+    //   }, error: (e: any) => {
+    //     console.log(e);
+    //   }
+    // })
   }
 
   ngOnInit(): void {
@@ -43,8 +43,12 @@ export class TabsComponent implements OnInit, AfterViewInit {
   onTabChange(event: MatTabChangeEvent) {
     const index = event.index;
     // issue tab == 1
-    index === 1
-      ? this.navigationService.navigateToProjectIssues()
-      : this.navigationService.navigateToTab(index);
+    if (index === 1) {
+      this.navigationService.navigateToProjectIssues();
+    } else if (index === 2) {
+      this.navigationService.navigateToProjectPRs();
+    } else {
+      this.navigationService.navigateToTab(index);
+    }
   }
 }

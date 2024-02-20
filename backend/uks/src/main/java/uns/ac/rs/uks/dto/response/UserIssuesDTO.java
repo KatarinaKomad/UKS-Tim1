@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uns.ac.rs.uks.model.State;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserIssuesDTO {
+public class UserIssuesDTO implements Serializable {
     List<IssueDTO> createdIssues;
     List<IssueDTO> assignedIssues;
 

@@ -1,0 +1,74 @@
+<app-issues-button-group (buttonClick)="addNewIssue()" [showSearch]="false"></app-issues-button-group>
+
+<div class="flex flex-col pt-4 w-5/6 mx-auto issue-container">
+
+    <div class="flex flex-row active-filter"
+        *ngIf="authorFilter || labelsFilters || milestoneFilter || assigneesFilters">
+        <button (click)="clearAllFilters()" class="!py-1 clear-button">
+            <i class="fa-solid fa-xmark"></i>
+            Clear
+        </button>
+        {{authorFilter ? authorFilter + '; ' : '' }}
+        {{labelsFilters ? labelsFilters + '; ' : '' }}
+        {{milestoneFilter ? milestoneFilter + '; ' : '' }}
+        {{assigneesFilters ? assigneesFilters + ';' : '' }}
+    </div>
+
+    <div class="flex flex-row space-x-4 issues-header">
+        <div class="flex flex-col  w-1/2">
+            <div class="issue-left-container">
+                <button class="header-button !py-1 " (click)="changeShownIssues(true)" [ngStyle]="{'background-color': shownOpen  ? '#d1d5da' : '#f6f8fa', 
+            'color': shownOpen ? 'white' : 'black'}">
+                    <i class="icon fa-regular fa-circle-dot"></i>
+                    Open
+                </button>
+
+                <button class="header-button !py-1" (click)="changeShownIssues(false)"
+                    [ngStyle]="{'background-color': !shownOpen ? '#d1d5da' : '#f6f8fa', 'color': !shownOpen ? 'white' : 'black'}">
+                    <i class="fa-solid fa-check"></i>
+                    Closed
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col  w-1/2">
+            <span class="issue-right-container">
+                <button class="filter-button !py-1 " (click)="openFilter(ISSUE_PROPERTIES.AUTHOR)">
+                    Author
+                    <i class="fa-solid fa-sort-down"></i>
+                </button>
+                <button class="filter-button !py-1 " (click)="openFilter(ISSUE_PROPERTIES.LABEL)">
+                    Label
+                    <i class="fa-solid fa-sort-down "></i>
+                </button>
+                <button class="filter-button !py-1 " (click)="openFilter(ISSUE_PROPERTIES.MILESTONE)">
+                    Milestone
+                    <i class="fa-solid fa-sort-down"></i>
+                </button>
+                <button class="filter-button !py-1 " (click)="openFilter(ISSUE_PROPERTIES.ASSIGNEE)">
+                    Assignee
+                    <i class="fa-solid fa-sort-down"></i>
+                </button>
+
+                <!-- <app-author-filter *ngIf="openedProperty === ISSUE_PROPERTIES.AUTHOR" [isInput]="false"
+                    [preSelected]="selectedAuthor" (closeEvent)="closeAuthorFilter($event)">
+                </app-author-filter>
+                <app-label-filter *ngIf="openedProperty === ISSUE_PROPERTIES.LABEL" [isInput]="false"
+                    [preSelected]="selectedLabels" (closeEvent)="closeLabelFilter($event)">
+                </app-label-filter>
+                <app-milestone-filter *ngIf="openedProperty === ISSUE_PROPERTIES.MILESTONE" [isInput]="false"
+                    [preSelected]="selectedMilestone" (closeEvent)="closeMilestoneFilter($event)">
+                </app-milestone-filter>
+                <app-assignee-filter *ngIf="openedProperty === ISSUE_PROPERTIES.ASSIGNEE" [isInput]="false"
+                    [preSelected]="selectedAssignees" (closeEvent)="closeAssigneeFilter($event)">
+                </app-assignee-filter> -->
+            </span>
+        </div>
+    </div>
+    <div class="flex flex-row" *ngFor="let pr of shownPRs">
+        <app-pr-item [pr]="pr" [showRepoName]="false"></app-pr-item>
+    </div>
+    <div *ngIf="shownPRs.length === 0" class="flex flex-row">
+        No pull requests
+    </div>
+</div>

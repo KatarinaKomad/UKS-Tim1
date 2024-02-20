@@ -2,6 +2,7 @@ package uns.ac.rs.uks.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,17 +14,18 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment implements Serializable {
+@Builder
+public class PullRequestEvent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String message;
-    private String code;
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PullRequest pullRequest;
+    @ManyToOne(fetch = FetchType.LAZY)
     private User author;
+    private String newValue;
+    @Enumerated(EnumType.STRING)
+    private IssueEventType type;
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private Commit commit;
 }

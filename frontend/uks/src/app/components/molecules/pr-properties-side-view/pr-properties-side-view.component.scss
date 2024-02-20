@@ -1,0 +1,40 @@
+.segment {
+    border-bottom: 2px solid #d0d7de !important;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 90%;
+}
+
+.header {
+    font-size: medium;
+    padding-bottom: 5%;
+    justify-content: space-between;
+
+    .icon {
+        color: #5f6067;
+    }
+
+    .icon:hover {
+        color: #B4B4BB;
+    }
+}
+
+.delete-button {
+    font-size: medium;
+    padding-top: 5%;
+    align-items: end;
+    align-self: flex-end;
+
+    .icon {
+        color: #5f6067;
+    }
+
+    .icon:hover {
+        color: #B4B4BB;
+    }
+}
+
+
+.delete-button:hover {
+    color: #B4B4BB;
+}

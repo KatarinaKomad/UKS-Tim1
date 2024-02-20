@@ -1,0 +1,28 @@
+<div class="card-container">
+    <div class="issue-left-container flex flex-col">
+        <div class="flex flex-row">
+            <h3 class=" issue-title " (click)="viewPR()">
+                {{showRepoName ? pr?.repo + ' /' : '' }} {{pr?.name}}
+            </h3>
+            <div *ngFor="let lb of pr?.labels" class="py-1 px-2">
+                <span [style.background]="lb?.color" class="rounded-2xl px-2 mx-auto text-base">{{lb?.name}}
+                </span>
+            </div>
+        </div>
+
+        <p class="flex flex-row issue-description">
+            #{{pr?.counter}} -
+            created by {{pr?.author}},
+            {{pr?.createdAt | date: 'dd.MM.yyyy.'}}
+        </p>
+
+    </div>
+
+    <div class="issue-right-container flex flex-col">
+        <span class="assignees" *ngIf="this.pr?.assignees">
+            <span *ngFor="let elem of this.pr?.assignees ; let last = last">
+                {{elem}}<span *ngIf="!last">,</span>
+            </span>
+        </span>
+    </div>
+</div>
