@@ -22,6 +22,8 @@ import { PrPageComponent } from './pages/pr-page/pr-page.component';
 import { PrOverviewComponent } from './components/organisms/pr-overview/pr-overview.component';
 import { ProjectPrsComponent } from './components/organisms/project-prs/project-prs.component';
 import { NewPrFormComponent } from './components/molecules/new-pr-form/new-pr-form.component';
+import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -51,6 +53,28 @@ const routes: Routes = [
   { path: 'search', component: SearchPageComponent },
   { path: 'not-found', component: PageNotFoundComponent },
   { path: '**', component: PageNotFoundComponent },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
+    canMatch: [authGuard],
+    data: {},
+  },
+  {
+    path: 'sshkey',
+    component: AddSshKeyPageComponent,
+    canMatch: [authGuard],
+    data: {},
+  },
+  {
+    path: 'search',
+    component: SearchPageComponent,
+    canMatch: [],
+  },
+
+  
+
+  { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },
+  { path: '**', component: PageNotFoundComponent, canMatch: [] },
 ];
 
 @NgModule({

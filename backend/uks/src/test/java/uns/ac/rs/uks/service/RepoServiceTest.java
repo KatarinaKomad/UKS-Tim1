@@ -47,6 +47,8 @@ public class RepoServiceTest {
     @Mock
     private MemberService memberService;
     @Mock
+    private GitoliteService gitoliteService;
+    @Mock
     private EntityManager entityManager;
     private AutoCloseable closeable;
 
@@ -124,6 +126,7 @@ public class RepoServiceTest {
         when(branchService.createDefaultBranch(any(Repo.class))).thenReturn(defaultBranch);
         when(userService.getById(Constants.MIKA_USER_ID)).thenReturn(user);
         when(repoRepository.save(any(Repo.class))).thenReturn(repo);
+        when(gitoliteService.createRepo(any(String.class), any(String.class))).thenReturn(testName);
 
         // Test
         RepoBasicInfoDTO dto = repoService.createNewRepo(repoRequest);

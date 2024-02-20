@@ -13,11 +13,14 @@ import uns.ac.rs.uks.dto.request.KeyRequest;
 import uns.ac.rs.uks.dto.response.KeyResponse;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.service.GitoliteService;
+import uns.ac.rs.uks.service.UserService;
 
 @RestController
 @RequestMapping(value = "/key")
 @Slf4j
 public class KeyController {
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private GitoliteService gitoliteService;
@@ -26,6 +29,8 @@ public class KeyController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public KeyResponse createKey(@Valid @RequestBody KeyRequest request, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
+        user.setSshKeyValue(request.getValue());
+        userService.save(user);
         return gitoliteService.createKey(request.getValue(), user.getUsername());
     }
 }

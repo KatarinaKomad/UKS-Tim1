@@ -53,4 +53,19 @@ public class BranchService {
         var repo = repoRepository.findById(id).orElseThrow(() -> new NotFoundException("Repo not found"));
         return gitoliteService.getCommits(repo.getName().replace(" ", "-"), branch);
     }
+
+    public String getDifferences(UUID repoId, String originBranch, String destinationBranch) {
+        var repo = repoRepository.findById(repoId).orElseThrow(() -> new NotFoundException("Repo not found"));
+        return gitoliteService.getDifferences(repo.getName().replace(" ", "-"), originBranch, destinationBranch);
+    }
+
+    public void mergeBranches(UUID repoId, String originBranch, String destinationBranch) {
+        var repo = repoRepository.findById(repoId).orElseThrow(() -> new NotFoundException("Repo not found"));
+        gitoliteService.mergeBranches(repo.getName().replace(" ", "-"), originBranch, destinationBranch);
+    }
+
+    public void deleteBranch(UUID repoId, String branchName){
+        var repo = repoRepository.findById(repoId).orElseThrow(() -> new NotFoundException("Repo not found"));
+        gitoliteService.deleteBranch(repo.getName().replace(" ", "-"), branchName);
+    }
 }

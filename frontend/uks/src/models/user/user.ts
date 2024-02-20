@@ -17,3 +17,21 @@ export const getEmptyUser = (): UserBasicInfo => {
         createdAt: new Date()
     }
 }
+
+export interface UserDTO {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    blockedByAdmin: boolean;
+    name: string;
+    username: string;
+    createdAt: Date;
+}
+
+export interface UserUpdateRequest {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+}
