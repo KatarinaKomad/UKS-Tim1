@@ -71,7 +71,7 @@ const routes: Routes = [
     canMatch: [],
   },
 
-  
+
 
   { path: 'not-found', component: PageNotFoundComponent, canMatch: [] },
   { path: '**', component: PageNotFoundComponent, canMatch: [] },

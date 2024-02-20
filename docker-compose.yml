@@ -85,8 +85,9 @@ services:
 networks:
   uks:
     driver: bridge
-    
+
 volumes:
   gitolite-sshkeys:
   gitolite-git:
-  
+
+

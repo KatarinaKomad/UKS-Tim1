@@ -52,6 +52,9 @@ INSERT INTO MILESTONE(repository_id, name, description, due_date, state) VALUES
 (REPOSITORY_ID_1_UKS_TEST, 'mile stone', 'test milestone', '2024-01-25 23:59:59', 'CLOSE'),
 (REPOSITORY_ID_1_UKS_TEST, 'milestone2', 'test milestone2', '2024-02-25 23:59:59', 'OPEN');
 
+INSERT INTO LABEL(repository_id, name, description, color) VALUES
+(REPOSITORY_ID_1_UKS_TEST, 'test name', 'test description','#6bbf26'),
+(REPOSITORY_ID_1_UKS_TEST, 'test name2', 'test description2', '#e7e019');
 
 INSERT INTO ISSUE (id, name, description, state, repository_id, created_at, author_id, milestone_id) VALUES
 (ISSUE_ID_1, 'issue1', 'description1', 'OPEN', REPOSITORY_ID_1_UKS_TEST, '2024-01-25 15:00:00', PERA_USER_ID, 1),

@@ -1,7 +1,8 @@
 package uns.ac.rs.uks.mapper;
 
-import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.ForkParentDTO;
+import uns.ac.rs.uks.dto.request.RegistrationRequest;
+import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.User;
