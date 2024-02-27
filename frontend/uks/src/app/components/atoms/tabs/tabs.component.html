@@ -12,9 +12,7 @@
             <i class="icon fa-regular fa-circle-dot fa-lg"></i>
             <span class="itemTitle">Issues</span>
         </ng-template>
-
-        <router-outlet name="project-view"></router-outlet>
-        <router-outlet name="issue-view"></router-outlet>
+        <router-outlet name="issues-tab"></router-outlet>
     </mat-tab>
 
     <mat-tab class="custom-tab">
@@ -22,9 +20,7 @@
             <i class="icon fa-solid fa-code-pull-request fa-lg"></i>
             <span class="itemTitle">Pull requests</span>
         </ng-template>
-
-        <router-outlet name="project-view"></router-outlet>
-        <router-outlet name="pull-request-view"></router-outlet>
+        <router-outlet name="pr-tab"></router-outlet>
     </mat-tab>
 
     <mat-tab class="custom-tab" *ngIf="canEdit">

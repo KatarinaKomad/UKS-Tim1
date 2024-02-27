@@ -41,13 +41,7 @@ export class PrItemComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.repoService.getCanEditRepoItems().subscribe({
-      next: (canEdit: boolean) => {
-        this.canEdit = canEdit;
-      }, error: (e: any) => {
-        console.log(e);
-      }
-    })
+    this.canEdit = this.repoService.getCanEditRepoItems()
   }
 
   viewPR() {

@@ -11,8 +11,6 @@ import { HttpRequestService } from 'src/utils/http-request.service';
 
 import { Injectable } from '@angular/core';
 
-import { AuthService } from '../auth/auth.service';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +18,6 @@ export class RepoService {
 
   constructor(
     private httpRequestService: HttpRequestService,
-    private authService: AuthService
   ) { }
 
   getAllPublic(): Observable<RepoBasicInfoDTO[]> {
@@ -85,23 +82,9 @@ export class RepoService {
     return this.httpRequestService.post(url, body) as Observable<boolean>;
   }
 
-  getCanEditRepoItems(): Observable<boolean> {
-    let repoRequest;
-    this.authService.getLoggedUser().subscribe({
-      next: (user: UserBasicInfo | undefined) => {
-        repoRequest = this.createEditRepoRequest(user);
-      },
-      error: (e: any) => {
-        console.log(e);
-        return of(false);
-      },
-    });
-    return repoRequest ? this.canEditRepoItems(repoRequest) : of(false);
-  }
-  private createEditRepoRequest(user: UserBasicInfo | undefined): EditRepoRequest | null {
-    const repoId = localStorage.getItem('repoId');
-    if (!repoId || !user?.id) return null;
-    return { repoId, userId: user.id };
+  getCanEditRepoItems(): boolean {
+    var storedBoolean = localStorage.getItem('canEditRepoItems');
+    return storedBoolean === 'true' ? true : false;
   }
 
   getAllForked(repoId: string) {

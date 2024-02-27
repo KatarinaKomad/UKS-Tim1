@@ -50,16 +50,10 @@ export class ProjectLabelsComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.repoService.getCanEditRepoItems().subscribe({
-      next: (canEdit: boolean) => {
-        this.canEdit = canEdit;
-        if (canEdit) {
-          this.displayedColumns = ['name', 'description', 'issues', 'actions'];
-        }
-      }, error: (e: any) => {
-        console.log(e);
-      }
-    })
+    this.canEdit = this.repoService.getCanEditRepoItems()
+    if (this.canEdit) {
+      this.displayedColumns = ['name', 'description', 'issues', 'actions'];
+    }
   }
 
   addNewLabel() {

@@ -39,37 +39,35 @@ const routes: Routes = [
     component: RepositoryPageComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'issues', component: ProjectIssuesComponent, outlet: 'project-view' },
-      { path: 'pull-requests', component: ProjectPrsComponent, outlet: 'project-view' },
-      { path: 'milestones', component: ProjectMilestonesComponent, outlet: 'project-view' },
-      { path: 'labels', component: ProjectLabelsComponent, outlet: 'project-view' },
-      { path: 'issue/new', component: NewIssueComponent, outlet: 'issue-view' },
-      { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: 'issue-view' },
-      { path: 'pull-request/:prId', component: PrOverviewComponent, outlet: 'pull-request-view' },
-      { path: 'pull-request/new', component: NewPrFormComponent, outlet: 'pull-request-view' }
+      {
+        path: 'issues',
+        children: [
+          { path: 'issues-view', component: ProjectIssuesComponent, outlet: 'issues-tab' },
+          { path: 'milestones-view', component: ProjectMilestonesComponent, outlet: 'issues-tab' },
+          { path: 'labels-view', component: ProjectLabelsComponent, outlet: 'issues-tab' },
+          { path: 'new', component: NewIssueComponent, outlet: 'issues-tab' },
+          { path: ':issueId', component: IssueOverviewComponent, outlet: 'issues-tab' },
+        ]
+      },
+
+      {
+        path: 'pull-requests',
+        children: [
+          { path: 'pr-view', component: ProjectPrsComponent, outlet: 'pr-tab' },
+          { path: 'milestones-view', component: ProjectMilestonesComponent, outlet: 'pr-tab' },
+          { path: 'labels-view', component: ProjectLabelsComponent, outlet: 'pr-tab' },
+          { path: 'new', component: NewPrFormComponent, outlet: 'pr-tab' },
+          { path: ':prId', component: PrOverviewComponent, outlet: 'pr-tab' },
+        ]
+      },
     ]
   },
+
+  { path: 'profile', component: ProfilePageComponent, canMatch: [authGuard] },
+  { path: 'sshkey', component: AddSshKeyPageComponent, canMatch: [authGuard] },
   { path: 'pull-requests', component: PrPageComponent, canActivate: [authGuard] },
   { path: 'search', component: SearchPageComponent },
-  { path: 'not-found', component: PageNotFoundComponent },
-  { path: '**', component: PageNotFoundComponent },
-  {
-    path: 'profile',
-    component: ProfilePageComponent,
-    canMatch: [authGuard],
-    data: {},
-  },
-  {
-    path: 'sshkey',
-    component: AddSshKeyPageComponent,
-    canMatch: [authGuard],
-    data: {},
-  },
-  {
-    path: 'search',
-    component: SearchPageComponent,
-    canMatch: [],
-  },
+
 
 
 
