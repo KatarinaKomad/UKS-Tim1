@@ -5,8 +5,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -25,6 +23,7 @@ import uns.ac.rs.uks.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -108,41 +107,6 @@ public class RepoServiceTest {
 //        assertTrue(myRepos.isEmpty());
 //    }
 
-    @Test
-    public void createNewRepo() throws NotFoundException {
-        // Mocking
-        String testName = "testName";
-        RepoRequest repoRequest = createRepoRequest(testName, Constants.MIKA_USER_ID);
-        Repo repo = createRepo(testName, Constants.MIKA_USER_ID, true);
-
-        User user = new User();
-        user.setId(Constants.MIKA_USER_ID);
-
-        when(userService.getById(Constants.MIKA_USER_ID)).thenReturn(user);
-        when(repoRepository.save(any(Repo.class))).thenReturn(repo);
-
-        // Test
-        RepoBasicInfoDTO dto = repoService.createNewRepo(repoRequest);
-
-        // Assertions
-        assertNotNull(dto);
-        assertEquals(Constants.MIKA_USER_ID, dto.getOwner().getId());
-        assertEquals(testName, dto.getName());
-
-    }
-
-    @Test
-    void testAddNewRepoUserDoesNotExists(){
-        // Mocking
-        String testName = "testName";
-        RepoRequest repoRequest = createRepoRequest(testName, Constants.MIKA_USER_ID);
-
-        when(userService.getById(Constants.MIKA_USER_ID)).thenThrow(new NotFoundException("User not found!"));
-
-        // Test && Assertions
-        assertThrows(NotFoundException.class, () -> repoService.createNewRepo(repoRequest));
-    }
-
 //    @Test
 //    public void testGetByNamePublic() {
 //        // Mocking
@@ -216,24 +180,6 @@ public class RepoServiceTest {
 //        // Assertions
 //        assertNull(dto);
 //    }
-    private Repo createRepo(String name, UUID userId, boolean isPublic) {
-        Repo repo = new Repo();
-        repo.setName(name);
-        repo.setId(UUID.randomUUID());
-        User user = new User();
-        user.setId(userId);
-        repo.setOwner(user);
-        repo.setIsPublic(isPublic);
-        return repo;
-    }
-
-    private RepoRequest createRepoRequest(String name, UUID id) {
-        RepoRequest repoRequest = new RepoRequest();
-        repoRequest.setName(name);
-        repoRequest.setOwnerId(id);
-        repoRequest.setIsPublic(true);
-        return repoRequest;
-    }
 
     @Test
     public void createNewRepo() throws NotFoundException {

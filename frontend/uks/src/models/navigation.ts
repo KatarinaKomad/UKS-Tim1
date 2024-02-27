@@ -21,3 +21,10 @@ export const titleMapper = (selection: SelectionOptions): string => {
         default: return '';
     }
 }
+
+export enum TAB_VIEW {
+    ISSUES = 'issues-view',
+    PRS = 'pr-view',
+    LABELS = 'labels-view',
+    MILESTONES = 'milestones-view',
+}
