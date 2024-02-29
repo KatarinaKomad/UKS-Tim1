@@ -24,6 +24,7 @@ import { ProjectPrsComponent } from './components/organisms/project-prs/project-
 import { NewPrFormComponent } from './components/molecules/new-pr-form/new-pr-form.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
+import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,6 +35,8 @@ const routes: Routes = [
   { path: 'issues', component: MyIssuesPageComponent, canActivate: [authGuard] },
   { path: 'repository/fork', component: NewForkPageComponent },
   { path: 'repository/forks-overview', component: ForksOverviewPageComponent, canActivate: [authGuard] },
+  { path: 'repository/watchers-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
+  { path: 'repository/stars-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
@@ -64,6 +67,7 @@ const routes: Routes = [
   },
 
   { path: 'profile', component: ProfilePageComponent, canMatch: [authGuard] },
+  { path: 'profile/:userId', component: ProfilePageComponent, canMatch: [authGuard] },
   { path: 'sshkey', component: AddSshKeyPageComponent, canMatch: [authGuard] },
   { path: 'pull-requests', component: PrPageComponent, canActivate: [authGuard] },
   { path: 'search', component: SearchPageComponent },

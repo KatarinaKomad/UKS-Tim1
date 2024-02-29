@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import uns.ac.rs.uks.dto.request.EditRepoRequest;
-import uns.ac.rs.uks.dto.request.RepoForkRequest;
-import uns.ac.rs.uks.dto.request.RepoRequest;
-import uns.ac.rs.uks.dto.request.RepoUpdateRequest;
+import uns.ac.rs.uks.dto.request.*;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
 import uns.ac.rs.uks.service.RepoService;
 
 import java.util.List;
@@ -78,5 +76,35 @@ public class RepoController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public List<RepoBasicInfoDTO> getAllForked(@PathVariable UUID repoId) {
         return repoService.getAllForked(repoId);
+    }
+
+    @PostMapping("/star")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public RepoBasicInfoDTO starRepo(@Valid @RequestBody RepoStarWatchRequest starRequest) {
+        return repoService.starRepo(starRequest);
+    }
+
+    @GetMapping("/getAllStargazers/{repoId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<UserDTO> getAllStargazers(@PathVariable UUID repoId) {
+        return repoService.getAllStargazers(repoId);
+    }
+
+    @PostMapping("/watch")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public RepoBasicInfoDTO watchRepo(@Valid @RequestBody RepoStarWatchRequest watchRequest) {
+        return repoService.watchRepo(watchRequest);
+    }
+
+    @GetMapping("/getAllWatchers/{repoId}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public List<UserDTO> getAllWatchers(@PathVariable UUID repoId) {
+        return repoService.getAllWatchers(repoId);
+    }
+
+    @PostMapping("/amIWatchingStargazing")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public WatchStarResponseDTO amIWatchingStargazing(@Valid @RequestBody RepoStarWatchRequest watchRequest) {
+        return repoService.amIWatchingStargazing(watchRequest);
     }
 }

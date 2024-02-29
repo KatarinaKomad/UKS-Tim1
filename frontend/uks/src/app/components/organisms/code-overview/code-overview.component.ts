@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { RepoBasicInfoDTO } from 'src/models/repo/repo';
+import { RepoBasicInfoDTO, getEmptyRepo } from 'src/models/repo/repo';
 import { RepoService } from 'src/services/repo/repo.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { RepoService } from 'src/services/repo/repo.service';
 })
 export class CodeOverviewComponent {
 
-  repo?: RepoBasicInfoDTO;
+  repo: RepoBasicInfoDTO = getEmptyRepo();
 
   constructor(
     private repoService: RepoService,

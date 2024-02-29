@@ -32,6 +32,6 @@ public class UserController {
     @DeleteMapping("/delete/{userID}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public void deleteMyAccount(@PathVariable UUID userID) {
-        userService.deleteUserByUser(userID);
+        userService.deleteUser(userID);
     }
 }

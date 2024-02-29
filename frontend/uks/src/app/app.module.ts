@@ -92,6 +92,9 @@ import { PrPropertiesSideViewComponent } from './components/molecules/pr-propert
 
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
+import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
+import { UserItemComponent } from './components/molecules/user-item/user-item.component';
+import { YesNoDialogComponent } from './components/molecules/dialogs/yes-no-dialog/yes-no-dialog.component';
 
 
 
@@ -153,6 +156,10 @@ import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-pag
     ProjectPrsComponent,
     NewPrFormComponent,
     PrPropertiesSideViewComponent,
+
+    UsersOverviewPageComponent,
+    UserItemComponent,
+    YesNoDialogComponent,
   ],
   exports: [],
   imports: [

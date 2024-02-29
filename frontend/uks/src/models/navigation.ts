@@ -28,3 +28,8 @@ export enum TAB_VIEW {
     LABELS = 'labels-view',
     MILESTONES = 'milestones-view',
 }
+
+export interface YesNoPrompt {
+    title: string;
+    prompt: string;
+}

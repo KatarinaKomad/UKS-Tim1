@@ -5,12 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import uns.ac.rs.uks.dto.request.EditRepoRequest;
-import uns.ac.rs.uks.dto.request.RepoForkRequest;
-import uns.ac.rs.uks.dto.request.RepoRequest;
-import uns.ac.rs.uks.dto.request.RepoUpdateRequest;
+import uns.ac.rs.uks.dto.request.*;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.RepoMapper;
@@ -132,5 +130,50 @@ public class RepoService {
     public List<RepoBasicInfoDTO> getAllForked(UUID repoId) {
         Repo repo = getById(repoId);
         return RepoMapper.toDTOs(repo.getForkChildren());
+    }
+
+    public RepoBasicInfoDTO starRepo(RepoStarWatchRequest starRequest) {
+        Repo repo = getById(starRequest.getRepoId());
+        User user = userService.getById(starRequest.getUserId());
+        boolean isStargazing = repo.getStaredBy().stream().anyMatch(u -> u.getId().equals(user.getId()));
+        if(!isStargazing) {
+            user.getStared().add(repo);
+            repo.getStaredBy().add(user);
+        } else {
+            user.getStared().remove(repo);
+            repo.getStaredBy().remove(user);
+        }
+        return RepoMapper.toDTO(repoRepository.save(repo));
+    }
+
+    public RepoBasicInfoDTO watchRepo(RepoStarWatchRequest starRequest) {
+        Repo repo = getById(starRequest.getRepoId());
+        User user = userService.getById(starRequest.getUserId());
+        boolean isWatching = repo.getWatchers().stream().anyMatch(u -> u.getId().equals(starRequest.getUserId()));
+        if(!isWatching) {
+            user.getWatching().add(repo);
+            repo.getWatchers().add(user);
+        } else {
+            user.getWatching().remove(repo);
+            repo.getWatchers().remove(user);
+        }
+        return RepoMapper.toDTO(repoRepository.save(repo));
+    }
+
+    public List<UserDTO> getAllStargazers(UUID repoId) {
+        Repo repo = getById(repoId);
+        return UserMapper.toDTOs(repo.getStaredBy());
+    }
+
+    public List<UserDTO> getAllWatchers(UUID repoId) {
+        Repo repo = getById(repoId);
+        return UserMapper.toDTOs(repo.getWatchers());
+    }
+
+    public WatchStarResponseDTO amIWatchingStargazing(RepoStarWatchRequest request) {
+        Repo repo = getById(request.getRepoId());
+        boolean isWatching = repo.getWatchers().stream().anyMatch(u -> u.getId().equals(request.getUserId()));
+        boolean isStargazing = repo.getStaredBy().stream().anyMatch(u -> u.getId().equals(request.getUserId()));
+        return new WatchStarResponseDTO(isWatching, isStargazing);
     }
 }
