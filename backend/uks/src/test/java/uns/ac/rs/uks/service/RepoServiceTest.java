@@ -13,8 +13,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
+import uns.ac.rs.uks.dto.request.RepoStarWatchRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.model.*;
@@ -342,6 +344,91 @@ public class RepoServiceTest {
         assertEquals(Constants.MIKA_USER_ID, dto.getOwner().getId());
         assertEquals(Constants.PERA_USER_ID, dto.getForkParent().getOwner().getId());
 
+    }
+
+    @Test
+    public void testWatchRepo() {
+        // Mocking
+        String testName = "testName";
+
+        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.PERA_USER_ID);
+
+        Repo repo = createRepo(testName, Constants.PERA_USER_ID, true);
+        repo.setWatchers(new ArrayList<>());
+
+        User user = new User();
+        user.setId(Constants.PERA_USER_ID);
+        user.setWatching(new ArrayList<>());
+
+        when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
+        when(userService.getById(Constants.PERA_USER_ID)).thenReturn(user);
+        when(repoRepository.save(any(Repo.class))).thenReturn(repo);
+
+        // Test
+        RepoBasicInfoDTO dto = repoService.watchRepo(request);
+
+        // Assertions
+        assertNotNull(dto);
+        assertEquals(1, dto.getWatchCount());
+    }
+
+    @Test
+    public void testStarRepo()  {
+        // Mocking
+        String testName = "testName";
+
+        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.PERA_USER_ID);
+
+        Repo repo = createRepo(testName, Constants.PERA_USER_ID, true);
+        repo.setStaredBy(new ArrayList<>());
+
+        User user = new User();
+        user.setId(Constants.PERA_USER_ID);
+        user.setStared(new ArrayList<>());
+
+        when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
+        when(userService.getById(Constants.PERA_USER_ID)).thenReturn(user);
+        when(repoRepository.save(any(Repo.class))).thenReturn(repo);
+
+        // Test
+        RepoBasicInfoDTO dto = repoService.starRepo(request);
+
+        // Assertions
+        assertNotNull(dto);
+        assertEquals(1, dto.getStarCount());
+    }
+
+    @Test
+    public void testAmIWatchingStargazing()  {
+        // Mocking
+        String testName = "testName";
+
+        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.PERA_USER_ID);
+
+        Repo repo = createRepo(testName, Constants.PERA_USER_ID, true);
+        User user = new User();
+        user.setId(Constants.PERA_USER_ID);
+
+        user.setStared(List.of(repo));
+        repo.setStaredBy(List.of(user));
+        user.setWatching(List.of(repo));
+        repo.setWatchers(List.of(user));
+
+        when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
+
+        // Test
+        WatchStarResponseDTO dto = repoService.amIWatchingStargazing(request);
+
+        // Assertions
+        assertNotNull(dto);
+        assertTrue(dto.isStargazing());
+        assertTrue(dto.isWatching());
     }
 
     private Repo createRepo(String name, UUID userId, boolean isPublic) {
