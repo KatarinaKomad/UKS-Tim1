@@ -36,15 +36,15 @@ export class RepoAboutSideViewComponent {
   }
 
   onStarClick() {
-    throw new Error('Method not implemented.');
+    this.navigationService.navigateToStarsOverview();
   }
   onForkClick() {
     this.navigationService.navigateToForksOverview();
   }
   onWatchClick() {
-    throw new Error('Method not implemented.');
+    this.navigationService.navigateToWatchersOverview();
   }
   showUserProfile(user: UserBasicInfo) {
-    throw new Error('Method not implemented.');
+    this.navigationService.navigateToUser(user.id);
   }
 }

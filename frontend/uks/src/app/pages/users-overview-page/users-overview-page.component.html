@@ -1,0 +1,47 @@
+<mat-drawer-container class="sidebar-container" hasBackdrop="true">
+    <mat-drawer #drawer mode="over" class="drawer">
+        <app-sidebar></app-sidebar>
+    </mat-drawer>
+
+    <mat-drawer-content>
+        <app-navbar [drawer]="drawer"></app-navbar>
+
+        <div class="flex" style=" height: 100%;">
+            <div class="w-1/5 p-4 flex flex-col h-full">
+            </div>
+
+            <div class="!border-l !border-gray-300 !h-full"></div>
+
+            <div class="w-3/4 p-4 flex flex-col h-full">
+
+                <div class="search-bar">
+                    <h2 style="margin-top: 10px; margin-left: 3%; font-size: large; font-weight: 500;">{{interestType}}
+                    </h2>
+                    <span class="span-spacer"></span>
+
+                    <form>
+                        <input class="p-2 rounded-md !text-[14px] text-black !focus-visible:outline-none"
+                            id="searchUsers" placeholder="Search users..." [formControl]="search" />
+
+                        <button type="submit"
+                            class="!bg-green-600 rounded-lg  w-fit px-4 py-1 text-white hover:!bg-green-800 text-sm"
+                            (click)="onSearch()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="repo-container">
+                    <div *ngFor="let user of shownUsers">
+                        <app-user-item [user]="user" style="height: fit-content;"></app-user-item>
+                    </div>
+                    <div *ngIf="shownUsers.length === 0">
+                        No users
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </mat-drawer-content>
+
+</mat-drawer-container>

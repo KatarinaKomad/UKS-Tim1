@@ -77,3 +77,13 @@ export const getEmptyForkParent = (): ForkParentDTO => {
     owner: getEmptyUser()
   }
 }
+
+
+export interface RepoStarWatchRequest {
+  userId: string;
+  repoId: string;
+}
+export interface WatchStarResponseDTO {
+  watching: boolean;
+  stargazing: boolean;
+}

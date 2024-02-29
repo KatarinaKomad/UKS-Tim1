@@ -57,9 +57,9 @@ public class UserService {
         userRepository.updateBlockedByAdmin(id, false);
     }
 
-    public void deleteUserByAdmin(UUID id)  throws NotFoundException{
+    public void deleteUser(UUID id)  throws NotFoundException{
         logger.info("Delete user with email {}", id);
-        userRepository.updateDeletedByAdmin(id, true);
+        userRepository.updateDelete(id, true);
     }
 
 
@@ -90,10 +90,6 @@ public class UserService {
 
         save(user);
         return UserMapper.toDTO(user);
-    }
-
-    public void deleteUserByUser(UUID id)  throws NotFoundException{
-        userRepository.updateDeletedByUser(id, true);
     }
 
 }

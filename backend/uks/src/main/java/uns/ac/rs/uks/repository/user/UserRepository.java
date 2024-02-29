@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import uns.ac.rs.uks.model.User;
 
 import java.util.Optional;
@@ -18,13 +19,12 @@ public interface UserRepository extends JpaRepository<User, UUID>, CustomUserRep
 
     @Modifying
     @Query("UPDATE User u SET u.blockedByAdmin = ?2 WHERE u.id = ?1")
+    @Transactional
     void updateBlockedByAdmin(UUID id, boolean blocked);
 
     @Modifying
     @Query("UPDATE User u SET u.deleted = ?2 WHERE u.id = ?1")
-    void updateDeletedByAdmin(UUID id, boolean deleted);
+    @Transactional
+    void updateDelete(UUID id, boolean deleted);
 
-    @Modifying
-    @Query("UPDATE User u SET u.deleted = ?2 WHERE u.id = ?1")
-    void updateDeletedByUser(UUID id, boolean deleted);
 }

@@ -1,4 +1,4 @@
-import { RepoForkRequest, RepoUpdateRequest } from 'src/models/repo/repo';
+import { RepoForkRequest, RepoStarWatchRequest, RepoUpdateRequest, WatchStarResponseDTO } from 'src/models/repo/repo';
 import {
   EditRepoRequest,
   RepoBasicInfoDTO,
@@ -97,5 +97,35 @@ export class RepoService {
     const body = JSON.stringify(forkRequest);
 
     return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
+  }
+
+
+  star(starRequest: RepoStarWatchRequest) {
+    const url = environment.API_BASE_URL + '/repo/star';
+    const body = JSON.stringify(starRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<void>;
+  }
+  getAllStargazers(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/getAllStargazers/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
+  }
+
+  watch(watchRequest: RepoStarWatchRequest) {
+    const url = environment.API_BASE_URL + '/repo/watch';
+    const body = JSON.stringify(watchRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<void>;
+  }
+  getAllWatchers(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/getAllWatchers/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
+  }
+
+  amIWatchingStargazing(request: RepoStarWatchRequest) {
+    const url = environment.API_BASE_URL + `/repo/amIWatchingStargazing`;
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.post(url, body) as Observable<WatchStarResponseDTO>;
   }
 }

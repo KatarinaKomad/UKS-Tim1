@@ -18,6 +18,7 @@ export class InputComponent implements OnInit {
   @Input() extenseClass: string = '';
   @Input() type: string = 'text';
   @Input() readOnly: boolean = false;
+  @Input() inputClass: string = '';
 
   constructor() { }
 

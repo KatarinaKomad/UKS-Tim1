@@ -158,6 +158,19 @@ export class NavigationService {
   navigateToForksOverview() {
     this.router.navigate(['/repository/forks-overview']);
   }
+  navigateToStarsOverview() {
+    this.router.navigate(['/repository/stars-overview']);
+  }
+  navigateToWatchersOverview() {
+    this.router.navigate(['/repository/watchers-overview']);
+  }
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
+
+  navigateToUser(userId: string) {
+    this.router.navigate([`/profile/${userId}`])
+  }
 
   private setRepoToLocalStorage(repo: RepoBasicInfoDTO, canEdit: boolean) {
     localStorage.setItem("repoId", repo.id);

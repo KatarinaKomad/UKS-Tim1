@@ -35,3 +35,8 @@ export interface UserUpdateRequest {
     email: string;
     username: string;
 }
+
+export enum REPO_INTEREST {
+    STAR = 'Stargazers',
+    WATCH = 'Watchers'
+}
