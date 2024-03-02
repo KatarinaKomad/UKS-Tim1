@@ -29,13 +29,11 @@ jobs:
           distribution: "temurin"
           cache: maven
 
-      - name: Set up environment variables
+      - name: Test
         env:
           EMAIL_SENDER_ADDRESS: ${{ secrets.EMAIL_SENDER_ADDRESS }}
           EMAIL_SENDER_PASSWORD: ${{ secrets.EMAIL_SENDER_PASSWORD }}
           TOKEN_SECRET: $ {{ secrets.TOKEN_SECRET }}
-
-      - name: Test
         run: |
           cd backend/uks && mvn clean test
 
