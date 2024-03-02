@@ -34,5 +34,9 @@ jobs:
         run: docker logs redis-container
 
       - name: Test
+        env:
+          EMAIL_SENDER_ADDRESS: ${{ secrets.EMAIL_SENDER_ADDRESS }}
+          EMAIL_SENDER_PASSWORD: ${{ secrets.EMAIL_SENDER_PASSWORD }}
+          TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
         run: |
           cd backend/uks && mvn clean test
