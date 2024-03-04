@@ -1,4 +1,4 @@
-import { RepoForkRequest, RepoStarWatchRequest, RepoUpdateRequest, WatchStarResponseDTO } from 'src/models/repo/repo';
+import { RepoForkRequest, RepoUserRequest, RepoUpdateRequest, WatchStarResponseDTO } from 'src/models/repo/repo';
 import {
   EditRepoRequest,
   RepoBasicInfoDTO,
@@ -23,11 +23,6 @@ export class RepoService {
   getAllPublic(): Observable<RepoBasicInfoDTO[]> {
     const url = environment.API_BASE_URL + '/repo/getAllPublic';
     return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;
-  }
-
-  getRepoMembers(repoId: string): Observable<UserBasicInfo[]> {
-    const url = environment.API_BASE_URL + `/repo/getMembers/${repoId}`;
-    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
   }
 
   getMyRepos(userId: string): Observable<RepoBasicInfoDTO[]> {
@@ -100,7 +95,7 @@ export class RepoService {
   }
 
 
-  star(starRequest: RepoStarWatchRequest) {
+  star(starRequest: RepoUserRequest) {
     const url = environment.API_BASE_URL + '/repo/star';
     const body = JSON.stringify(starRequest);
 
@@ -111,7 +106,7 @@ export class RepoService {
     return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
   }
 
-  watch(watchRequest: RepoStarWatchRequest) {
+  watch(watchRequest: RepoUserRequest) {
     const url = environment.API_BASE_URL + '/repo/watch';
     const body = JSON.stringify(watchRequest);
 
@@ -122,10 +117,15 @@ export class RepoService {
     return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
   }
 
-  amIWatchingStargazing(request: RepoStarWatchRequest) {
+  amIWatchingStargazing(request: RepoUserRequest) {
     const url = environment.API_BASE_URL + `/repo/amIWatchingStargazing`;
     const body = JSON.stringify(request);
 
     return this.httpRequestService.post(url, body) as Observable<WatchStarResponseDTO>;
+  }
+
+  deleteRepo(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/delete/${repoId}`;
+    return this.httpRequestService.delete(url) as Observable<void>;
   }
 }

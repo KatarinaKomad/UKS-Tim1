@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { LoginRequest, TokenResponse } from 'src/models/authentication/login';
+import { LoginRequest, PasswordResetRequest, PasswordUpdateRequest, TokenResponse } from 'src/models/authentication/login';
 import { RegistrationRequest } from 'src/models/authentication/registration';
 import { UserBasicInfo } from 'src/models/user/user';
 import { HttpRequestService } from 'src/utils/http-request.service';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+
   private loggedUserSubject = new BehaviorSubject<UserBasicInfo | undefined>(
     undefined
   );
@@ -102,5 +103,19 @@ export class AuthService {
   private getCurrentUser(): Observable<UserBasicInfo> {
     const url = environment.API_BASE_URL + '/auth/me';
     return this.httpRequestService.get(url) as Observable<UserBasicInfo>;
+  }
+
+  updatePassword(request: PasswordUpdateRequest) {
+    const url = environment.API_BASE_URL + '/auth/updatePassword';
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.post(url, body) as Observable<void>;
+  }
+
+  resetPassword(request: PasswordResetRequest) {
+    const url = environment.API_BASE_URL + '/auth/resetPassword';
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.post(url, body) as Observable<void>;
   }
 }

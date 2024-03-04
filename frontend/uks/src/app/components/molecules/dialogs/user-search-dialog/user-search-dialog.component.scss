@@ -1,0 +1,122 @@
+.search-bar {
+    padding-top: 15px;
+    padding-left: 5%;
+    width: 100%;
+
+    input {
+        font-size: 12px;
+        border: 1px solid #d1d5da;
+        border-radius: 6px;
+        outline: none;
+        box-shadow: 0 2px 3px rgba(27, 31, 35, 0.075);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        width: 430px;
+        height: 30px;
+        margin-right: 10px;
+    }
+
+    input:focus {
+        border-color: #1f883d;
+    }
+
+    .button {
+        padding: 8px 16px;
+        font-size: 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        height: 30px;
+    }
+
+    select {
+        font-size: 12px;
+        border: 1px solid #d1d5da;
+        border-radius: 6px;
+        outline: none;
+        box-shadow: 0 2px 3px rgba(27, 31, 35, 0.075);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        height: 30px;
+        margin-right: 10px;
+        width: 160px;
+    }
+
+    select:focus {
+        border-color: #1f883d;
+    }
+
+}
+
+
+.paginator {
+    margin-left: 30px;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.segment {
+    padding-top: 3%;
+    padding-bottom: 5%;
+    width: 90%;
+}
+
+.header {
+    font-size: medium;
+    font-weight: bold;
+    padding-bottom: 2%;
+    justify-content: space-between;
+    border-bottom: 2px solid #d0d7de !important;
+
+    .icon {
+        color: #5f6067;
+    }
+
+    .icon:hover {
+        color: #B4B4BB;
+    }
+}
+
+.activity-count {
+    background-color: #d1d5da;
+    margin-left: 3px;
+    border-radius: 50%;
+    padding: 1px 6px;
+
+}
+
+.contributor {
+    font-size: medium;
+    padding-top: 5%;
+    align-items: center;
+}
+
+.contributor-info {
+    margin-left: 10px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 5%;
+}
+
+.submit {
+    font-size: medium;
+    width: 45%;
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.cancel {
+    font-size: medium;
+    width: 45%;
+    margin-top: 5%;
+    margin-left: 5%;
+}

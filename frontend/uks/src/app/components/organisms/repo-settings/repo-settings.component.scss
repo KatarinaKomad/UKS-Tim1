@@ -1,0 +1,40 @@
+.segment {
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 90%;
+}
+
+.header {
+    font-size: medium;
+    font-weight: bold;
+    padding-bottom: 5%;
+    justify-content: space-between;
+    border-bottom: 2px solid #d0d7de !important;
+
+    .icon {
+        color: #5f6067;
+    }
+
+    .icon:hover {
+        color: #B4B4BB;
+    }
+}
+
+.activity-count {
+    background-color: #d1d5da;
+    margin-left: 3px;
+    border-radius: 50%;
+    padding: 1px 6px;
+
+}
+
+.contributor {
+    font-size: medium;
+    justify-content: space-between;
+    padding-top: 5%;
+}
+
+.contributor-info:hover {
+    color: cornflowerblue;
+    cursor: pointer;
+}

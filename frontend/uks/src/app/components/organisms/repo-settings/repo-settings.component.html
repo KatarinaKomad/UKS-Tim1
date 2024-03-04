@@ -1,33 +1,96 @@
-<div class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200">
-  <div class="text-xl font-semibold mx-auto mb-5">
-    {{ repository.name }} Settings
-  </div>
-  <app-input [label]="'Repository name'" [id]="'repoName'" [control]="repoNameControl" [placeholder]="'Repo Name'"
-    [required]="true" [invalid]="repoNameControl.invalid && repoNameControl.dirty"
-    [errorMessage]="'Repo Name is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"></app-input>
+<div class="flex flex-row">
+  <div class="flex flex-col !w-2/12  h-full bg-gray-100 gap-y-4 "></div>
+  <div class="flex flex-col !w-6/12  h-full items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200 ">
+    <div class=" text-xl font-semibold mx-auto mb-5">
+      {{ repository.name }} Settings
+    </div>
+    <div class="w-full h-full">
+      <app-input [label]="'Repository name'" [id]="'repoName'" [control]="repoNameControl" [placeholder]="'Repo Name'"
+        [required]="true" [invalid]="repoNameControl.invalid && repoNameControl.dirty" [inputClass]="'w-[70%]'"
+        [errorMessage]="'Repo Name is required'" [type]="'text'" defaultClass="flex items-center gap-x-12"></app-input>
 
-  <app-input [label]="'Repository description'" [id]="'repoDescription'" [control]="repoDescriptionControl"
-    [placeholder]="'Repo description'" [required]="false"
-    [invalid]="repoDescriptionControl.invalid && repoDescriptionControl.dirty" [type]="'text'"
-    defaultClass="flex items-center gap-x-4"></app-input>
+      <app-input [label]="'Repository description'" [id]="'repoDescription'" [control]="repoDescriptionControl"
+        [placeholder]="'Repo description'" [required]="false" [inputClass]="'w-[70%]'"
+        [invalid]="repoDescriptionControl.invalid && repoDescriptionControl.dirty" [type]="'text'"
+        defaultClass="flex items-center gap-x-2"></app-input>
 
-  <div class="flex items-center gap-x-4">
-    <div class="text-[16px]">Public repository</div>
-    <mat-checkbox [(ngModel)]="repository.isPublic"></mat-checkbox>
+      <div class="flex items-center gap-x-10">
+        <div class="text-[16px]">Public repository</div>
+        <mat-checkbox [(ngModel)]="repository.isPublic"></mat-checkbox>
+      </div>
+
+      <div class="flex items-center gap-x-14">
+        <div class="text-[16px] mr-3 pb-4">Default branch</div>
+        <mat-form-field class="bg-transparent h-[8.5vh] w-[30vw]">
+          <mat-select class="bg-transparent " [(ngModel)]="repository.defaultBranch">
+            @for (branch of branches; track branch) {
+            <mat-option [value]="branch.id">{{ branch.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="w-fit mx-auto mt-10">
+        <button (click)="deleteRepoPrompt()"
+          class="text-white rounded-xl text-[16px] w-fit px-6 py-2 !bg-red-500 !hover:bg-red-800 mr-20">
+          Delete
+          <i class="icon fa-solid fa-trash"></i>
+        </button>
+
+        <app-button text="Save" (buttonClick)="handleSave()" extenseClass="!px-10 ml-20 " />
+
+
+      </div>
+
+    </div>
   </div>
 
-  <div class="flex items-center gap-x-4">
-    <div class="text-[16px] mr-3 pb-4">Default branch</div>
-    <mat-form-field class="bg-transparent h-[8.5vh] w-[10.5vw]">
-      <mat-select class="bg-transparent " [(ngModel)]="repository.defaultBranch">
-        @for (branch of branches; track branch) {
-        <mat-option [value]="branch.id">{{ branch.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+  <!-- SIDE VIEW - MEMBERS SETTINGS -->
+
+  <div class="flex flex-col !w-4/12 justify-between  items-start my-10 rounded-l gap-y-4 px-10 py-10 bg-gray-100 ">
+    <div class="segment flex-grow">
+      <div class="header">
+        Members
+        <span class="activity-count">{{members.length}}</span>
+      </div>
+
+      <div *ngFor="let member of members; let index = index" class="contributor flex flex-row">
+        <div (click)="showUserProfile(member)" class="contributor-info">
+          {{index + 1}}. {{member.firstName}} {{member.lastName}}
+        </div>
+
+        <div *ngIf="member.repositoryRole !== REPO_ROLE.OWNER && member.inviteStatus !== INVITE_STATUS.PENDING">
+          <select (change)="onRepoRoleChange($event, member)" class="mr-4 px-1 py-1 border  rounded">
+            <option *ngFor="let option of roles" [value]="option" [selected]="option === member.repositoryRole">
+              {{ option | titlecase}}
+            </option>
+          </select>
+
+          <button (click)="removeUserFromRepoPrompt(member)"
+            class="text-white rounded-xl text-[14px] w-fit px-2 py-1 !bg-red-500 !hover:bg-red-800 ">
+            <i class="icon fa-solid fa-trash"></i>
+          </button>
+        </div>
+
+        <div *ngIf="member.repositoryRole === REPO_ROLE.OWNER">
+          <div class="mr-4 px-1 py-1 border rounded">
+            Owner
+          </div>
+        </div>
+
+        <div *ngIf="member.inviteStatus === INVITE_STATUS.PENDING">
+          <div class="mr-4 px-1 py-1 border rounded">
+            Pending...
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="w-fit mx-auto mt-auto ">
+      <app-button text="Invite users" (buttonClick)="inviteUsers()" />
+    </div>
+
   </div>
 
-  <div class="w-fit mx-auto mt-10">
-    <app-button text="Save" (buttonClick)="handleSave()" />
-  </div>
 </div>

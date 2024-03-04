@@ -2,7 +2,8 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, O
 import { FormControl } from '@angular/forms';
 import { FILTER_AUTHOR_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
 import { UserBasicInfo } from 'src/models/user/user';
-import { RepoService } from 'src/services/repo/repo.service';
+import { MemberService } from 'src/services/member/member.service';
+import { RepoMemberDTO } from 'src/models/user/member';
 
 @Component({
   selector: 'app-author-filter',
@@ -25,14 +26,14 @@ export class AuthorFilterComponent implements AfterViewInit, OnChanges {
   filter = new FormControl<string>("");
 
   constructor(
-    private repoService: RepoService,
+    private memberService: MemberService,
   ) {
 
     this.repoId = localStorage.getItem('repoId') as string;
 
-    this.repoService.getRepoMembers(this.repoId).subscribe({
-      next: (list: UserBasicInfo[]) => {
-        this.fullList = list;
+    this.memberService.getRepoMembers(this.repoId).subscribe({
+      next: (list: RepoMemberDTO[]) => {
+        this.fullList = list;;
         this.shownList = list;
       }
     })

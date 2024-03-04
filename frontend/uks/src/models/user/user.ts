@@ -40,3 +40,11 @@ export enum REPO_INTEREST {
     STAR = 'Stargazers',
     WATCH = 'Watchers'
 }
+
+
+export enum REPO_ROLE {
+    COLLABORATOR = "COLLABORATOR",
+    CONTRIBUTOR = "CONTRIBUTOR",
+    OWNER = "OWNER",
+    VIEWER = "VIEWER",
+}

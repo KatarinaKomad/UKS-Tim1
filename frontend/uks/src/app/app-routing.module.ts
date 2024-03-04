@@ -25,6 +25,7 @@ import { NewPrFormComponent } from './components/molecules/new-pr-form/new-pr-fo
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
 import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
+import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -71,6 +72,7 @@ const routes: Routes = [
   { path: 'sshkey', component: AddSshKeyPageComponent, canMatch: [authGuard] },
   { path: 'pull-requests', component: PrPageComponent, canActivate: [authGuard] },
   { path: 'search', component: SearchPageComponent },
+  { path: 'invite-verification/:link', component: RepoInvitationPageComponent },
 
 
 

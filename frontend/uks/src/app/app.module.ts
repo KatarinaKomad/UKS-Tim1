@@ -95,6 +95,9 @@ import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-pag
 import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
 import { UserItemComponent } from './components/molecules/user-item/user-item.component';
 import { YesNoDialogComponent } from './components/molecules/dialogs/yes-no-dialog/yes-no-dialog.component';
+import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
+import { UserSearchDialogComponent } from './components/molecules/dialogs/user-search-dialog/user-search-dialog.component';
+import { PasswordUpdateDialogComponent } from './components/molecules/dialogs/password-update-dialog/password-update-dialog.component';
 
 
 
@@ -160,6 +163,10 @@ import { YesNoDialogComponent } from './components/molecules/dialogs/yes-no-dial
     UsersOverviewPageComponent,
     UserItemComponent,
     YesNoDialogComponent,
+
+    RepoInvitationPageComponent,
+    UserSearchDialogComponent,
+    PasswordUpdateDialogComponent,
   ],
   exports: [],
   imports: [
