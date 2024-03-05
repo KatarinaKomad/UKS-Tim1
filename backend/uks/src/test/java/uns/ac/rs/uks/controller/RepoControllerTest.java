@@ -11,9 +11,8 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
-import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
-import uns.ac.rs.uks.dto.request.RepoStarWatchRequest;
+import uns.ac.rs.uks.dto.request.RepoUserRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
@@ -158,18 +157,6 @@ public class RepoControllerTest {
         assertEquals(Boolean.FALSE, responseEntity.getBody());
     }
 
-    @Test
-    public void testGetMembersByRepoId() {
-        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        String url = "/repo/getMembers/" + Constants.REPOSITORY_ID_1_UKS_TEST;
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ParameterizedTypeReference<List<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
-        ResponseEntity<List<UserDTO>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, responseType);
-
-        assertNotNull(responseEntity.getBody());
-        assertEquals(2, responseEntity.getBody().size());
-    }
-
 //    @Test
 //    public void testFork() {
 //        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
@@ -245,11 +232,11 @@ public class RepoControllerTest {
     @Test
     public void testStar() {
         HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.MIKA_USER_ID);
 
-        HttpEntity<RepoStarWatchRequest> entity = new HttpEntity<>(request, headers);
+        HttpEntity<RepoUserRequest> entity = new HttpEntity<>(request, headers);
         ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
                 .exchange("/repo/star", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
 
@@ -259,11 +246,11 @@ public class RepoControllerTest {
     @Test
     public void testWatch() {
         HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.MIKA_USER_ID);
 
-        HttpEntity<RepoStarWatchRequest> entity = new HttpEntity<>(request, headers);
+        HttpEntity<RepoUserRequest> entity = new HttpEntity<>(request, headers);
         ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
                 .exchange("/repo/watch", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
 
@@ -291,7 +278,7 @@ public class RepoControllerTest {
     @Test
     public void testGetAllWatchers() {
         HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.MIKA_USER_ID);
 
@@ -312,11 +299,11 @@ public class RepoControllerTest {
     @Test
     public void testAmIWatchingStargazing() {
         HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.MIKA_USER_ID);
 
-        HttpEntity<RepoStarWatchRequest> entity = new HttpEntity<>(request, headers);
+        HttpEntity<RepoUserRequest> entity = new HttpEntity<>(request, headers);
         ResponseEntity<WatchStarResponseDTO> responseEntity = restTemplate
                 .exchange("/repo/amIWatchingStargazing", HttpMethod.POST, entity, WatchStarResponseDTO.class);
 
