@@ -42,7 +42,9 @@ export class NavbarComponent implements OnInit {
     const href = this.router.url;
     this.selected = href as SelectionOptions;
     this.title = titleMapper(this.selected);
-    if (this.title === '' && href.includes(SelectionOptions.REPOSITORY)) {
+    if (this.title === '' && href.includes(SelectionOptions.PROFILE)) {
+      this.title = titleMapper(SelectionOptions.PROFILE);
+    } else if (this.title === '' && href.includes(SelectionOptions.REPOSITORY)) {
       this.getRepoTitle();
     }
   }

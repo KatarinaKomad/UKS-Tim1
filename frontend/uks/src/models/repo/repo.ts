@@ -12,7 +12,7 @@ export interface RepoBasicInfoDTO extends SearchResult {
   watchCount: number;
   defaultBranch: number;
   forkParent?: ForkParentDTO;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export interface RepoUpdateRequest {
@@ -79,7 +79,7 @@ export const getEmptyForkParent = (): ForkParentDTO => {
 }
 
 
-export interface RepoStarWatchRequest {
+export interface RepoUserRequest {
   userId: string;
   repoId: string;
 }

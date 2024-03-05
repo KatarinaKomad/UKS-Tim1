@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uns.ac.rs.uks.dto.request.LoginRequest;
+import uns.ac.rs.uks.dto.request.PasswordResetRequest;
+import uns.ac.rs.uks.dto.request.PasswordUpdateRequest;
 import uns.ac.rs.uks.dto.request.RegistrationRequest;
 import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.dto.response.UserDTO;
@@ -28,7 +30,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -46,6 +48,8 @@ public class AuthServiceTest {
     private RoleService roleService;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
+    private EmailService emailService;
     private AutoCloseable closeable;
 
     private final String testEmail = "test@example.com";
@@ -97,7 +101,7 @@ public class AuthServiceTest {
     @Test
     void testLoginSuccess() {
         // Mocking
-        LoginRequest loginRequest = new LoginRequest(Constants.MIKA_EMAIL,  "bWlrYTEyMw=="); //mika123
+        LoginRequest loginRequest = new LoginRequest(Constants.MIKA_EMAIL,  Constants.MIKA_PASSWORD); //mika123
         String accessToken = "mockToken";
         long expiresAt = System.currentTimeMillis() + 3600000;
 
@@ -118,7 +122,7 @@ public class AuthServiceTest {
     @Test
     void testLoginWhenEmailDoesNotExists() {
         // Mocking
-        LoginRequest loginRequest = new LoginRequest(testEmail,  "bWlrYTEyMw=="); //mika123
+        LoginRequest loginRequest = new LoginRequest(testEmail,  Constants.MIKA_PASSWORD); //mika123
         when(userService.getUserByEmail(testEmail)).thenThrow(NotFoundException.class);
         // Test && Assertions
         assertThrows(NotFoundException.class, () -> authService.login(loginRequest));
@@ -127,7 +131,7 @@ public class AuthServiceTest {
     @Test
     void testLoginWhenAccountDeleted() {
         // Mocking
-        LoginRequest loginRequest = new LoginRequest(Constants.MIKA_EMAIL,  "bWlrYTEyMw=="); //mika123
+        LoginRequest loginRequest = new LoginRequest(Constants.MIKA_EMAIL,  Constants.MIKA_PASSWORD); //mika123
         User user = User.builder().email(Constants.MIKA_EMAIL).blockedByAdmin(false).deleted(true).build();
         when(userService.getUserByEmail(Constants.MIKA_EMAIL)).thenReturn(user);
         // Test && Assertions
@@ -136,11 +140,64 @@ public class AuthServiceTest {
 
     @Test
     void testLoginWhenAccountBlocked() {
-        LoginRequest loginRequest = new LoginRequest(Constants.MIKA_EMAIL,  "bWlrYTEyMw=="); //mika123
+        LoginRequest loginRequest = new LoginRequest(Constants.MIKA_EMAIL,  Constants.MIKA_PASSWORD); //mika123
         User user = User.builder().email(Constants.MIKA_EMAIL).blockedByAdmin(true).deleted(false).build();
         when(userService.getUserByEmail(Constants.MIKA_EMAIL)).thenReturn(user);
         // Test && Assertions
         assertThrows(NotFoundException.class, () -> authService.login(loginRequest));
+    }
+
+    @Test
+    void testResetPassword() {
+        // Mocking
+        String oldPassword = Constants.MIKA_PASSWORD;
+
+        User user = User.builder()
+                        .email(Constants.MIKA_EMAIL).blockedByAdmin(false).deleted(false).password(oldPassword)
+                        .build();
+
+        PasswordResetRequest request = new PasswordResetRequest();
+        request.setEmail(Constants.MIKA_EMAIL);
+
+        when(userService.getUserByEmail(Constants.MIKA_EMAIL)).thenReturn(user);
+        when(userService.save(any(User.class))).thenReturn(any(User.class));
+
+        // Test
+        authService.resetPassword(request);
+        // Assertions
+        verify(emailService).sendResetPasswordEmail(any(User.class), any(String.class));
+    }
+
+    @Test
+    void testUpdatePassword() {
+        // Mocking
+        String oldPassword = Constants.MIKA_PASSWORD;
+        String newPassword = "cGVyYTEyMzQ=";
+        String encodedNewPassword = "$2a$12$BUZ/Z5ZYrjyatiq9OdyHk.H2aY/KIgjgj9QuVPffj1zObzuX6Tmt.";
+        String encodedOldPassword = "$2a$12$3oftqT7voPybyTelelZotubxgrQPcKhyz3Cr6YWudJEyzBh319eLK";
+
+        User userOld = User.builder()
+                .email(Constants.MIKA_EMAIL).blockedByAdmin(false).deleted(false).password(encodedOldPassword)
+                .build();
+
+        User userNew = User.builder()
+                .email(Constants.MIKA_EMAIL).blockedByAdmin(false).deleted(false).password(encodedNewPassword)
+                .build();
+
+        PasswordUpdateRequest request = new PasswordUpdateRequest();
+        request.setEmail(Constants.MIKA_EMAIL);
+        request.setCurrentPassword(oldPassword);
+        request.setPassword(newPassword);
+        request.setPasswordConfirmation(newPassword);
+
+        when(userService.getUserByEmail(Constants.MIKA_EMAIL)).thenReturn(userOld);
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(userService.save(any(User.class))).thenReturn(userNew);
+        doNothing().when(emailService).sendResetPasswordEmail(any(User.class), any(String.class));
+
+        // Test
+        authService.updatePassword(request);
+        // Assertions
     }
 
 

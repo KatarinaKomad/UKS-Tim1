@@ -64,7 +64,8 @@ public class SecurityConfig {
             antMatcher("/websocket/**").getPattern(),
             antMatcher("/auth/login").getPattern(),
             antMatcher("/auth/logout/**").getPattern(),
-            antMatcher("/auth/register").getPattern()
+            antMatcher("/auth/register").getPattern(),
+            antMatcher("/repo/acceptInvitation/**").getPattern()
     };
     @Bean
     public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception {
@@ -101,6 +102,8 @@ public class SecurityConfig {
                         exchange.requestMatchers(antMatcher("/websocket/**")).permitAll()
                                 .requestMatchers(mvc.pattern("/auth/login")).permitAll()
                                 .requestMatchers(mvc.pattern("/auth/register")).permitAll()
+                                .requestMatchers(mvc.pattern("/auth/resetPassword")).permitAll()
+                                .requestMatchers(mvc.pattern("/member/acceptInvitation/**")).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthenticationFilter(), BasicAuthenticationFilter.class);

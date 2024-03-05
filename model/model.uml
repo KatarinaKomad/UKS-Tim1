@@ -13,6 +13,7 @@ class Role {
 
 class Member {
     role: RepositoryRole
+    inviteStatus: MemberInviteStatus
 }
 
 class Repository {
@@ -106,6 +107,12 @@ enum IssueEventType {
     PR_REF
     PR_REVIEW
     COMMIT_REF
+}
+
+enum MemberInviteStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
 }
 
 Member *-- User

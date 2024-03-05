@@ -13,9 +13,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
-import uns.ac.rs.uks.dto.request.RepoStarWatchRequest;
+import uns.ac.rs.uks.dto.request.RepoUserRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
-import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.dto.response.RepoMemberDTO;
 import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
@@ -298,22 +298,7 @@ public class RepoServiceTest {
         // Assertions
         assertNull(dto);
     }
-    @Test
-    public void testGetMembers() {
-        UUID id = Constants.REPOSITORY_ID_1_UKS_TEST;
 
-        Repo repo = new Repo();
-        repo.setId(id);
-        Member member1 = new Member();
-        member1.setRepository(repo);
-        Member member2 = new Member();
-        member2.setRepository(repo);
-
-        when(memberService.findAllMembersByRepositoryId(id)).thenReturn(List.of(member1, member2));
-
-        List<UserDTO> members = repoService.getMembers(id);
-        assertEquals(2, members.size());
-    }
 
     @Test
     public void testForkRepo() throws NotAllowedException {
@@ -351,7 +336,7 @@ public class RepoServiceTest {
         // Mocking
         String testName = "testName";
 
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.PERA_USER_ID);
 
@@ -379,7 +364,7 @@ public class RepoServiceTest {
         // Mocking
         String testName = "testName";
 
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.PERA_USER_ID);
 
@@ -407,7 +392,7 @@ public class RepoServiceTest {
         // Mocking
         String testName = "testName";
 
-        RepoStarWatchRequest request = new RepoStarWatchRequest();
+        RepoUserRequest request = new RepoUserRequest();
         request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
         request.setUserId(Constants.PERA_USER_ID);
 

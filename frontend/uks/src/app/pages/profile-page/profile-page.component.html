@@ -35,15 +35,23 @@
           [errorMessage]="'Username is required'" [type]="'text'" defaultClass="flex items-center gap-x-10"
           [inputClass]="'w-[70%]'" [readOnly]="isReadonly"></app-input>
 
-        <div class="w-fit mx-auto mt-10" *ngIf="!isReadonly">
-          <app-button text="Save" (buttonClick)="handleSave()" />
+
+        <div class="w-fit mx-auto mt-4" *ngIf="!isReadonly">
+          <app-button text="Save" (buttonClick)="handleSave()" extenseClass="w-[150px]" />
         </div>
+
       </div>
 
 
-      <div class="delete-button w-fit mx-auto">
+      <div class="w-fit mx-auto flex flex-row gap-x-20">
+        <button (click)="openUpdatePasswordDialog()" *ngIf="!isReadonly"
+          class="text-white rounded-xl text-[16px] w-[180px] px-4 py-2 !bg-blue-500 !hover:bg-blue-800">
+          Update password
+          <i class="fa-solid fa-key"></i>
+        </button>
+
         <button (click)="deleteAccountPrompt()" *ngIf="!isReadonly"
-          class="text-white rounded-xl text-[16px] w-fit px-4 py-2 !bg-red-500 !hover:bg-red-800 ">
+          class="text-white rounded-xl text-[16px] w-[180px] px-4 py-2 !bg-red-500 !hover:bg-red-800 ">
           Delete Account
           <i class="icon fa-solid fa-trash fa-lg"></i>
         </button>

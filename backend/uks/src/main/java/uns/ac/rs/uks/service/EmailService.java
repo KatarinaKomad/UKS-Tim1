@@ -7,7 +7,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,22 +16,18 @@ import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.model.Repo;
 import uns.ac.rs.uks.model.User;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
-import java.security.cert.CertificateEncodingException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
-
-    @Value("${application.mailing.templateLocation}")
-    private String templatesLocation;
+    @Autowired
+    private ResourceLoader resourceLoader;
+    private final String templatesLocation = "templates";
 
 
     private static final Logger logger = LogManager.getLogger(EmailService.class);
@@ -42,6 +39,15 @@ public class EmailService {
                 "repoName", repo.getName(),
                 "link", link);
         String subject = "Invitation to " + repo.getName();
+        sendMail("ukstim1111+" + user.getCustomUsername() +"@gmail.com", subject, content);
+    }
+
+    @Async
+    public void sendResetPasswordEmail(User user, String password) {
+        String content = renderTemplate("resetPassword.html",
+                "fullName", user.getName(),
+                "password", password);
+        String subject = "Password reset";
         sendMail("ukstim1111+" + user.getCustomUsername() +"@gmail.com", subject, content);
     }
 
@@ -91,10 +97,10 @@ public class EmailService {
     }
 
     private String renderTemplate(String templateName, Map<String, String> variables) {
-        File file = Paths.get(templatesLocation).resolve(templateName).toFile();
+        String path = Paths.get(templatesLocation).resolve(templateName).toString();
         String message = null;
         try {
-            message = FileUtils.readFileToString(file, "UTF-8");
+            message = readFileToString(path);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -108,6 +114,23 @@ public class EmailService {
         }
 
         return message;
+    }
+
+    public String readFileToString(String filePath) throws IOException {
+        // Load the resource
+        Resource resource = resourceLoader.getResource("classpath:" + filePath);
+
+        // Check if the resource exists
+        if (!resource.exists()) {
+            throw new IllegalArgumentException("File not found: " + filePath);
+        }
+
+        // Read the file content into a string
+//        return FileUtils.readFileToString(resource.getFile(), "UTF-8");
+        try (InputStream inputStream = resource.getInputStream();
+             Scanner scanner = new Scanner(inputStream, "UTF-8")) {
+            return scanner.useDelimiter("\\A").next();
+        }
     }
 
 }

@@ -1,0 +1,49 @@
+<div class="flex flex-col h-[90%]">
+    <div class="search-bar flex flex-row">
+        <form>
+            <input class="p-2 rounded-md !text-[12px] text-black !focus-visible:outline-none" id="searchRepos"
+                placeholder="Search..." [formControl]="inputControl" />
+
+            <button class="!bg-green-600 rounded-lg  w-fit px-4 py-1 text-white hover:!bg-green-800 text-sm  !mr-4"
+                (click)="search()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+
+        <div class="paginator">
+            <app-custom-pagination [page]="page" (nextPageEvent)="getNextPage()" (previousPageEvent)="getPreviousPage()"
+                (pageSizeEvent)="getPageInNewSize($event)">
+            </app-custom-pagination>
+        </div>
+    </div>
+    <div class="result-container ">
+
+        <div class="segment ">
+            <div class="header">
+                Search result:
+            </div>
+
+            <div *ngFor="let member of page?.content; let index = index" class="contributor flex flex-row">
+                <mat-checkbox [checked]="selectedUser?.id === member.id"
+                    (change)="onCheckboxChange($event, member)"></mat-checkbox>
+                <div class="contributor-info">
+                    {{member.username}}
+                    <div class="!text-[12px]">
+                        ({{member.firstName}} {{member.lastName}})
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="page && page.content.length === 0" class="contributor flex flex-row">
+                No results
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container !mt-auto ">
+        <app-button [text]="'Cancel'" [extenseClass]="'bg-red-500 hover:bg-red-800 '"
+            (click)="onCancelClick()"></app-button>
+        <app-button [text]="'Send invite'" [disabled]="!selectedUser" (buttonClick)="onSubmitClick()"></app-button>
+    </div>
+
+
+</div>

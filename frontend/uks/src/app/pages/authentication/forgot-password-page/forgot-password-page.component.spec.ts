@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ForgotPasswordPageComponent } from './forgot-password-page.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 describe('ForgotPasswordPageComponent', () => {
   let component: ForgotPasswordPageComponent;
@@ -8,9 +10,11 @@ describe('ForgotPasswordPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ForgotPasswordPageComponent ]
+      declarations: [ForgotPasswordPageComponent],
+      imports: [HttpClientModule, ToastrModule.forRoot()],
+      providers: [ToastrService]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ForgotPasswordPageComponent);
     component = fixture.componentInstance;

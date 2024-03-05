@@ -167,6 +167,9 @@ export class NavigationService {
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
+  navigateToHome() {
+    this.router.navigate(['/home']);
+  }
 
   navigateToUser(userId: string) {
     this.router.navigate([`/profile/${userId}`])

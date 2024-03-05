@@ -4,6 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { PasswordUpdateDialogComponent } from 'src/app/components/molecules/dialogs/password-update-dialog/password-update-dialog.component';
 import { YesNoDialogComponent } from 'src/app/components/molecules/dialogs/yes-no-dialog/yes-no-dialog.component';
 import {
   UserBasicInfo,
@@ -20,6 +21,7 @@ import { UserService } from 'src/services/user/user.service';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
+
   profileInfo!: UserDTO | null;
   loggedUser!: UserBasicInfo | undefined;
   request!: UserUpdateRequest;
@@ -140,5 +142,17 @@ export class ProfilePageComponent implements OnInit {
         console.log(e);
       },
     })
+  }
+
+  openUpdatePasswordDialog() {
+    const dialogRef = this.dialog.open(PasswordUpdateDialogComponent, {
+      height: '75%',
+      width: '60%',
+    });
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+      if (success) {
+        this.authService.logout()
+      }
+    });
   }
 }

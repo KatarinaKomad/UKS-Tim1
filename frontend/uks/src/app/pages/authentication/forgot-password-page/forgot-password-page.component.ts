@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { AuthService } from 'src/services/auth/auth.service';
+import { Toastr } from 'src/utils/toastr.service';
 
 @Component({
   selector: 'app-forgot-password-page',
@@ -9,11 +11,20 @@ import { FormControl, Validators } from '@angular/forms';
 export class ForgotPasswordPageComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
 
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    private toastr: Toastr
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   handleSendEmailButton(): void {
-    alert('login');
+    this.authService.resetPassword({ email: this.email.value as string }).subscribe({
+      next: () => {
+        this.toastr.success("New password sent", "Please check your email.")
+      }, error: () => {
+        this.toastr.error("Something went wrong", "Please try again later")
+      }
+    })
   }
 }

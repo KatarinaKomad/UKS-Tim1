@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import uns.ac.rs.uks.dto.request.LoginRequest;
+import uns.ac.rs.uks.dto.request.PasswordResetRequest;
+import uns.ac.rs.uks.dto.request.PasswordUpdateRequest;
 import uns.ac.rs.uks.dto.request.RegistrationRequest;
 import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.dto.response.UserDTO;
@@ -46,6 +48,17 @@ public class AuthController {
     @PostMapping("/register")
     public UserDTO register(@Valid @RequestBody RegistrationRequest registrationRequest) {
         return authService.registerUser(registrationRequest);
+    }
+
+    @PostMapping("/resetPassword")
+    public void resetPassword(@Valid @RequestBody PasswordResetRequest request) {
+        authService.resetPassword(request);
+    }
+
+    @PostMapping("/updatePassword")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public void updatePassword(@Valid @RequestBody PasswordUpdateRequest request) {
+        authService.updatePassword(request);
     }
 
     @GetMapping("/me")

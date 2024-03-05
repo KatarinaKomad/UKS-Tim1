@@ -15,3 +15,15 @@ export interface TokenResponse {
 export interface Token {
   sub: string;
 }
+
+
+export interface PasswordUpdateRequest {
+  email: string;
+  currentPassword: string;
+  password: string;
+  passwordConfirmation: string;
+}
+
+export interface PasswordResetRequest {
+  email: string;
+}
