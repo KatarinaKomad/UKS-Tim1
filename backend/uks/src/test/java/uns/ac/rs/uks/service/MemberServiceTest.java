@@ -127,10 +127,17 @@ public class MemberServiceTest {
 
         Repo repo = new Repo();
         repo.setId(id);
+        User user1 = new User();
+        user1.setId(Constants.MIKA_USER_ID);
+        User user2 = new User();
+        user2.setId(Constants.PERA_USER_ID);
+
         Member member1 = new Member();
         member1.setRepository(repo);
+        member1.setUser(user1);
         Member member2 = new Member();
         member2.setRepository(repo);
+        member2.setUser(user2);
 
         when(memberService.findAllMembersByRepositoryId(id)).thenReturn(List.of(member1, member2));
 
