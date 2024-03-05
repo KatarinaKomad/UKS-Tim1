@@ -2,6 +2,7 @@ package uns.ac.rs.uks.dto.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import uns.ac.rs.uks.dto.request.PasswordUpdateRequest;
 import uns.ac.rs.uks.dto.request.RegistrationRequest;
 
 public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMatch, Object> {
@@ -15,8 +16,8 @@ public class PasswordsMatchValidator implements ConstraintValidator<PasswordsMat
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
         if (o instanceof RegistrationRequest dto)
             return passwordsMatch(dto.getPassword(), dto.getPasswordConfirmation());
-//        if (o instanceof PasswordChangeRequest dto)
-//            return passwordsMatch(dto.getNewPassword(), dto.getPasswordConfirmation());
+        if (o instanceof PasswordUpdateRequest dto)
+            return passwordsMatch(dto.getPassword(), dto.getPasswordConfirmation());
         return false;
     }
 

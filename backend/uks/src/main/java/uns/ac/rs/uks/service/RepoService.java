@@ -2,22 +2,20 @@ package uns.ac.rs.uks.service;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.*;
-import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
-import uns.ac.rs.uks.dto.response.UserDTO;
-import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
+import uns.ac.rs.uks.dto.response.*;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
+import uns.ac.rs.uks.mapper.MemberMapper;
 import uns.ac.rs.uks.mapper.RepoMapper;
 import uns.ac.rs.uks.mapper.UserMapper;
-import uns.ac.rs.uks.model.Member;
-import uns.ac.rs.uks.model.Repo;
-import uns.ac.rs.uks.model.RepositoryRole;
-import uns.ac.rs.uks.model.User;
+import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.repo.RepoRepository;
+import uns.ac.rs.uks.util.EncryptionUtil;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,7 +53,7 @@ public class RepoService {
         Repo repo = RepoMapper.toRepoFromRequest(repoRequest, user);
         repo.setDefaultBranch(branchService.createDefaultBranch(repo));
         repoRepository.save(repo);
-        memberService.addNewMember(user, repo, RepositoryRole.OWNER);
+        memberService.addNewMember(user, repo, RepositoryRole.OWNER, MemberInviteStatus.ACCEPTED);
         var repoDto = RepoMapper.toDTO(repo);
         repoDto.setCloneUri(gitoliteService.createRepo(repoDto.getName(), user.getUsername()));
         return repoDto;
@@ -86,11 +84,6 @@ public class RepoService {
         Member member = memberService.findMemberByUserIdAndRepositoryId(repoRequest.getUserId(),
                 repoRequest.getRepoId());
         return member != null;
-    }
-
-    public List<UserDTO> getMembers(UUID repoId) {
-        List<Member> members = memberService.findAllMembersByRepositoryId(repoId);
-        return members.stream().map(member -> UserMapper.toDTO(member.getUser())).toList();
     }
 
     @CacheEvict(value = "repos", allEntries = true)
@@ -132,7 +125,7 @@ public class RepoService {
         return RepoMapper.toDTOs(repo.getForkChildren());
     }
 
-    public RepoBasicInfoDTO starRepo(RepoStarWatchRequest starRequest) {
+    public RepoBasicInfoDTO starRepo(RepoUserRequest starRequest) {
         Repo repo = getById(starRequest.getRepoId());
         User user = userService.getById(starRequest.getUserId());
         boolean isStargazing = repo.getStaredBy().stream().anyMatch(u -> u.getId().equals(user.getId()));
@@ -146,7 +139,7 @@ public class RepoService {
         return RepoMapper.toDTO(repoRepository.save(repo));
     }
 
-    public RepoBasicInfoDTO watchRepo(RepoStarWatchRequest starRequest) {
+    public RepoBasicInfoDTO watchRepo(RepoUserRequest starRequest) {
         Repo repo = getById(starRequest.getRepoId());
         User user = userService.getById(starRequest.getUserId());
         boolean isWatching = repo.getWatchers().stream().anyMatch(u -> u.getId().equals(starRequest.getUserId()));
@@ -170,10 +163,16 @@ public class RepoService {
         return UserMapper.toDTOs(repo.getWatchers());
     }
 
-    public WatchStarResponseDTO amIWatchingStargazing(RepoStarWatchRequest request) {
+    public WatchStarResponseDTO amIWatchingStargazing(RepoUserRequest request) {
         Repo repo = getById(request.getRepoId());
         boolean isWatching = repo.getWatchers().stream().anyMatch(u -> u.getId().equals(request.getUserId()));
         boolean isStargazing = repo.getStaredBy().stream().anyMatch(u -> u.getId().equals(request.getUserId()));
         return new WatchStarResponseDTO(isWatching, isStargazing);
+    }
+
+    @CacheEvict(value = "repos", allEntries = true)
+    public void deleteRepo(UUID repoId) {
+        memberService.removeAllMembersFromRepo(repoId);
+        repoRepository.deleteById(repoId);
     }
 }

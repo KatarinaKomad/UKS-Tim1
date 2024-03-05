@@ -1,5 +1,6 @@
 package uns.ac.rs.uks.service;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.LoginRequest;
+import uns.ac.rs.uks.dto.request.PasswordResetRequest;
+import uns.ac.rs.uks.dto.request.PasswordUpdateRequest;
 import uns.ac.rs.uks.dto.request.RegistrationRequest;
 import uns.ac.rs.uks.dto.response.TokenResponse;
 import uns.ac.rs.uks.dto.response.UserDTO;
 import uns.ac.rs.uks.exception.AlreadyExistsException;
+import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.RoleEnum;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.security.TokenProvider;
+import uns.ac.rs.uks.util.EncryptionUtil;
 
 import java.util.Base64;
 import java.util.Random;
@@ -38,6 +43,8 @@ public class AuthService {
     private RoleService roleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmailService emailService;
 
     public UserDTO registerUser(RegistrationRequest registrationRequest) throws AlreadyExistsException, NotFoundException{
         if (userService.existsByEmail(registrationRequest.getEmail()))
@@ -51,7 +58,7 @@ public class AuthService {
                 break;
             }
         }
-        String password = new String(Base64.getDecoder().decode(registrationRequest.getPassword()));
+        String password = EncryptionUtil.decodeBase64(registrationRequest.getPassword());
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(roleService.getRoleByName(RoleEnum.ROLE_USER.getName()));
         User savedUser = userService.save(user);
@@ -96,4 +103,26 @@ public class AuthService {
         return !user.getBlockedByAdmin() && !user.getDeleted();
     }
 
+    public void resetPassword(PasswordResetRequest request) {
+        User user = userService.getUserByEmail(request.getEmail());
+
+        String plainPassword = generatePassword();
+        user.setPassword(passwordEncoder.encode(plainPassword));
+
+        emailService.sendResetPasswordEmail(user, plainPassword);
+        userService.save(user);
+    }
+
+    public void updatePassword(PasswordUpdateRequest request) {
+        User user = userService.getUserByEmail(request.getEmail());
+        String currentPassword = EncryptionUtil.decodeBase64(request.getCurrentPassword());
+        if(!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            logger.warn("Failed to change password - current password not valid");
+            throw new NotAllowedException("Current password not valid.");
+        }
+        String password = EncryptionUtil.decodeBase64(request.getPassword());
+        user.setPassword(passwordEncoder.encode(password));
+        userService.save(user);
+    }
+    private String generatePassword(){ return RandomStringUtils.random(8, true, true);}
 }

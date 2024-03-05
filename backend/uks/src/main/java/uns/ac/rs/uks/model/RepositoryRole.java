@@ -5,7 +5,8 @@ import java.io.Serializable;
 public enum RepositoryRole implements Serializable {
     OWNER("OWNER"),
     COLLABORATOR("COLLABORATOR"),
-    CONTRIBUTOR("CONTRIBUTOR");
+    CONTRIBUTOR("CONTRIBUTOR"),
+    VIEWER("VIEWER");
 
     private final String name;
 

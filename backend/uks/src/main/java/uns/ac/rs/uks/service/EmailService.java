@@ -45,6 +45,15 @@ public class EmailService {
         sendMail("ukstim1111+" + user.getCustomUsername() +"@gmail.com", subject, content);
     }
 
+    @Async
+    public void sendResetPasswordEmail(User user, String password) {
+        String content = renderTemplate("resetPassword.html",
+                "fullName", user.getName(),
+                "password", password);
+        String subject = "Password reset";
+        sendMail("ukstim1111+" + user.getCustomUsername() +"@gmail.com", subject, content);
+    }
+
 
     private void sendMail(String to, String subject, String body) {
         try {

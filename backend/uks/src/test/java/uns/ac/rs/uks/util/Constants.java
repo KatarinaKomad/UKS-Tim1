@@ -8,6 +8,8 @@ public class Constants {
 	public static final UUID PERA_USER_ID = UUID.fromString("ff1d6606-e1f5-4e26-8a32-a14800b42a27");
 	public static final String PERA_EMAIL = "pera@gmail.com";
 
+	public static final String PERA_PASSWORD = "cGVyYTEyMw==";
+
 	public static final UUID MIKA_USER_ID = UUID.fromString("0e7f2a1d-49d0-44cd-8a01-4d40186f6f08");
 	public static final String MIKA_EMAIL = "mika@gmail.com";
 	public static final String MIKA_PASSWORD = "bWlrYTEyMw==";
