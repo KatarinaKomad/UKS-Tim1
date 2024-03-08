@@ -26,7 +26,7 @@ public class RepoMapper {
                         .defaultBranch(repo.getDefaultBranch() != null ? repo.getDefaultBranch().getId() : 0)
                         .forkParent(repo.getForkParent() != null ? toForkParentDTO(repo.getForkParent()) : null)
                         .createdAt(repo.getCreatedAt())
-                        .cloneUri("")
+                        .cloneUri(repo.getCloneUri())
                         .build();
     }
 

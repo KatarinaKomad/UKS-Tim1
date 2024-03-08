@@ -55,7 +55,7 @@ public class BranchServiceTest {
     @Test
     void testCreateDefaultBranchSuccess(){
         Repo repo = createRepo("testRepo", Constants.MIKA_USER_ID, true);
-        Branch branch = branchService.createDefaultBranch(repo);
+        Branch branch = branchService.createDefaultBranch(repo, repo.getOwner());
 
         assertNotNull(branch);
         assertEquals(branch.getRepository().getId(), repo.getId());

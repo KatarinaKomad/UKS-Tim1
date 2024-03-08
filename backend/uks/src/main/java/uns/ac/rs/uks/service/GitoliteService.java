@@ -7,45 +7,46 @@ import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.dto.response.KeyResponse;
+import uns.ac.rs.uks.util.FileUtil;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class GitoliteService {
-
     @Value("${app.gitolite.keydir}")
     private String keyDirPath;
+    @Value("${app.gitolite.workingDirectory}")
+    private String scriptWorkingDirectory;
+    @Value("${app.gitolite.bashLocation}")
+    private String bashLocation;
+    @Value("${app.gitolite.configFile}")
+    private String configFile;
+
 
     @Value("${app.gitolite.script}")
     private String commitAndPushScript;
-
-    @Value("${app.gitolite.readBranchesScript}")
-    private String readBranchesScript;
-
     @Value("${app.gitolite.readCommitsScript}")
     private String readCommitsScript;
-
     @Value("${app.gitolite.getDifferencesScript}")
     private String getDifferencesScript;
-
     @Value("${app.gitolite.mergeScript}")
     private String mergeScript;
-
-    @Value("${app.gitolite.deleteScript}")
-    private String deleteScript;
-
-    @Value("${app.gitolite.workingDirectory}")
-    private String scriptWorkingDirectory;
-
-    @Value("${app.gitolite.bashLocation}")
-    private String bashLocation;
-
-    @Value("${app.gitolite.configFile}")
-    private String configFile;
+    @Value("${app.gitolite.deleteBranchScript}")
+    private String deleteBranchScript;
+    @Value("${app.gitolite.newBranchScript}")
+    private String newBranchScript;
+    @Value("${app.gitolite.initialCommitScript}")
+    private String initialCommitScript;
+    @Value("${app.gitolite.renameBranchScript}")
+    private String renameBranchScript;
+    //    @Value("${app.gitolite.readBranchesScript}")
+//    private String readBranchesScript;
 
     private final String commitsDelimiter = "Commits";
 
@@ -75,6 +76,7 @@ public class GitoliteService {
             return "";
         }
         commitGitoliteAdmin(String.format("Created repo %s for user %s", repoName, username));
+        pushInitialCommit(repoName);
         return String.format("GIT_SSH_COMMAND='ssh -p 2222 -i <your_private_ssh>' git clone git@localhost:%s", repoName);
     }
 
@@ -113,49 +115,6 @@ public class GitoliteService {
             }
         } catch (IOException | InterruptedException e) {
             logger.error(e.getMessage());
-        }
-    }
-
-    public List<BranchBasicInfoDTO> readRepoBranches(String repo) {
-        try {
-            var branches = new ArrayList<BranchBasicInfoDTO>();
-
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, readBranchesScript, repo);
-            processBuilder.directory(new File(scriptWorkingDirectory));
-            processBuilder.redirectErrorStream(true);
-
-            Process process = processBuilder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                parseAndAddBranchOutput(branches, line);
-            }
-
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", readBranchesScript));
-            } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
-            }
-
-            return branches;
-        } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-        return new ArrayList<>();
-    }
-
-
-    private void parseAndAddBranchOutput(List<BranchBasicInfoDTO> list, String output) {
-        var parts = output.split("\\t");
-        if (parts.length == 2) {
-            var dto = new BranchBasicInfoDTO();
-            dto.setId((long) list.size());
-            dto.setCode(parts[0]);
-            dto.setName(parts[1].replace("refs/heads/", ""));
-            list.add(dto);
         }
     }
 
@@ -263,27 +222,36 @@ public class GitoliteService {
     }
 
     public void mergeBranches(String repo, String originBranch, String destinationBranch) {
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, mergeScript, repo, originBranch, destinationBranch);
-            processBuilder.directory(new File(scriptWorkingDirectory));
-            processBuilder.redirectErrorStream(true);
-
-            Process process = processBuilder.start();
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", mergeScript));
-            } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage());
-        }
+        String script = mergeScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo, originBranch, destinationBranch);
+        execScript(processBuilder, script);
     }
 
     public void deleteBranch(String repo, String branch) {
+        String script = deleteBranchScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo, branch);
+        execScript(processBuilder, script);
+    }
+
+    public void newBranch(String repo, String originBranch, String newBranch) {
+        String script = newBranchScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo, originBranch, newBranch);
+        execScript(processBuilder, script);
+    }
+    public void renameBranch(String repo, String oldName, String newName) {
+        String script = renameBranchScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo, oldName, newName);
+        execScript(processBuilder, script);
+    }
+
+    private void pushInitialCommit(String repo) {
+        String script = initialCommitScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo);
+        execScript(processBuilder, script);
+    }
+
+    private void execScript(ProcessBuilder processBuilder, String script){
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, deleteScript, repo, branch);
             processBuilder.directory(new File(scriptWorkingDirectory));
             processBuilder.redirectErrorStream(true);
 
@@ -291,7 +259,7 @@ public class GitoliteService {
             int exitCode = process.waitFor();
 
             if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", deleteScript));
+                logger.info(String.format("Script %s executed successfully", script));
             } else {
                 logger.error("Script execution failed with exit code: " + exitCode);
             }
@@ -299,4 +267,8 @@ public class GitoliteService {
             logger.error(e.getMessage());
         }
     }
+
+//    public byte[] zipFilesFromGitolite(String repoName) {
+//        return FileUtil.zipFiles(scriptWorkingDirectory  + File.separator + repoName);
+//    }
 }

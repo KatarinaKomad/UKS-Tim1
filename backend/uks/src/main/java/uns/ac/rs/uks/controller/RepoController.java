@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uns.ac.rs.uks.dto.request.*;
 import uns.ac.rs.uks.dto.response.*;
+import uns.ac.rs.uks.model.Branch;
 import uns.ac.rs.uks.service.RepoService;
 
 import java.util.List;
@@ -104,5 +105,10 @@ public class RepoController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public void deleteRepo(@PathVariable UUID repoId) {
         repoService.deleteRepo(repoId);
+    }
+
+    @GetMapping("/getDefaultBranch/{repoId}")
+    public BranchDTO getDefaultBranch(@PathVariable UUID repoId) {
+        return repoService.getDefaultBranch(repoId);
     }
 }
