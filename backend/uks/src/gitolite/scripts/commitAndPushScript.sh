@@ -7,7 +7,7 @@ fi
 
 message="$1"
 
-exec > >(tee -i gitolite_admin_script.log)
+exec > >(tee -i ../logs/gitolite_admin_script.log)
 exec 2>&1
 
 echo "Committing to gitolite-admin with message: $message"
