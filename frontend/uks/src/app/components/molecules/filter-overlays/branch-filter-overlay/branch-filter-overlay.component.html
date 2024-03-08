@@ -1,0 +1,24 @@
+<div class="overlay">
+    <div #overlayContent class="overlay-content">
+        <span class="close-btn" (click)="closeForm()">
+            &times;
+        </span>
+        <form class="filter-row">
+            <button (click)="submitFilter()"
+                class="!bg-green-600 rounded-lg  px-2 py-1 text-white hover:!bg-green-800 text-sm ">
+                <i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="text" id="authorFilter" [formControl]="filter" name="author" class="border input-filter" />
+        </form>
+        <div class="mb-2">
+            <b>Branches:</b>
+        </div>
+
+        <div *ngFor="let elem of shownList" class="item-row flex flex-row items-center" (click)=" onSelectChange(elem)">
+            <i class="icon fa-regular fa-circle-check" *ngIf="selected?.id === elem.id"></i>
+            <div [class]="selected?.id === elem.id ? 'ml-4' : 'ml-8'">
+                <i class="icon fa-solid fa-code-branch"></i>
+                <label class="author-name">{{elem.name}}</label>
+            </div>
+        </div>
+    </div>
+</div>

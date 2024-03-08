@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { BranchBasicInfoDTO } from 'src/models/branch/branch';
+import { BranchBasicInfoDTO, BranchDTO } from 'src/models/branch/branch';
 import { RepoBasicInfoDTO, RepoUpdateRequest, getEmptyRepo } from 'src/models/repo/repo';
 import { BranchService } from 'src/services/branch/branch.service';
 import { RepoService } from 'src/services/repo/repo.service';
@@ -26,7 +26,7 @@ export class RepoSettingsComponent implements OnInit {
   repository: RepoBasicInfoDTO = getEmptyRepo();
   repoNameControl = new FormControl('', [Validators.required]);
   repoDescriptionControl = new FormControl('');
-  branches: BranchBasicInfoDTO[] = [];
+  branches: BranchDTO[] = [];
   members: RepoMemberDTO[] = [];
   REPO_ROLE = REPO_ROLE;
   INVITE_STATUS = MEMBER_INVITE_STATUS;
@@ -50,7 +50,7 @@ export class RepoSettingsComponent implements OnInit {
   }
   private setBranches() {
     this.branchService.getRepoBranches(this.repoId).subscribe({
-      next: (response: BranchBasicInfoDTO[]) => {
+      next: (response: BranchDTO[]) => {
         this.branches = response;
       },
       error: (e: HttpErrorResponse) => {

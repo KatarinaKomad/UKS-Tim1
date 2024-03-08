@@ -11,6 +11,8 @@ import {
 } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -98,6 +100,12 @@ import { YesNoDialogComponent } from './components/molecules/dialogs/yes-no-dial
 import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
 import { UserSearchDialogComponent } from './components/molecules/dialogs/user-search-dialog/user-search-dialog.component';
 import { PasswordUpdateDialogComponent } from './components/molecules/dialogs/password-update-dialog/password-update-dialog.component';
+import { BranchPageComponent } from './pages/branch-page/branch-page.component';
+import { BranchButtonGroupComponent } from './components/molecules/branch-button-group/branch-button-group.component';
+import { BranchesOverviewComponent } from './components/organisms/branches-overview/branches-overview.component';
+import { NewBranchDialogComponent } from './components/molecules/dialogs/new-branch-dialog/new-branch-dialog.component';
+import { CloneRepoOverlayComponent } from './components/molecules/filter-overlays/clone-repo-overlay/clone-repo-overlay.component';
+import { BranchFilterOverlayComponent } from './components/molecules/filter-overlays/branch-filter-overlay/branch-filter-overlay.component';
 
 
 
@@ -167,6 +175,13 @@ import { PasswordUpdateDialogComponent } from './components/molecules/dialogs/pa
     RepoInvitationPageComponent,
     UserSearchDialogComponent,
     PasswordUpdateDialogComponent,
+
+    BranchPageComponent,
+    BranchButtonGroupComponent,
+    BranchesOverviewComponent,
+    NewBranchDialogComponent,
+    CloneRepoOverlayComponent,
+    BranchFilterOverlayComponent,
   ],
   exports: [],
   imports: [
@@ -191,6 +206,7 @@ import { PasswordUpdateDialogComponent } from './components/molecules/dialogs/pa
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    ClipboardModule,
     ToastrModule.forRoot(),
   ],
   providers: [

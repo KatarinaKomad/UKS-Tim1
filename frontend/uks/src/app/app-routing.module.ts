@@ -26,6 +26,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
 import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
 import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
+import { BranchPageComponent } from './pages/branch-page/branch-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'repository/forks-overview', component: ForksOverviewPageComponent, canActivate: [authGuard] },
   { path: 'repository/watchers-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
   { path: 'repository/stars-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
+  { path: 'repository/branches', component: BranchPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
@@ -64,6 +66,8 @@ const routes: Routes = [
           { path: ':prId', component: PrOverviewComponent, outlet: 'pr-tab' },
         ]
       },
+
+
     ]
   },
 

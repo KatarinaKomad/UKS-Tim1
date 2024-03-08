@@ -175,6 +175,11 @@ export class NavigationService {
     this.router.navigate([`/profile/${userId}`])
   }
 
+  navigateToBranchesPage() {
+    this.router.navigate([`repository/branches`]);
+  }
+
+
   private setRepoToLocalStorage(repo: RepoBasicInfoDTO, canEdit: boolean) {
     localStorage.setItem("repoId", repo.id);
     localStorage.setItem("repoName", repo.name);
