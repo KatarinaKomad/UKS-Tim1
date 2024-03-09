@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CodeOverviewComponent } from './code-overview.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 describe('CodeOverviewComponent', () => {
   let component: CodeOverviewComponent;
@@ -10,7 +12,10 @@ describe('CodeOverviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CodeOverviewComponent],
-      imports: [HttpClientModule]
+      imports: [HttpClientModule, ToastrModule.forRoot(), MatDialogModule],
+      providers: [ToastrService,
+        { provide: MatDialogRef, useValue: {} }
+      ],
     })
       .compileComponents();
 

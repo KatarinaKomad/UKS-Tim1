@@ -1,0 +1,24 @@
+<div class="overlay">
+    <div #overlayContent class="overlay-content">
+        <span class="close-btn" (click)="closeForm()">
+            &times;
+        </span>
+        <div class="filter-row">
+            <label for="authorFilter">Clone repository using SSH</label>
+            <div class="!text-xs">
+                *You must add your SSH key beforehand (sidebar --> Add new SSH key)
+            </div>
+        </div>
+
+        <div class="uri-row">
+            <code class="author-name">{{repo.cloneUri}}</code>
+        </div>
+
+        <div class="flex flex-row items-center mt-4">
+            <div class="mr-4">Copy command</div>
+            <i class="fa-regular fa-clone cursor-pointer clickable" (click)="copyName()" *ngIf="!copySuccess"></i>
+            <i *ngIf="copySuccess" class="fa-solid fa-check text-green-600"></i>
+        </div>
+
+    </div>
+</div>
