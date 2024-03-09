@@ -86,7 +86,7 @@ INSERT INTO ISSUE_EVENT (issue_id, author_id, new_value, type, created_at) VALUE
 (ISSUE_ID_2, PERA_USER_ID, 'mile stone', 'MILESTONE', '2024-01-25 15:00:00'),
 (ISSUE_ID_2, MIKA_USER_ID, 'milestone2', 'MILESTONE', '2024-01-25 15:01:00');
 
-INSERT INTO BRANCH (name, repository_id) VALUES ('main', REPOSITORY_ID_1_UKS_TEST);
+INSERT INTO BRANCH (name, repository_id) VALUES ('master', REPOSITORY_ID_1_UKS_TEST);
 INSERT INTO BRANCH (name, repository_id) VALUES ('dev', REPOSITORY_ID_1_UKS_TEST);
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -4,18 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.dto.response.KeyResponse;
-import uns.ac.rs.uks.util.FileUtil;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @Service
 public class GitoliteService {
