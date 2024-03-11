@@ -27,6 +27,7 @@ import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-pag
 import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
 import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
 import { BranchPageComponent } from './pages/branch-page/branch-page.component';
+import { RepoFilesTreeViewPageComponent } from './pages/repo-files-tree-view-page/repo-files-tree-view-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -40,6 +41,9 @@ const routes: Routes = [
   { path: 'repository/watchers-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
   { path: 'repository/stars-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
   { path: 'repository/branches', component: BranchPageComponent, canActivate: [authGuard] },
+
+  { path: 'repository/branch/:branchName', component: RepositoryPageComponent, canActivate: [authGuard] },
+  { path: 'repository/tree/:branchName/:filePath', component: RepoFilesTreeViewPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
@@ -66,8 +70,6 @@ const routes: Routes = [
           { path: ':prId', component: PrOverviewComponent, outlet: 'pr-tab' },
         ]
       },
-
-
     ]
   },
 

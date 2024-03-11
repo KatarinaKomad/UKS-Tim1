@@ -1,0 +1,47 @@
+<div [class]="'flex flex-row w-[95%] pt-6 '">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+        style="border: 1px solid #d1d5da; ">
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"
+                style="width: 40% !important; background-color: #f6f8fa;">
+                Name
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index;" style="width: 40% !important; ">
+                <i class="fa-solid fa-folder text-blue-400 fa-lg" *ngIf="element.isFolder"></i>
+                <i class="fa-regular fa-file fa-lg" *ngIf="!element.isFolder"></i>
+                <button class="rounded-lg px-2 mx-auto  mr-2 clickable"
+                    (click)="navigateToFile(element)">{{element.name}}</button>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="last commit message">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last commit message"
+                style="background-color: #f6f8fa;">
+                Last commit message
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <div>
+                    {{element.commitHistory[0].message }}
+                </div>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date of last commit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date of last commit"
+                style="background-color: #f6f8fa;">
+                Last commit date
+            </th>
+            <td mat-cell *matCellDef="let element" class="!clickable">
+                <div>
+                    {{element.commitHistory[0].timeAgo }}
+                </div>
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"
+            style="height: 50px; box-shadow: 1px 1px 20px #00000011;">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

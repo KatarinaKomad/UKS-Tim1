@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BranchBasicInfoDTO, BranchDTO } from 'src/models/branch/branch';
 import { BranchService } from 'src/services/branch/branch.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
@@ -9,9 +10,9 @@ import { RepoService } from 'src/services/repo/repo.service';
   templateUrl: './branch-button-group.component.html',
   styleUrl: './branch-button-group.component.scss'
 })
-export class BranchButtonGroupComponent {
+export class BranchButtonGroupComponent implements OnInit {
 
-  selectedBranch?: BranchDTO;
+  selectedBranchName?: string;
   branchCount: number = 0;
 
   repoId: string;
@@ -23,15 +24,24 @@ export class BranchButtonGroupComponent {
     private navigationService: NavigationService,
     private repoService: RepoService,
     private branchService: BranchService,
+    private route: ActivatedRoute,
   ) {
     this.repoId = localStorage.getItem("repoId") as string;
-    this.setDefaultBranch();
+
     this.setBranchCount();
   }
+
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.selectedBranchName = params['branchName'] ? params['branchName'] : this.setDefaultBranch();;
+
+    });
+  }
+
   private setDefaultBranch() {
     this.repoService.getDefaultBranch(this.repoId).subscribe({
       next: (res: BranchDTO) => {
-        this.selectedBranch = res;
+        this.selectedBranchName = res.name;
       }, error: (e: any) => {
         console.log(e);
       }
@@ -48,10 +58,11 @@ export class BranchButtonGroupComponent {
     })
   }
 
-  changeBranch(selected: BranchDTO | null | undefined) {
+  changeBranch(selectedName: string | null | undefined) {
     this.isBranchOptionOpen = !this.isBranchOptionOpen;
-    if (selected) {
-      this.selectedBranch = selected;
+    if (selectedName) {
+      this.selectedBranchName = selectedName;
+      this.navigationService.navigateToBranchCodeOverview(selectedName);
     }
   }
 

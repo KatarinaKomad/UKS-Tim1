@@ -7,12 +7,13 @@ import {
   DateAdapter,
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
+  MatCommonModule,
   MatNativeDateModule,
 } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-
+import { MatTreeModule } from "@angular/material/tree";
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -106,6 +107,9 @@ import { BranchesOverviewComponent } from './components/organisms/branches-overv
 import { NewBranchDialogComponent } from './components/molecules/dialogs/new-branch-dialog/new-branch-dialog.component';
 import { CloneRepoOverlayComponent } from './components/molecules/filter-overlays/clone-repo-overlay/clone-repo-overlay.component';
 import { BranchFilterOverlayComponent } from './components/molecules/filter-overlays/branch-filter-overlay/branch-filter-overlay.component';
+import { FolderTableOverviewComponent } from './components/molecules/folder-table-overview/folder-table-overview.component';
+import { FolderTreeOverviewComponent } from './components/molecules/folder-tree-overview/folder-tree-overview.component';
+import { RepoFilesTreeViewPageComponent } from './pages/repo-files-tree-view-page/repo-files-tree-view-page.component';
 
 
 
@@ -182,6 +186,10 @@ import { BranchFilterOverlayComponent } from './components/molecules/filter-over
     NewBranchDialogComponent,
     CloneRepoOverlayComponent,
     BranchFilterOverlayComponent,
+
+    FolderTableOverviewComponent,
+    FolderTreeOverviewComponent,
+    RepoFilesTreeViewPageComponent
   ],
   exports: [],
   imports: [
@@ -207,6 +215,8 @@ import { BranchFilterOverlayComponent } from './components/molecules/filter-over
     MatNativeDateModule,
     MatProgressBarModule,
     ClipboardModule,
+
+    MatTreeModule,
     ToastrModule.forRoot(),
   ],
   providers: [

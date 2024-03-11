@@ -8,6 +8,8 @@ import { RepoService } from '../repo/repo.service';
 import { AuthService } from '../auth/auth.service';
 import { Observable, of } from 'rxjs';
 import { TAB_VIEW } from 'src/models/navigation';
+import { BranchDTO } from 'src/models/branch/branch';
+import { FileDTO } from 'src/models/files/files';
 
 @Injectable({
   providedIn: 'root'
@@ -178,6 +180,14 @@ export class NavigationService {
   navigateToBranchesPage() {
     this.router.navigate([`repository/branches`]);
   }
+
+  navigateToBranchCodeOverview(branchName: string) {
+    this.router.navigate([`repository/branch/${branchName}`])
+  }
+  navigateToFile(branchName: string, filePath: string) {
+    this.router.navigate([`repository/tree/${branchName}/${filePath}`])
+  }
+
 
 
   private setRepoToLocalStorage(repo: RepoBasicInfoDTO, canEdit: boolean) {

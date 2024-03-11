@@ -1,15 +1,15 @@
 <div class="flex flex-row pt-3  ">
 
-    <div class="button-group w-[70%]">
+    <div class="button-group w-[84%]">
         <button class="show-button !py-1" (click)="changeBranch(null)">
             <i class="fa-solid fa-code-branch"></i>
             <span class="mx-2 font-semibold">
-                {{selectedBranch?.name}}
+                {{selectedBranchName}}
             </span>
             <i class="fa-solid fa-caret-down"></i>
         </button>
         <app-branch-filter-overlay *ngIf="isBranchOptionOpen" (closeEvent)="changeBranch($event)"
-            [preSelected]="selectedBranch">
+            [preSelected]="selectedBranchName">
         </app-branch-filter-overlay>
 
         <button class="overview-button font-semibold !py-1 " (click)="navigateToBranches()">
@@ -20,26 +20,17 @@
 
     </div>
 
-    <div class="button-group w-[30%]">
+    <div class="button-group w-[16%]">
 
-        <button class="show-button !py-1  font-semibold" (click)="openFileOptions()">
+        <button class="!bg-green-600 rounded-lg w-fit px-4 py-1.5 text-white hover:!bg-green-800 font-semibold"
+            (click)="openCodeOptions(true)">
+            <i class="icon fa-solid fa-code"></i>
             <span class="mx-2">
-                Add file
+                Code
             </span>
             <i class="fa-solid fa-caret-down"></i>
         </button>
-
-        <span class="pl-5">
-            <button class="!bg-green-600 rounded-lg w-fit px-4 py-1.5 text-white hover:!bg-green-800 font-semibold"
-                (click)="openCodeOptions(true)">
-                <i class="icon fa-solid fa-code"></i>
-                <span class="mx-2">
-                    Code
-                </span>
-                <i class="fa-solid fa-caret-down"></i>
-            </button>
-            <app-clone-repo-overlay *ngIf="isCodeOptionOpen" (closeEvent)="openCodeOptions(false)">
-            </app-clone-repo-overlay>
-        </span>
+        <app-clone-repo-overlay *ngIf="isCodeOptionOpen" (closeEvent)="openCodeOptions(false)">
+        </app-clone-repo-overlay>
     </div>
 </div>

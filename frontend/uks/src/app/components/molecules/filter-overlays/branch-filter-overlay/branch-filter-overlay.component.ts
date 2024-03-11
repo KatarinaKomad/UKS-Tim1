@@ -10,14 +10,14 @@ import { BranchService } from 'src/services/branch/branch.service';
 })
 export class BranchFilterOverlayComponent {
 
-  @Input() preSelected?: BranchDTO;
-  @Output() closeEvent: EventEmitter<BranchDTO | null> = new EventEmitter<BranchDTO | null>();
+  @Input() preSelected?: string;
+  @Output() closeEvent: EventEmitter<string | null> = new EventEmitter<string | null>();
   @ViewChild('overlayContent') overlayContent?: ElementRef;
 
 
   fullList: BranchDTO[] = [];
   shownList: BranchDTO[] = [];
-  selected?: BranchDTO;
+  selectedName?: string;
 
   repoId: string = '';
   filter = new FormControl<string>("");
@@ -38,7 +38,7 @@ export class BranchFilterOverlayComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['preSelected'].currentValue) {
-      this.selected = changes['preSelected'].currentValue;
+      this.selectedName = changes['preSelected'].currentValue;
     }
   }
 
@@ -49,18 +49,18 @@ export class BranchFilterOverlayComponent {
   }
 
   onSelectChange(selected: BranchDTO): void {
-    if (this.selected?.id == selected.id) {
-      this.selected = undefined;
+    if (this.selectedName == selected.name) {
+      this.selectedName = undefined;
     } else {
-      this.selected = selected;
+      this.selectedName = selected.name;
     }
 
     this.closeForm();
   }
 
   closeForm() {
-    if (this.preSelected?.id !== this.selected?.id) {
-      this.closeEvent.emit(this.selected);
+    if (this.preSelected !== this.selectedName) {
+      this.closeEvent.emit(this.selectedName);
     } else {
       this.closeEvent.emit(null);
     }

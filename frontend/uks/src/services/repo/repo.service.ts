@@ -11,6 +11,7 @@ import { HttpRequestService } from 'src/utils/http-request.service';
 
 import { Injectable } from '@angular/core';
 import { BranchDTO } from 'src/models/branch/branch';
+import { FileDTO, FileRequest } from 'src/models/files/files';
 
 @Injectable({
   providedIn: 'root',
@@ -134,5 +135,12 @@ export class RepoService {
   getDefaultBranch(repoId: string): Observable<BranchDTO> {
     const url = environment.API_BASE_URL + `/repo/getDefaultBranch/${repoId}`;
     return this.httpRequestService.get(url) as Observable<BranchDTO>;
+  }
+
+  getFiles(request: FileRequest): Observable<FileDTO[]> {
+    const url = environment.API_BASE_URL + `/repo/getFiles`;
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.post(url, body) as Observable<FileDTO[]>;
   }
 }
