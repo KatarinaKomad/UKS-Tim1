@@ -3,8 +3,10 @@
 <div class="flex flex-row">
     <div class="flex flex-col w-1/12"></div>
     <div class="flex flex-col w-8/12">
-        <app-branch-button-group></app-branch-button-group>
-        <app-folder-table-overview></app-folder-table-overview>
+        <app-branch-button-group [showCodeOptions]="true"></app-branch-button-group>
+        <div class="pt-6 ">
+            <app-folder-table-overview [files]="files"></app-folder-table-overview>
+        </div>
 
     </div>
     <div class="flex flex-col w-3/12">

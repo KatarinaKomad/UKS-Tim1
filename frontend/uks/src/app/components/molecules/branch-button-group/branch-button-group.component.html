@@ -9,7 +9,7 @@
             <i class="fa-solid fa-caret-down"></i>
         </button>
         <app-branch-filter-overlay *ngIf="isBranchOptionOpen" (closeEvent)="changeBranch($event)"
-            [preSelected]="selectedBranchName">
+            [preSelected]="selectedBranchName" [showCodeOptions]="showCodeOptions">
         </app-branch-filter-overlay>
 
         <button class="overview-button font-semibold !py-1 " (click)="navigateToBranches()">
@@ -20,7 +20,7 @@
 
     </div>
 
-    <div class="button-group w-[16%]">
+    <div class="button-group w-[16%]" *ngIf="showCodeOptions">
 
         <button class="!bg-green-600 rounded-lg w-fit px-4 py-1.5 text-white hover:!bg-green-800 font-semibold"
             (click)="openCodeOptions(true)">

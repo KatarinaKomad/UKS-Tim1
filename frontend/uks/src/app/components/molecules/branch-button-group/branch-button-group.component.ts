@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BranchBasicInfoDTO, BranchDTO } from 'src/models/branch/branch';
+import { BranchDTO } from 'src/models/branch/branch';
 import { BranchService } from 'src/services/branch/branch.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { RepoService } from 'src/services/repo/repo.service';
@@ -12,10 +12,13 @@ import { RepoService } from 'src/services/repo/repo.service';
 })
 export class BranchButtonGroupComponent implements OnInit {
 
+  @Input() showCodeOptions: boolean = false;
+
   selectedBranchName?: string;
   branchCount: number = 0;
 
   repoId: string;
+
 
   isCodeOptionOpen: boolean = false;
   isBranchOptionOpen: boolean = false;

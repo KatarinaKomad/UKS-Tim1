@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BranchDTO } from 'src/models/branch/branch';
+import { NO_CODE_OPTIONS_CLONE_OVERLAY, OverlayPosition, SHOW_CODE_OPTIONS_CLONE_OVERLAY } from 'src/models/forms/position';
 import { BranchService } from 'src/services/branch/branch.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { BranchService } from 'src/services/branch/branch.service';
 export class BranchFilterOverlayComponent {
 
   @Input() preSelected?: string;
+  @Input() showCodeOptions: boolean = false;
   @Output() closeEvent: EventEmitter<string | null> = new EventEmitter<string | null>();
   @ViewChild('overlayContent') overlayContent?: ElementRef;
 
@@ -36,7 +38,16 @@ export class BranchFilterOverlayComponent {
     })
   }
 
+  ngAfterViewInit(): void {
+    const position = this.showCodeOptions ? SHOW_CODE_OPTIONS_CLONE_OVERLAY : NO_CODE_OPTIONS_CLONE_OVERLAY;
+    this.setOverlayPosition(position);
+  }
+
+
   ngOnChanges(changes: SimpleChanges) {
+    const position = changes['showCodeOptions'] ? SHOW_CODE_OPTIONS_CLONE_OVERLAY : NO_CODE_OPTIONS_CLONE_OVERLAY;
+    this.setOverlayPosition(position);
+
     if (changes['preSelected'].currentValue) {
       this.selectedName = changes['preSelected'].currentValue;
     }
@@ -66,5 +77,12 @@ export class BranchFilterOverlayComponent {
     }
   }
 
+  private setOverlayPosition(positions: OverlayPosition) {
+    if (this.overlayContent) {
+      const overlayContentElement = this.overlayContent.nativeElement as HTMLElement;
+      overlayContentElement.style.top = `${positions.top}%`;
+      overlayContentElement.style.left = `${positions.left}%`;
+    }
+  }
 
 }

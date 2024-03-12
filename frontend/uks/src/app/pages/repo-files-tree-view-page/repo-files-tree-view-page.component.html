@@ -6,21 +6,33 @@
     <mat-drawer-content>
         <app-navbar [drawer]="drawer"></app-navbar>
 
-        <div class="flex" style=" height: 100%;">
-            <div class="w-1/3 p-4 flex flex-col h-full">
-                <app-folder-tree-overview></app-folder-tree-overview>
+        <div class="px-4 pt-4">
+            <div class="w-[90%] text-xl font-semibold">
+                Files
+            </div>
+
+            <app-branch-button-group [showCodeOptions]="false"></app-branch-button-group>
+        </div>
+
+
+        <div class="flex flex-row" style=" height: 100%;">
+
+
+            <div [class]="'w-1/3 p-4 flex flex-col h-full overflow-x-scroll  overflow-y-scroll'">
+                <app-folder-tree-overview [files]="files"></app-folder-tree-overview>
             </div>
 
             <div class="!border-l !border-gray-300 !h-full"></div>
 
             <div class="w-2/3 p-4 flex flex-col h-full">
 
-                <app-folder-table-overview></app-folder-table-overview>
+                <app-folder-table-overview [files]="files"></app-folder-table-overview>
 
                 <!-- or preview of file content -->
 
             </div>
         </div>
+
 
     </mat-drawer-content>
 

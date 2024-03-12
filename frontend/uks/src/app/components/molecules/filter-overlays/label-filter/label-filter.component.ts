@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FILTER_LABELS_OVERLAY, INPUT_LABELS_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
+import { FILTER_LABELS_OVERLAY, INPUT_LABELS_OVERLAY, OverlayPosition } from 'src/models/forms/position';
 import { LabelDTO } from 'src/models/label/label';
 import { LabelService } from 'src/services/label/label.service';
 import { areArraysEqual } from 'src/utils/custom-filters';
