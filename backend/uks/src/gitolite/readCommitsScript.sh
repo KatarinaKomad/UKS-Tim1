@@ -24,8 +24,10 @@ cd "$repo" || exit 1
 
 echo "Commits"
 
-git log --pretty=format:'%h %s (%cr) [%an]' --abbrev-commit --date=short "$branch"
+file_path="$branch"
 
-cd ..
+if [ -n "$3" ]; then
+  file_path="$3"
+fi
 
-rm -rf "$repo"
+git log --pretty=format:'%h %s (%cr) [%an]' --abbrev-commit --date=short "$file_path"

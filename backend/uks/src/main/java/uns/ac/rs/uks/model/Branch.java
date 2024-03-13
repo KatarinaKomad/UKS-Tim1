@@ -29,8 +29,8 @@ public class Branch implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User updatedBy;
-    @ManyToMany
-    private List<Commit> commits;
+//    @ManyToMany
+//    private List<Commit> commits;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Repo repository;

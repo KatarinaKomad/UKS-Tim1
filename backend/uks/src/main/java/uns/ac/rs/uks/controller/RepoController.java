@@ -111,4 +111,9 @@ public class RepoController {
     public BranchDTO getDefaultBranch(@PathVariable UUID repoId) {
         return repoService.getDefaultBranch(repoId);
     }
+
+    @PostMapping("/getFiles")
+    public List<FileDTO> getFiles(@Valid @RequestBody FileRequest request) {
+        return repoService.getFiles(request);
+    }
 }
