@@ -4,12 +4,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uns.ac.rs.uks.dto.response.CommitsResponseDto;
-import uns.ac.rs.uks.dto.response.KeyResponse;
+import uns.ac.rs.uks.dto.response.*;
+import uns.ac.rs.uks.util.DateUtil;
+import uns.ac.rs.uks.util.FileUtil;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,8 +48,14 @@ public class GitoliteService {
     private String initialCommitScript;
     @Value("${app.gitolite.renameBranchScript}")
     private String renameBranchScript;
-    //    @Value("${app.gitolite.readBranchesScript}")
-//    private String readBranchesScript;
+    @Value("${app.gitolite.readBranchesScript}")
+    private String readBranchesScript;
+    @Value("${app.gitolite.removeClonedRepoScript}")
+    private String removeClonedRepoScript;
+    @Value("${app.gitolite.cloneRepoScriptFirstLevelSingleBranch}")
+    private String cloneRepoScript_firstLevelSingleBranch;
+    @Value("${app.gitolite.cloneRepoScriptSpecificFolderAndBranch}")
+    private String cloneRepoScript_specificFolderAndBranch;
 
     private final String commitsDelimiter = "Commits";
 
@@ -88,65 +101,39 @@ public class GitoliteService {
         }
     }
 
-    private void commitGitoliteAdmin(String message) {
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, commitAndPushScript, message);
-            processBuilder.directory(new File(scriptWorkingDirectory));
-            processBuilder.redirectErrorStream(true);
-
-            Process process = processBuilder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                logger.info(line);
-            }
-
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", commitAndPushScript));
-            } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
-            }
-        } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage());
+    public List<CommitsResponseDto> getBranchCommits(String repo, String branch) {
+        String script = readCommitsScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo, branch);
+        List<CommitsResponseDto> commits = execScriptWithCommitHistory(processBuilder, script);
+        removeClonedRepo(repo);
+        return commits;
+    }
+    public List<CommitsResponseDto> getFileCommits(String repo, String branch, String path) {
+        String script = readCommitsScript;
+        ProcessBuilder processBuilder;
+        if (Objects.equals(path, "")){
+            processBuilder = new ProcessBuilder(bashLocation, script, repo, branch);
+        } else {
+            processBuilder = new ProcessBuilder(bashLocation, script, repo, branch, path);
         }
+        return execScriptWithCommitHistory(processBuilder, script);
+
+
     }
 
-    public List<CommitsResponseDto> getCommits(String repo, String branch) {
-        try {
-            var commits = new ArrayList<CommitsResponseDto>();
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, readCommitsScript, repo, branch);
-            processBuilder.directory(new File(scriptWorkingDirectory));
-            processBuilder.redirectErrorStream(true);
-
-            Process process = processBuilder.start();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            var commitsStarted = false;
-            while ((line = reader.readLine()) != null) {
-                if (commitsStarted) {
-                    parseAndAddCommit(commits, line);
-                } else {
-                    commitsStarted = line.equals(commitsDelimiter);
-                }
-            }
-
-            int exitCode = process.waitFor();
-
-            if (exitCode == 0) {
-                logger.info(String.format("Script %s executed successfully", readCommitsScript));
+    private ArrayList<CommitsResponseDto> parseCommits(Process process) throws IOException {
+        var commits = new ArrayList<CommitsResponseDto>();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        var commitsStarted = false;
+        while ((line = reader.readLine()) != null) {
+            if (commitsStarted) {
+                parseAndAddCommit(commits, line);
             } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
+                commitsStarted = line.equals(commitsDelimiter);
             }
-
-            return commits;
-        } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage());
         }
-        return new ArrayList<>();
+        return commits;
     }
 
     private void parseAndAddCommit(List<CommitsResponseDto> commits, String line) {
@@ -165,6 +152,49 @@ public class GitoliteService {
         }
     }
 
+    public List<BranchDTO> readRepoBranches(String repo) {
+        try {
+            var branches = new ArrayList<BranchDTO>();
+
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, readBranchesScript, repo);
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                parseAndAddBranchOutput(branches, line);
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", readBranchesScript));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+
+            return branches;
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    private void parseAndAddBranchOutput(List<BranchDTO> list, String output) {
+
+        String[] parts = output.split("  ");
+        if (parts.length == 3) {
+            BranchDTO branchDTO = new BranchDTO();
+            branchDTO.setUpdatedAt(DateUtil.parseGitoliteDate(parts[0]));
+            branchDTO.setName(parts[1]);
+            branchDTO.setUpdatedBy(parts[2]);
+            list.add(branchDTO);
+        }
+    }
+
     public String getDifferences(String repo, String originBranch, String destinationBranch) {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, getDifferencesScript, repo, destinationBranch, originBranch);
@@ -173,17 +203,7 @@ public class GitoliteService {
 
             Process process = processBuilder.start();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            StringBuilder changes = new StringBuilder();
-            var differencesStarted = false;
-            while ((line = reader.readLine()) != null) {
-                if (differencesStarted) {
-                    changes.append(parseGitDiffOutput(line));
-                } else {
-                    differencesStarted = line.equals(differencesDelimiter);
-                }
-            }
+            StringBuilder changes = parseGitDiff(process);
 
             int exitCode = process.waitFor();
 
@@ -197,6 +217,21 @@ public class GitoliteService {
             logger.error(e.getMessage());
         }
         return "";
+    }
+
+    private StringBuilder parseGitDiff(Process process) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        StringBuilder changes = new StringBuilder();
+        var differencesStarted = false;
+        while ((line = reader.readLine()) != null) {
+            if (differencesStarted) {
+                changes.append(parseGitDiffOutput(line));
+            } else {
+                differencesStarted = line.equals(differencesDelimiter);
+            }
+        }
+        return changes;
     }
 
     private String parseGitDiffOutput(String line) {
@@ -215,6 +250,12 @@ public class GitoliteService {
             return "File " + line.substring(6) + "\n";
         }
         return "";
+    }
+
+    private void commitGitoliteAdmin(String message) {
+        String script = commitAndPushScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, message);
+        execScript(processBuilder, script);
     }
 
     public void mergeBranches(String repo, String originBranch, String destinationBranch) {
@@ -246,6 +287,26 @@ public class GitoliteService {
         execScript(processBuilder, script);
     }
 
+    public void partialRepoClone(String repo, String branch, String folderPath) {
+        String script;
+        ProcessBuilder processBuilder;
+
+        if (!Objects.equals(folderPath, "")){
+            script = cloneRepoScript_specificFolderAndBranch;
+            processBuilder = new ProcessBuilder(bashLocation, script, repo, branch, folderPath.replace('\\', '/'));
+        } else {
+            script = cloneRepoScript_firstLevelSingleBranch;
+            processBuilder = new ProcessBuilder(bashLocation, script, repo, branch);
+        }
+        execScript(processBuilder, script);
+    }
+
+    public void removeClonedRepo(String repo) {
+        String script = removeClonedRepoScript;
+        ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, script, repo);
+        execScript(processBuilder, script);
+    }
+
     private void execScript(ProcessBuilder processBuilder, String script){
         try {
             processBuilder.directory(new File(scriptWorkingDirectory));
@@ -262,6 +323,76 @@ public class GitoliteService {
         } catch (IOException | InterruptedException e) {
             logger.error(e.getMessage());
         }
+    }
+
+    private ArrayList<CommitsResponseDto> execScriptWithCommitHistory(ProcessBuilder processBuilder, String script){
+        try {
+            processBuilder.directory(new File(scriptWorkingDirectory));
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+            ArrayList<CommitsResponseDto> commits = parseCommits(process);
+            int exitCode = process.waitFor();
+
+            if (exitCode == 0) {
+                logger.info(String.format("Script %s executed successfully", script));
+            } else {
+                logger.error("Script execution failed with exit code: " + exitCode);
+            }
+            return commits;
+        } catch (IOException | InterruptedException e) {
+            logger.error(e.getMessage());
+        }
+        return new ArrayList<>();
+    }
+
+    public List<FileDTO> getFiles(String repoName, String branchName, String path) {
+        String filePath = path.replaceFirst(Pattern.quote(repoName + "\\"), "");
+        Path fullPath = Objects.equals(filePath, "") ?
+                Paths.get(scriptWorkingDirectory, repoName) :
+                Paths.get(scriptWorkingDirectory, repoName, filePath);
+
+       partialRepoClone(repoName, branchName, filePath);
+        try {
+            List<FileDTO> files = Files.walk(fullPath, 1)
+                    .filter(p -> shouldParse(p, filePath, fullPath.toString()))
+                    .map(p -> fileToDTO(p, getFileCommits(repoName, branchName, filePath), repoName))
+                    .toList();
+            removeClonedRepo(repoName);
+            return files;
+        } catch (IOException e) {
+            e.printStackTrace();
+            removeClonedRepo(repoName);
+            return null;
+        }
+    }
+
+    private FileDTO fileToDTO(Path p, List<CommitsResponseDto> commits, String repoName) {
+        FileDTO dto = new FileDTO();
+        String fileName = p.getName(p.getNameCount() - 1).toString();
+
+        Path pathWithRepo = p.subpath(2, p.getNameCount());
+        Path parent = pathWithRepo.getParent() != null ? pathWithRepo.getParent() : null;
+        Path grandParent = parent != null && parent.getParent() != null ? parent.getParent() : null;
+
+        dto.setParentPath(grandParent != null ? grandParent.toString(): "");
+        dto.setName(fileName);
+        dto.setIsFolder(Files.isDirectory(p));
+        dto.setCommitHistory(commits);
+        dto.setPath(pathWithRepo.toString());
+
+        if(!Files.isDirectory(p)) {
+            dto.setContent(FileUtil.readContent(p));
+        }
+        return dto;
+    }
+
+    private boolean shouldParse(Path p, String filePath, String fullPath) {
+//        String lastPartOfPath = p.getName(p.getNameCount() - 1).toString();
+        return p.getNameCount() > 3 &&
+                !p.getName(3).toString().equals(".git") &&
+//                !lastPartOfPath.equals(filePath) &&
+            (!p.toString().equals(fullPath)  || !Files.isDirectory(p) );
     }
 
 //    public byte[] zipFilesFromGitolite(String repoName) {

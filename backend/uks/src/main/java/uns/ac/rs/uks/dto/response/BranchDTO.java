@@ -19,10 +19,7 @@ public class BranchDTO {
     private String name;
     private String code;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createdAt;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime updatedAt;
-    private UserDTO updatedBy;
-    //    private List<Commit> commits;
+    private String updatedBy;
     private UUID repoId;
 }

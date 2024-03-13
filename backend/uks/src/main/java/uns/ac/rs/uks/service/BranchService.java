@@ -43,8 +43,11 @@ public class BranchService {
         return  branchRepository.findById(id).orElseThrow(()->new NotFoundException("Branch not found."));
     }
 
-    public List<BranchDTO> getRepoBranches(UUID id) {
-        List<Branch> branches = branchRepository.findAllByRepositoryId(id);
+    public List<BranchDTO> getRepoBranches(UUID repoId) {
+        var repo = getRepoById(repoId);
+        List<BranchDTO> gitoliteBranches = gitoliteService.readRepoBranches(formatRepoName(repo.getName()));
+        // TODO: Save gitolite branch to repo if not saved
+        List<Branch> branches = branchRepository.findAllByRepositoryId(repoId);
         return BranchMapper.toDTOs(branches);
     }
     public Long getRepoBranchesCount(UUID repoId) {
@@ -53,7 +56,7 @@ public class BranchService {
 
     public List<CommitsResponseDto> getCommits(UUID repoId, String branch){
         var repo = getRepoById(repoId);
-        return gitoliteService.getCommits(formatRepoName(repo.getName()), branch);
+        return gitoliteService.getBranchCommits(formatRepoName(repo.getName()), branch);
     }
 
     public String getDifferences(UUID repoId, String originBranch, String destinationBranch) {

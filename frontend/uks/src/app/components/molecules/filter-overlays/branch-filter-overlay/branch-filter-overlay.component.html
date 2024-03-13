@@ -14,8 +14,8 @@
         </div>
 
         <div *ngFor="let elem of shownList" class="item-row flex flex-row items-center" (click)=" onSelectChange(elem)">
-            <i class="icon fa-regular fa-circle-check" *ngIf="selected?.id === elem.id"></i>
-            <div [class]="selected?.id === elem.id ? 'ml-4' : 'ml-8'">
+            <i class="icon fa-regular fa-circle-check" *ngIf="selectedName === elem.name"></i>
+            <div [class]="selectedName === elem.name ? 'ml-4' : 'ml-8'">
                 <i class="icon fa-solid fa-code-branch"></i>
                 <label class="author-name">{{elem.name}}</label>
             </div>

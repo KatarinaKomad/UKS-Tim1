@@ -8,11 +8,8 @@ export interface BranchBasicInfoDTO {
 export interface BranchDTO {
   id: number;
   name: string;
-  createdAt: Date;
   updatedAt: Date;
-  updatedBy: UserBasicInfo;
-  repoId: string;
-  // private List<Commit> commits;
+  updatedBy: string;
 }
 
 export interface OriginTargetBranchRequest {
@@ -24,4 +21,11 @@ export interface OriginTargetBranchRequest {
 export interface TargetBranchRequest {
   repoId: string;
   branchName: string;
+}
+
+export interface CommitsResponseDto {
+  hash: string;
+  message: string;
+  gitUser: string;
+  timeAgo: string;
 }

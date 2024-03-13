@@ -40,6 +40,9 @@ const routes: Routes = [
   { path: 'repository/watchers-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
   { path: 'repository/stars-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
   { path: 'repository/branches', component: BranchPageComponent, canActivate: [authGuard] },
+
+  { path: 'repository/branch/:branchName', component: RepositoryPageComponent, canActivate: [authGuard] },
+  { path: 'repository/branch/:branchName/:filePath', component: RepositoryPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
@@ -66,8 +69,6 @@ const routes: Routes = [
           { path: ':prId', component: PrOverviewComponent, outlet: 'pr-tab' },
         ]
       },
-
-
     ]
   },
 

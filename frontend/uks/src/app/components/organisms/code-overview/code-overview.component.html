@@ -3,7 +3,23 @@
 <div class="flex flex-row">
     <div class="flex flex-col w-1/12"></div>
     <div class="flex flex-col w-8/12">
-        <app-branch-button-group></app-branch-button-group>
+        <app-branch-button-group [showCodeOptions]="true"></app-branch-button-group>
+        <div class="pt-6 " *ngIf="!showFileContent">
+            <app-folder-table-overview [files]="files"></app-folder-table-overview>
+        </div>
+
+        <div *ngIf="showFileContent" class=" !mt-6 !mr-6 !pr-6">
+            <div class="font-semibold mb-2">
+                <i class="fa-regular fa-file fa-lg"></i>
+                {{files[0].name}}
+            </div>
+            <div class="bg-gray-700 text-white h-full">
+                <div *ngFor=" let line of files[0].content?.split('\n'); let i=index">
+                    <pre>{{ i+1 }}.  {{ line }}</pre>
+                </div>
+            </div>
+
+        </div>
 
     </div>
     <div class="flex flex-col w-3/12">

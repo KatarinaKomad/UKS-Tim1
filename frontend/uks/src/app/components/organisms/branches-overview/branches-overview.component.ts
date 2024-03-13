@@ -4,7 +4,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableDataSourcePaginator } from '@angular/material/table';
-import { BranchBasicInfoDTO, BranchDTO, OriginTargetBranchRequest } from 'src/models/branch/branch';
+import { BranchDTO, OriginTargetBranchRequest } from 'src/models/branch/branch';
 import { BranchService } from 'src/services/branch/branch.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { RepoService } from 'src/services/repo/repo.service';
@@ -128,11 +128,12 @@ export class BranchesOverviewComponent {
     this.dataSource.data = [...this.dataSource.data];
   }
 
-  navigateToBranchCode() {
-    // this.navigationService.navigateToBranchCode();
+  navigateToBranchCode(branchName: string) {
+    this.navigationService.navigateToBranchCodeOverview(branchName);
   }
   navigateToPr(pr: any) {
     // this.navigationService.navigateToPr(pr.id);
+    throw new Error('Method not implemented.');
   }
 
   copyName(branchName: string, i: number) {

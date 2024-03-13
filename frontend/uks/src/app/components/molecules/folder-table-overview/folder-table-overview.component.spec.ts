@@ -1,22 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CodeOverviewComponent } from './code-overview.component';
-import { HttpClientModule } from '@angular/common/http';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { FolderTableOverviewComponent } from './folder-table-overview.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 
-describe('CodeOverviewComponent', () => {
-  let component: CodeOverviewComponent;
-  let fixture: ComponentFixture<CodeOverviewComponent>;
+describe('FolderTableOverviewComponent', () => {
+  let component: FolderTableOverviewComponent;
+  let fixture: ComponentFixture<FolderTableOverviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CodeOverviewComponent],
-      imports: [HttpClientModule, ToastrModule.forRoot(), MatDialogModule],
-      providers: [ToastrService,
-        { provide: MatDialogRef, useValue: {} },
+      declarations: [FolderTableOverviewComponent],
+      imports: [HttpClientModule],
+      providers: [
         {
           provide: ActivatedRoute,
           useValue: {
@@ -32,7 +29,7 @@ describe('CodeOverviewComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(CodeOverviewComponent);
+    fixture = TestBed.createComponent(FolderTableOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

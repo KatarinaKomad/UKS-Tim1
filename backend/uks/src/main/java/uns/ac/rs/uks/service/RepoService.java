@@ -6,10 +6,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.*;
-import uns.ac.rs.uks.dto.response.BranchDTO;
-import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
-import uns.ac.rs.uks.dto.response.UserDTO;
-import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
+import uns.ac.rs.uks.dto.response.*;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.BranchMapper;
@@ -17,7 +14,11 @@ import uns.ac.rs.uks.mapper.RepoMapper;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.repo.RepoRepository;
+import uns.ac.rs.uks.util.FileUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -184,5 +185,10 @@ public class RepoService {
     public BranchDTO getDefaultBranch(UUID repoId) {
         Repo repo = getById(repoId);
         return BranchMapper.toDTO(repo.getDefaultBranch());
+    }
+
+    public List<FileDTO> getFiles(FileRequest request) {
+        Repo repo = getById(request.getRepoId());
+        return gitoliteService.getFiles(repo.getName(), request.getBranchName(), request.getFilePath());
     }
 }

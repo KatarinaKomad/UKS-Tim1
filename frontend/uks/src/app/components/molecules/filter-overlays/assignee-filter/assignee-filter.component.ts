@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FILTER_ASSIGNEE_OVERLAY, INPUT_ASSIGNEE_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
+import { FILTER_ASSIGNEE_OVERLAY, INPUT_ASSIGNEE_OVERLAY, OverlayPosition } from 'src/models/forms/position';
 import { UserBasicInfo } from 'src/models/user/user';
 import { MemberService } from 'src/services/member/member.service';
 import { RepoService } from 'src/services/repo/repo.service';

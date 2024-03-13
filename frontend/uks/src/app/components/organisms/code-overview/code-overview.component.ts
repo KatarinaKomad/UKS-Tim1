@@ -1,4 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FileDTO, FileRequest } from 'src/models/files/files';
 import { RepoBasicInfoDTO, getEmptyRepo } from 'src/models/repo/repo';
 import { RepoService } from 'src/services/repo/repo.service';
 
@@ -9,14 +11,51 @@ import { RepoService } from 'src/services/repo/repo.service';
 })
 export class CodeOverviewComponent {
 
+  showFileContent: boolean = false;
+  showFile?: FileDTO;
+
   repo: RepoBasicInfoDTO = getEmptyRepo();
+  repoId: string = "";
+  branchName: string = "master";
+  filePath: string = "";
+  files: FileDTO[] = [];
 
   constructor(
     private repoService: RepoService,
-    private cdr: ChangeDetectorRef
+    private route: ActivatedRoute,
   ) {
-    const repoId = localStorage.getItem("repoId") as string;
-    this.setRepo(repoId);
+    this.repoId = localStorage.getItem("repoId") as string;
+    this.setRepo(this.repoId);
+  }
+
+  ngOnInit(): void {
+    if (this.route.params) {
+      this.route.params.subscribe((params) => {
+        this.branchName = params['branchName'] ? params['branchName'] : "master";
+        this.filePath = params['filePath'] ? params['filePath'] : "";
+
+        this.setFiles();
+      });
+    }
+
+    if (this.route.queryParams) {
+      this.route.queryParams.subscribe((params) => {
+        if (params['isFile']) {
+          this.showFileContent = params['isFile'];
+        }
+      });
+    }
+
+  }
+
+  private setFiles() {
+    const request: FileRequest = this.createFileRequest()
+    this.repoService.getFiles(request).subscribe({
+      next: (res: FileDTO[]) => {
+        console.log(res);
+        this.files = res;
+      }
+    })
   }
 
   private setRepo(repoId: string) {
@@ -31,4 +70,11 @@ export class CodeOverviewComponent {
     })
   }
 
+  private createFileRequest(): FileRequest {
+    return {
+      branchName: this.branchName,
+      repoId: this.repoId,
+      filePath: this.filePath
+    };
+  }
 }

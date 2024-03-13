@@ -11,18 +11,15 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import uns.ac.rs.uks.dto.request.IssueRequest;
 import uns.ac.rs.uks.dto.request.OriginTargetBranchRequest;
-import uns.ac.rs.uks.dto.response.BranchBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.BranchDTO;
-import uns.ac.rs.uks.dto.response.IssueDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.mapper.BranchMapper;
 import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.BranchRepository;
 import uns.ac.rs.uks.repository.repo.RepoRepository;
 import uns.ac.rs.uks.util.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -114,12 +111,15 @@ public class BranchServiceTest {
     void testGetAllRepoBranches() {
         Repo repository = new Repo();
         repository.setId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        repository.setName("UKS-test");
         Branch branch1 = new Branch();
         branch1.setRepository(repository);
         Branch branch2 = new Branch();
         branch2.setRepository(repository);
 
+        when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repository));
         when(branchRepository.findAllByRepositoryId(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(List.of(branch1, branch2));
+        when(gitoliteService.readRepoBranches(repository.getName())).thenReturn(new ArrayList<>());
 
         List<BranchDTO> branches = branchService.getRepoBranches(Constants.REPOSITORY_ID_1_UKS_TEST);
         assertEquals(branches.size(), 2);

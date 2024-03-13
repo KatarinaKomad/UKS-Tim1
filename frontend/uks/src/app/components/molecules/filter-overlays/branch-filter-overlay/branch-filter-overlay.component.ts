@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BranchDTO } from 'src/models/branch/branch';
+import { NO_CODE_OPTIONS_CLONE_OVERLAY, OverlayPosition, SHOW_CODE_OPTIONS_CLONE_OVERLAY } from 'src/models/forms/position';
 import { BranchService } from 'src/services/branch/branch.service';
 
 @Component({
@@ -10,14 +11,15 @@ import { BranchService } from 'src/services/branch/branch.service';
 })
 export class BranchFilterOverlayComponent {
 
-  @Input() preSelected?: BranchDTO;
-  @Output() closeEvent: EventEmitter<BranchDTO | null> = new EventEmitter<BranchDTO | null>();
+  @Input() preSelected?: string;
+  @Input() showCodeOptions: boolean = false;
+  @Output() closeEvent: EventEmitter<string | null> = new EventEmitter<string | null>();
   @ViewChild('overlayContent') overlayContent?: ElementRef;
 
 
   fullList: BranchDTO[] = [];
   shownList: BranchDTO[] = [];
-  selected?: BranchDTO;
+  selectedName?: string;
 
   repoId: string = '';
   filter = new FormControl<string>("");
@@ -36,9 +38,18 @@ export class BranchFilterOverlayComponent {
     })
   }
 
+  ngAfterViewInit(): void {
+    const position = this.showCodeOptions ? SHOW_CODE_OPTIONS_CLONE_OVERLAY : NO_CODE_OPTIONS_CLONE_OVERLAY;
+    this.setOverlayPosition(position);
+  }
+
+
   ngOnChanges(changes: SimpleChanges) {
+    const position = changes['showCodeOptions'] ? SHOW_CODE_OPTIONS_CLONE_OVERLAY : NO_CODE_OPTIONS_CLONE_OVERLAY;
+    this.setOverlayPosition(position);
+
     if (changes['preSelected'].currentValue) {
-      this.selected = changes['preSelected'].currentValue;
+      this.selectedName = changes['preSelected'].currentValue;
     }
   }
 
@@ -49,22 +60,29 @@ export class BranchFilterOverlayComponent {
   }
 
   onSelectChange(selected: BranchDTO): void {
-    if (this.selected?.id == selected.id) {
-      this.selected = undefined;
+    if (this.selectedName == selected.name) {
+      this.selectedName = undefined;
     } else {
-      this.selected = selected;
+      this.selectedName = selected.name;
     }
 
     this.closeForm();
   }
 
   closeForm() {
-    if (this.preSelected?.id !== this.selected?.id) {
-      this.closeEvent.emit(this.selected);
+    if (this.preSelected !== this.selectedName) {
+      this.closeEvent.emit(this.selectedName);
     } else {
       this.closeEvent.emit(null);
     }
   }
 
+  private setOverlayPosition(positions: OverlayPosition) {
+    if (this.overlayContent) {
+      const overlayContentElement = this.overlayContent.nativeElement as HTMLElement;
+      overlayContentElement.style.top = `${positions.top}%`;
+      overlayContentElement.style.left = `${positions.left}%`;
+    }
+  }
 
 }
