@@ -21,7 +21,7 @@
             </th>
             <td mat-cell *matCellDef="let element">
                 <div>
-                    {{element.commitHistory[0].message }}
+                    {{element.commitHistory?.length > 0 ? element.commitHistory[0].message: '' }}
                 </div>
             </td>
         </ng-container>
@@ -33,7 +33,7 @@
             </th>
             <td mat-cell *matCellDef="let element" class="!clickable">
                 <div>
-                    {{element.commitHistory[0].timeAgo }}
+                    {{element.commitHistory?.length > 0 ? element.commitHistory[0].timeAgo: '' }}
                 </div>
             </td>
         </ng-container>

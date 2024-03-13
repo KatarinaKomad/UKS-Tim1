@@ -13,6 +13,9 @@ import { NavigationService } from 'src/services/navigation/navigation.service';
 })
 export class FolderTableOverviewComponent implements OnInit, OnChanges {
 
+  showFileContent: boolean = false;
+  showFile?: FileDTO;
+
   displayedColumns: string[] = ['name', 'last commit message', 'date of last commit'];
 
   dataSource: MatTableDataSource<FileDTO, MatTableDataSourcePaginator> = new MatTableDataSource();
@@ -20,6 +23,7 @@ export class FolderTableOverviewComponent implements OnInit, OnChanges {
   @Input() files: FileDTO[] = [];
 
   repoId: string = "";
+  repoName: string = "";
   branchName: string = "";
   filePath: string = "";
   @ViewChild(MatSort) sort: MatSort = new MatSort;
@@ -30,21 +34,27 @@ export class FolderTableOverviewComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
   ) {
     this.repoId = localStorage.getItem("repoId") as string
+    this.repoName = localStorage.getItem("repoName") as string
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.branchName = params['branchName'] ? params['branchName'] : "master";
-      this.filePath = params['filePath'] ? params['filePath'] : "";
-    });
-
+    if (this.route.params) {
+      this.route.params.subscribe((params) => {
+        this.branchName = params['branchName'] ? params['branchName'] : "master";
+        this.filePath = params['filePath'] ? params['filePath'] : "";
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['files'].currentValue) {
       this.files = [...changes['files'].currentValue];
+      if (this.files[1]?.parentPath) {
+        this.files.splice(0, 0, { name: "..", isFolder: true, path: this.files[1].parentPath });
+      }
       this.dataSource = new MatTableDataSource(this.files);
       this.dataSource.sort = this.sort;
+
     }
   }
 
@@ -57,7 +67,11 @@ export class FolderTableOverviewComponent implements OnInit, OnChanges {
   }
 
   navigateToFile(file: FileDTO) {
-    this.navigationService.navigateToFile(this.branchName, file.path);
+    if (file.path === this.repoName) {
+      this.navigationService.navigateToBranchCodeOverview(this.branchName);
+    } else {
+      this.navigationService.navigateToFile(this.branchName, file.path, file);
+    }
   }
 
 }

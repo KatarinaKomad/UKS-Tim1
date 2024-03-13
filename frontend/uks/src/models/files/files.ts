@@ -9,7 +9,8 @@ export interface FileRequest {
 export interface FileDTO {
     name: string;
     path: string;
-    content: string;
+    content?: string | undefined;
     isFolder: boolean;
-    commitHistory: CommitsResponseDto[];
+    commitHistory?: CommitsResponseDto[];
+    parentPath?: string | undefined;
 }

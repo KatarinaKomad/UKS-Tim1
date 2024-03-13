@@ -108,8 +108,6 @@ import { NewBranchDialogComponent } from './components/molecules/dialogs/new-bra
 import { CloneRepoOverlayComponent } from './components/molecules/filter-overlays/clone-repo-overlay/clone-repo-overlay.component';
 import { BranchFilterOverlayComponent } from './components/molecules/filter-overlays/branch-filter-overlay/branch-filter-overlay.component';
 import { FolderTableOverviewComponent } from './components/molecules/folder-table-overview/folder-table-overview.component';
-import { FolderTreeOverviewComponent } from './components/molecules/folder-tree-overview/folder-tree-overview.component';
-import { RepoFilesTreeViewPageComponent } from './pages/repo-files-tree-view-page/repo-files-tree-view-page.component';
 
 
 
@@ -188,8 +186,6 @@ import { RepoFilesTreeViewPageComponent } from './pages/repo-files-tree-view-pag
     BranchFilterOverlayComponent,
 
     FolderTableOverviewComponent,
-    FolderTreeOverviewComponent,
-    RepoFilesTreeViewPageComponent
   ],
   exports: [],
   imports: [
@@ -216,7 +212,6 @@ import { RepoFilesTreeViewPageComponent } from './pages/repo-files-tree-view-pag
     MatProgressBarModule,
     ClipboardModule,
 
-    MatTreeModule,
     ToastrModule.forRoot(),
   ],
   providers: [

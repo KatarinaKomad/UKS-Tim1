@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { TAB_VIEW } from 'src/models/navigation';
 import { BranchDTO } from 'src/models/branch/branch';
 import { FileDTO } from 'src/models/files/files';
+import { query } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -184,8 +185,15 @@ export class NavigationService {
   navigateToBranchCodeOverview(branchName: string) {
     this.router.navigate([`repository/branch/${branchName}`])
   }
-  navigateToFile(branchName: string, filePath: string) {
-    this.router.navigate([`repository/tree/${branchName}/${filePath}`])
+  navigateToFile(branchName: string, filePath: string, file: FileDTO) {
+    if (file.isFolder) {
+      this.router.navigate([`repository/branch/${branchName}/${filePath}`])
+    }
+    else {
+      localStorage.setItem("filePreview", JSON.stringify(file))
+      this.router.navigate([`repository/branch/${branchName}/${filePath}`], { queryParams: { isFile: true } })
+    }
+
   }
 
 

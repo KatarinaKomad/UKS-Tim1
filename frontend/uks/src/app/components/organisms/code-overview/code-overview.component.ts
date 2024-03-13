@@ -11,6 +11,9 @@ import { RepoService } from 'src/services/repo/repo.service';
 })
 export class CodeOverviewComponent {
 
+  showFileContent: boolean = false;
+  showFile?: FileDTO;
+
   repo: RepoBasicInfoDTO = getEmptyRepo();
   repoId: string = "";
   branchName: string = "master";
@@ -26,12 +29,23 @@ export class CodeOverviewComponent {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      this.branchName = params['branchName'] ? params['branchName'] : "master";
-      this.filePath = params['filePath'] ? params['filePath'] : "";
+    if (this.route.params) {
+      this.route.params.subscribe((params) => {
+        this.branchName = params['branchName'] ? params['branchName'] : "master";
+        this.filePath = params['filePath'] ? params['filePath'] : "";
 
-      this.setFiles();
-    });
+        this.setFiles();
+      });
+    }
+
+    if (this.route.queryParams) {
+      this.route.queryParams.subscribe((params) => {
+        if (params['isFile']) {
+          this.showFileContent = params['isFile'];
+        }
+      });
+    }
+
   }
 
   private setFiles() {

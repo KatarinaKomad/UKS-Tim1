@@ -4,6 +4,8 @@ import { CodeOverviewComponent } from './code-overview.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('CodeOverviewComponent', () => {
   let component: CodeOverviewComponent;
@@ -14,7 +16,18 @@ describe('CodeOverviewComponent', () => {
       declarations: [CodeOverviewComponent],
       imports: [HttpClientModule, ToastrModule.forRoot(), MatDialogModule],
       providers: [ToastrService,
-        { provide: MatDialogRef, useValue: {} }
+        { provide: MatDialogRef, useValue: {} },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: {
+                get: () => 'exampleParamValue',
+              },
+            },
+            queryParams: of({}),
+          },
+        },
       ],
     })
       .compileComponents();
