@@ -54,11 +54,6 @@ public class BranchService {
         return branchRepository.countAllByRepositoryId(repoId);
     }
 
-    public List<CommitsResponseDto> getCommits(UUID repoId, String branch){
-        var repo = getRepoById(repoId);
-        return gitoliteService.getBranchCommits(formatRepoName(repo.getName()), branch);
-    }
-
     public String getDifferences(UUID repoId, String originBranch, String destinationBranch) {
         var repo = getRepoById(repoId);
         return gitoliteService.getDifferences(formatRepoName(repo.getName()), originBranch, destinationBranch);

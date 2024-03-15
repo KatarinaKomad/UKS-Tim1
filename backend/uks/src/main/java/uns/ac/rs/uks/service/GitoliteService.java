@@ -108,17 +108,12 @@ public class GitoliteService {
         removeClonedRepo(repo);
         return commits;
     }
-    public List<CommitsResponseDto> getFileCommits(String repo, String branch, String path) {
+    public List<CommitsResponseDto> getFileCommits(String repoName, String branch, String path, boolean fullHistory) {
+        String filePathWithoutRepo = path.replaceFirst(Pattern.quote(repoName + "\\"), "");
         String script = readCommitsScript;
-        ProcessBuilder processBuilder;
-        if (Objects.equals(path, "")){
-            processBuilder = new ProcessBuilder(bashLocation, script, repo, branch);
-        } else {
-            processBuilder = new ProcessBuilder(bashLocation, script, repo, branch, path);
-        }
+        ProcessBuilder processBuilder =
+                new ProcessBuilder(bashLocation, script, repoName, branch, filePathWithoutRepo, String.valueOf(fullHistory));
         return execScriptWithCommitHistory(processBuilder, script);
-
-
     }
 
     private ArrayList<CommitsResponseDto> parseCommits(Process process) throws IOException {
@@ -347,16 +342,16 @@ public class GitoliteService {
     }
 
     public List<FileDTO> getFiles(String repoName, String branchName, String path) {
-        String filePath = path.replaceFirst(Pattern.quote(repoName + "\\"), "");
-        Path fullPath = Objects.equals(filePath, "") ?
+        String filePathWithoutRepo = path.replaceFirst(Pattern.quote(repoName + "\\"), "");
+        Path fullPath = Objects.equals(filePathWithoutRepo, "") ?
                 Paths.get(scriptWorkingDirectory, repoName) :
-                Paths.get(scriptWorkingDirectory, repoName, filePath);
+                Paths.get(scriptWorkingDirectory, repoName, filePathWithoutRepo);
 
-       partialRepoClone(repoName, branchName, filePath);
+       partialRepoClone(repoName, branchName, filePathWithoutRepo);
         try {
             List<FileDTO> files = Files.walk(fullPath, 1)
-                    .filter(p -> shouldParse(p, filePath, fullPath.toString()))
-                    .map(p -> fileToDTO(p, getFileCommits(repoName, branchName, filePath), repoName))
+                    .filter(p -> shouldParse(p, filePathWithoutRepo, fullPath.toString()))
+                    .map(p -> fileToDTO(p, getFileCommits(repoName, branchName, path, false)))
                     .toList();
             removeClonedRepo(repoName);
             return files;
@@ -367,7 +362,7 @@ public class GitoliteService {
         }
     }
 
-    private FileDTO fileToDTO(Path p, List<CommitsResponseDto> commits, String repoName) {
+    private FileDTO fileToDTO(Path p, List<CommitsResponseDto> commits) {
         FileDTO dto = new FileDTO();
         String fileName = p.getName(p.getNameCount() - 1).toString();
 

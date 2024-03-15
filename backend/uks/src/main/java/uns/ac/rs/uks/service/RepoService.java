@@ -187,8 +187,4 @@ public class RepoService {
         return BranchMapper.toDTO(repo.getDefaultBranch());
     }
 
-    public List<FileDTO> getFiles(FileRequest request) {
-        Repo repo = getById(request.getRepoId());
-        return gitoliteService.getFiles(repo.getName(), request.getBranchName(), request.getFilePath());
-    }
 }

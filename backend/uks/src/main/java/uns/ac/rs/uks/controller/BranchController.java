@@ -34,21 +34,6 @@ public class BranchController {
         return branchService.getRepoBranchesCount(repoId);
     }
 
-//    @GetMapping("/getRepoBranches/{repoId}")
-//    public List<BranchBasicInfoDTO> getAllByRepoId(@PathVariable UUID repoId) {
-//        return branchService.getRepoBranches(repoId);
-//    }
-//
-//    @GetMapping("/getRepoBranchesFromGitolite/{repoId}")
-//    public List<BranchBasicInfoDTO> getAllFromGitoliteByRepoId(@PathVariable UUID repoId) {
-//        return branchService.getGitoliteRepoBranches(repoId);
-//    }
-
-    @GetMapping("/commits")
-    public List<CommitsResponseDto> getBranchCommits(@Valid @RequestBody TargetBranchRequest request){
-        return branchService.getCommits(request.getRepoId(), request.getBranchName());
-    }
-
     @GetMapping("/difference")
     public String getBranchDifferences(@Valid @RequestBody OriginTargetBranchRequest request){
         return branchService.getDifferences(request.getRepoId(), request.getOriginName(), request.getTargetName());

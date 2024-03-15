@@ -112,8 +112,4 @@ public class RepoController {
         return repoService.getDefaultBranch(repoId);
     }
 
-    @PostMapping("/getFiles")
-    public List<FileDTO> getFiles(@Valid @RequestBody FileRequest request) {
-        return repoService.getFiles(request);
-    }
 }
