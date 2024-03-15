@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BranchDTO } from 'src/models/branch/branch';
+import { FileDTO } from 'src/models/files/files';
 import { BranchService } from 'src/services/branch/branch.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { RepoService } from 'src/services/repo/repo.service';
@@ -13,6 +14,7 @@ import { RepoService } from 'src/services/repo/repo.service';
 export class BranchButtonGroupComponent implements OnInit {
 
   @Input() showCodeOptions: boolean = false;
+  @Output() changeBranchEvent: EventEmitter<string> = new EventEmitter<string>();
 
   selectedBranchName?: string;
   branchCount: number = 0;
@@ -65,16 +67,14 @@ export class BranchButtonGroupComponent implements OnInit {
     this.isBranchOptionOpen = !this.isBranchOptionOpen;
     if (selectedName) {
       this.selectedBranchName = selectedName;
-      this.navigationService.navigateToBranchCodeOverview(selectedName);
+      this.changeBranchEvent.emit(selectedName);
     }
   }
 
   navigateToBranches() {
     this.navigationService.navigateToBranchesPage();
   }
-  openFileOptions() {
-    throw new Error('Method not implemented.');
-  }
+
   openCodeOptions(isOpen: boolean) {
     this.isCodeOptionOpen = isOpen;
   }

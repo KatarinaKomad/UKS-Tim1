@@ -1,7 +1,7 @@
 import { CommitsResponseDto } from "../branch/branch";
 
 export interface FileRequest {
-    repoId: string;
+    repoName: string;
     branchName: string;
     filePath: string;
 }

@@ -185,16 +185,18 @@ export class NavigationService {
   navigateToBranchCodeOverview(branchName: string) {
     this.router.navigate([`repository/branch/${branchName}`])
   }
-  navigateToFile(branchName: string, filePath: string, file: FileDTO) {
+  navigateToFile(branchName: string, file: FileDTO) {
     if (file.isFolder) {
-      this.router.navigate([`repository/branch/${branchName}/${filePath}`])
+      this.router.navigate([`repository/branch/${branchName}/${file.path}`])
     }
     else {
-      localStorage.setItem("filePreview", JSON.stringify(file))
-      this.router.navigate([`repository/branch/${branchName}/${filePath}`], { queryParams: { isFile: true } })
+      this.router.navigate([`repository/branch/${branchName}/${file.path}`], { queryParams: { isFile: true } })
     }
-
   }
+  navigateToCommitHistory(branchName: string, filePath: string) {
+    this.router.navigate([`repository/commits/${branchName}/${filePath}`])
+  }
+
 
 
 
