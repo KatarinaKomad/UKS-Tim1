@@ -19,7 +19,8 @@ public class FileService {
     }
 
     public List<CommitsResponseDto> getFileCommits(FileRequest fr) {
-        boolean fullCommitHistory = true;
-        return gitoliteService.getFileCommits(fr.getRepoName(), fr.getBranchName(), fr.getFilePath(), fullCommitHistory);
+        List<CommitsResponseDto> commits = gitoliteService.getFileCommits(fr.getRepoName(), fr.getBranchName(), fr.getFilePath());
+        gitoliteService.removeClonedRepo(fr.getRepoName());
+        return commits;
     }
 }

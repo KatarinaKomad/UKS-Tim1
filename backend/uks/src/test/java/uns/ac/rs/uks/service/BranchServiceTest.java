@@ -145,6 +145,7 @@ public class BranchServiceTest {
         // Mocking
         User user = new User();
         user.setId(Constants.PERA_USER_ID);
+        user.setCustomUsername("PeraPeric123");
 
         Repo repo = new Repo();
         repo.setId(Constants.REPOSITORY_ID_1_UKS_TEST);
@@ -158,7 +159,7 @@ public class BranchServiceTest {
         Branch branch = new Branch();
         branch.setName("test");
         branch.setRepository(repo);
-        branch.setUpdatedBy(user);
+        branch.setUpdatedBy(user.getCustomUsername());
 
 
         when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
@@ -180,6 +181,7 @@ public class BranchServiceTest {
         // Mocking
         User user = new User();
         user.setId(Constants.PERA_USER_ID);
+        user.setCustomUsername("PeraPeric123");
 
         Repo repo = new Repo();
         repo.setId(Constants.REPOSITORY_ID_1_UKS_TEST);
@@ -193,7 +195,7 @@ public class BranchServiceTest {
         Branch branch = new Branch();
         branch.setName("test");
         branch.setRepository(repo);
-        branch.setUpdatedBy(user);
+        branch.setUpdatedBy(user.getCustomUsername());
 
 
         when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
