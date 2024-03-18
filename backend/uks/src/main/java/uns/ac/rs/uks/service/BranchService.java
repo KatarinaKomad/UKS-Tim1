@@ -14,6 +14,7 @@ import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.repository.BranchRepository;
 import uns.ac.rs.uks.repository.repo.RepoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class BranchService {
         Branch branch = new Branch();
         branch.setName("master");
         branch.setRepository(repo);
-        branch.setUpdatedBy(creator);
+        branch.setUpdatedBy(creator.getCustomUsername());
         branchRepository.save(branch);
         return branch;
     }
@@ -44,19 +45,26 @@ public class BranchService {
     }
 
     public List<BranchDTO> getRepoBranches(UUID repoId) {
-        var repo = getRepoById(repoId);
+        Repo repo = getRepoById(repoId);
         List<BranchDTO> gitoliteBranches = gitoliteService.readRepoBranches(formatRepoName(repo.getName()));
-        // TODO: Save gitolite branch to repo if not saved
         List<Branch> branches = branchRepository.findAllByRepositoryId(repoId);
-        return BranchMapper.toDTOs(branches);
+        ArrayList<BranchDTO> DTOs = new ArrayList<>(BranchMapper.toDTOs(branches));
+
+        for (BranchDTO b : gitoliteBranches) {
+            if(branches.stream().noneMatch(x-> x.getName().equals(b.getName()))){
+                Branch newGitoliteBranch = Branch.builder()
+                        .name(b.getName())
+                        .repository(repo)
+                        .updatedBy(b.getUpdatedBy())
+                        .updatedAt(b.getUpdatedAt())
+                        .build();
+                DTOs.add(BranchMapper.toDTO(branchRepository.save(newGitoliteBranch)));
+            }
+        }
+        return DTOs;
     }
     public Long getRepoBranchesCount(UUID repoId) {
         return branchRepository.countAllByRepositoryId(repoId);
-    }
-
-    public List<CommitsResponseDto> getCommits(UUID repoId, String branch){
-        var repo = getRepoById(repoId);
-        return gitoliteService.getBranchCommits(formatRepoName(repo.getName()), branch);
     }
 
     public String getDifferences(UUID repoId, String originBranch, String destinationBranch) {
@@ -84,13 +92,13 @@ public class BranchService {
         User repoUser = entityManager.getReference(User.class, user.getId());
         var repo = getRepoById(request.getRepoId());
         gitoliteService.newBranch(formatRepoName(repo.getName()), request.getOriginName(), request.getTargetName());
-        Branch newBranch = Branch.builder().name(request.getTargetName()).repository(repo).updatedBy(repoUser).build();
+        Branch newBranch = Branch.builder().name(request.getTargetName()).repository(repo).updatedBy(repoUser.getCustomUsername()).build();
         return BranchMapper.toDTO(branchRepository.save(newBranch));
     }
 
     private Branch updateBranch(UUID repoId, String branchName, User user) {
         Branch branch = branchRepository.findByRepositoryIdAndName(repoId, branchName);
-        branch.setUpdatedBy(user);
+        branch.setUpdatedBy(user.getCustomUsername());
         return branchRepository.save(branch);
     }
 

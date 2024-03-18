@@ -12,10 +12,21 @@ exec 2>&1
 
 # echo "Reading repo branches: $repo"
 
-cd gitolite-admin || exit 1
+if [ ! -d branches ]; then
+  mkdir branches
+fi
 
-#GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git ls-remote git@localhost:"$repo".git | grep 'refs/heads/'
+cd branches || exit
 
-#GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git for-each-ref --sort='-committerdate:iso8601' --format='%(committerdate:relative)|%(refname:short)|%(committername)' refs/remotes/ | column -s '|' -t
+GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git clone git@localhost:"$repo"
+if [ $? -ne 0 ]; then
+  echo "Error: Cloning failed. Exiting."
+  exit 1
+fi
 
-GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git for-each-ref --sort='-committerdate:iso8601' --format='%(committerdate:iso8601)|%(refname:short)|%(committername)' refs/remotes/ | sed 's/origin\///' | grep -v 'HEAD' | column -s '|' -t
+cd "$repo" || exit
+
+GIT_SSH_COMMAND="ssh -p 2222 -i ../../gitolite" git for-each-ref --sort='-committerdate:iso8601' --format='%(committerdate:iso8601)|%(refname:short)|%(committername)' refs/remotes/ | sed 's/origin\///' | grep -v 'HEAD'
+
+cd ..
+rm -rf "$repo"

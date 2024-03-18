@@ -70,7 +70,7 @@ export class FolderTableOverviewComponent implements OnInit, OnChanges {
     if (file.path === this.repoName) {
       this.navigationService.navigateToBranchCodeOverview(this.branchName);
     } else {
-      this.navigationService.navigateToFile(this.branchName, file.path, file);
+      this.navigationService.navigateToFile(this.branchName, file);
     }
   }
 

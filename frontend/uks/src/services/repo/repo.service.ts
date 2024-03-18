@@ -136,11 +136,4 @@ export class RepoService {
     const url = environment.API_BASE_URL + `/repo/getDefaultBranch/${repoId}`;
     return this.httpRequestService.get(url) as Observable<BranchDTO>;
   }
-
-  getFiles(request: FileRequest): Observable<FileDTO[]> {
-    const url = environment.API_BASE_URL + `/repo/getFiles`;
-    const body = JSON.stringify(request);
-
-    return this.httpRequestService.post(url, body) as Observable<FileDTO[]>;
-  }
 }
