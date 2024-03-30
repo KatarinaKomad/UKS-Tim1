@@ -17,7 +17,6 @@ import java.util.UUID;
 public class CommentDTO implements Serializable {
     private Long id;
     private String message;
-    //private String code;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private UserDTO author;

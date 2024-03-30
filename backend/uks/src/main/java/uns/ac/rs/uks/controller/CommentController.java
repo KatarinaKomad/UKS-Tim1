@@ -25,16 +25,16 @@ public class CommentController {
         return commentService.getAllItemComments(itemId);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create/{itemId}/{authorId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public CommentDTO createNewComment(@Valid @RequestBody CommentRequest commentRequest) {
-        return commentService.createNewComment(commentRequest);
+    public CommentDTO createNewComment(@PathVariable UUID itemId, @PathVariable UUID authorId, @Valid @RequestBody CommentRequest commentRequest) {
+        return commentService.createNewComment(itemId, authorId, commentRequest);
     }
 
-    @PatchMapping("/edit")
+    @PatchMapping("/edit/{commentId}")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public CommentDTO editComment(@Valid @RequestBody CommentRequest commentRequest) {
-        return commentService.editComment(commentRequest);
+    public CommentDTO editComment(@PathVariable Long commentId, @Valid @RequestBody CommentRequest commentRequest) {
+        return commentService.editComment(commentId, commentRequest);
     }
 
     @DeleteMapping("/delete/{commentId}")

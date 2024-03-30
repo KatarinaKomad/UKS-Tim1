@@ -10,9 +10,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentRequest {
-    private Long id;
     private String message;
-    //private String code;
-    private UUID authorId;
-    private UUID itemId;
 }

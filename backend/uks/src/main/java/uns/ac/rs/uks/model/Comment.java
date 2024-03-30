@@ -22,8 +22,6 @@ public class Comment implements Serializable {
 
     private String message;
 
-    //private String code;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -33,6 +31,6 @@ public class Comment implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Item item;
 
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private Commit commit;
+    //@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //private Commit commit;
 }

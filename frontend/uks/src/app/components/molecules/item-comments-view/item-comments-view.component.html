@@ -1,0 +1,12 @@
+<div class="card mb-3" *ngFor="let comment of comments">
+  <h5 class="card-header">
+    <b>{{ comment.author.username }}</b> commented on
+    {{ comment.createdAt | date : "mediumDate" }}
+    <button class="float-right">
+      <i class="fas fa-ellipsis-h"></i>
+    </button>
+  </h5>
+  <div class="card-body">
+    <p>{{ comment.message }}</p>
+  </div>
+</div>

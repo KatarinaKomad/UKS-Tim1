@@ -1,71 +1,139 @@
 <div class="flex flex-row">
-    <div class="flex flex-col w-1/6 p-5 first-col">
-        <button class="show-button !py-1 " (click)="showProjectIssues()">
-            <i class="fa-solid fa-circle-left"></i>
-            Back
+  <div class="flex flex-col w-1/6 p-5 first-col">
+    <button class="show-button !py-1" (click)="showProjectIssues()">
+      <i class="fa-solid fa-circle-left"></i>
+      Back
+    </button>
+  </div>
+  <div class="flex flex-col w-3/6 p-5 h-full" *ngIf="!isEdit">
+    <div class="header">
+      <div class="flex flex-row">
+        <span class="text-2xl text-bold pb-2 w-5/6"
+          >#{{ issue?.counter }} - {{ issue?.name }}</span
+        >
+        <button class="show-button !py-1" (click)="edit()">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Edit
         </button>
-    </div>
-    <div class="flex flex-col w-3/6 p-5 h-full" *ngIf="!isEdit">
-        <div class="header">
-            <div class="flex flex-row">
-                <span class="text-2xl text-bold pb-2 w-5/6">#{{issue?.counter}} - {{issue?.name}}</span>
-                <button class="show-button !py-1" (click)="edit()">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                    Edit
-                </button>
-                <button class="show-button !py-1 " (click)="changeStatus(STATE.CLOSE)"
-                    *ngIf="issue?.state === STATE.OPEN">
-                    <i class="fa-regular fa-circle-check"></i>
-                    Close
-                </button>
-                <button class="show-button !py-1 " (click)="changeStatus(STATE.OPEN)"
-                    *ngIf="issue?.state === STATE.CLOSE">
-                    <i class="icon fa-regular fa-circle-dot"></i>
-                    Reopen
-                </button>
-            </div>
-            <div class="flex flex-row space-x-4">
-                <div [style.background]="stateColor" class="state-tag rounded-2xl text-base text-white">
-                    <i class="icon fa-regular fa-circle-dot" *ngIf="issue?.state == STATE.OPEN"></i>
-                    <i class="icon fa-regular fa-circle-check" *ngIf="issue?.state == STATE.CLOSE"></i>
-                    <i class="icon fa-solid fa-code-merge" *ngIf="issue?.state == STATE.MERGED"></i>
-                    {{issue?.state | titlecase}}
-                </div>
-                <h4 class=" text-bold pb-2">{{issue?.description}}</h4>
-            </div>
+        <button
+          class="show-button !py-1"
+          (click)="changeStatus(STATE.CLOSE)"
+          *ngIf="issue?.state === STATE.OPEN"
+        >
+          <i class="fa-regular fa-circle-check"></i>
+          Close
+        </button>
+        <button
+          class="show-button !py-1"
+          (click)="changeStatus(STATE.OPEN)"
+          *ngIf="issue?.state === STATE.CLOSE"
+        >
+          <i class="icon fa-regular fa-circle-dot"></i>
+          Reopen
+        </button>
+      </div>
+      <div class="flex flex-row space-x-4">
+        <div
+          [style.background]="stateColor"
+          class="state-tag rounded-2xl text-base text-white"
+        >
+          <i
+            class="icon fa-regular fa-circle-dot"
+            *ngIf="issue?.state == STATE.OPEN"
+          ></i>
+          <i
+            class="icon fa-regular fa-circle-check"
+            *ngIf="issue?.state == STATE.CLOSE"
+          ></i>
+          <i
+            class="icon fa-solid fa-code-merge"
+            *ngIf="issue?.state == STATE.MERGED"
+          ></i>
+          {{ issue?.state | titlecase }}
         </div>
+        <h4 class="text-bold pb-2">{{ issue?.description }}</h4>
+      </div>
+    </div>
 
-        <div class="timeline">
-            <div *ngFor="let event of events" class="flex flex-row event">
-                <div class="date">{{ event.createdAt | date: 'dd.MM.yyyy.'}}</div>
-                <div class="event-type">
-                    <i class="icon fa-solid fa-tag fa-lg" *ngIf="event.type === ISSUE_EVENT_TYPE.LABEL"></i>
-                    <i class="icon fa-regular fa-flag" *ngIf="event.type === ISSUE_EVENT_TYPE.MILESTONE"></i>
-                    <i class="icon fa-regular fa-user" *ngIf="event.type === ISSUE_EVENT_TYPE.ASSIGNEE"></i>
-                    <i class="icon fa-solid fa-pen-to-square" *ngIf="event.type === ISSUE_EVENT_TYPE.DESCRIPTION"></i>
-                    <i class="icon fa-solid fa-pen-to-square" *ngIf="event.type === ISSUE_EVENT_TYPE.NAME"></i>
-                    <i class="icon fa-solid fa-comments" *ngIf="event.type === ISSUE_EVENT_TYPE.COMMENT"></i>
-                    <i class="icon fa-solid fa-rotate" *ngIf="event.type === ISSUE_EVENT_TYPE.STATE"></i>
-                    <i class="icon fa-solid fa-asterisk" *ngIf="event.type === ISSUE_EVENT_TYPE.PR_REF"></i>
-                    <i class="icon fa-solid fa-magnifying-glass" *ngIf="event.type === ISSUE_EVENT_TYPE.PR_REVIEW "></i>
-                    <i class="icon fa-solid fa-asterisk" *ngIf="event.type === ISSUE_EVENT_TYPE.COMMIT_REF"></i>
-                </div>
-                <div class=" description w-90%">
-                    <b>{{event.author.firstName}} {{event.author.lastName}}</b>
-                    - set {{event.type }} to {{ event.value }}
-                </div>
-            </div>
+    <div class="timeline">
+      <div *ngFor="let event of events" class="flex flex-row event">
+        <div class="date">{{ event.createdAt | date : "dd.MM.yyyy." }}</div>
+        <div class="event-type">
+          <i
+            class="icon fa-solid fa-tag fa-lg"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.LABEL"
+          ></i>
+          <i
+            class="icon fa-regular fa-flag"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.MILESTONE"
+          ></i>
+          <i
+            class="icon fa-regular fa-user"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.ASSIGNEE"
+          ></i>
+          <i
+            class="icon fa-solid fa-pen-to-square"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.DESCRIPTION"
+          ></i>
+          <i
+            class="icon fa-solid fa-pen-to-square"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.NAME"
+          ></i>
+          <i
+            class="icon fa-solid fa-comments"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.COMMENT"
+          ></i>
+          <i
+            class="icon fa-solid fa-rotate"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.STATE"
+          ></i>
+          <i
+            class="icon fa-solid fa-asterisk"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.PR_REF"
+          ></i>
+          <i
+            class="icon fa-solid fa-magnifying-glass"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.PR_REVIEW"
+          ></i>
+          <i
+            class="icon fa-solid fa-asterisk"
+            *ngIf="event.type === ISSUE_EVENT_TYPE.COMMIT_REF"
+          ></i>
         </div>
-
+        <div class="description w-90%">
+          <b>{{ event.author.firstName }} {{ event.author.lastName }}</b>
+          - set {{ event.type }} to {{ event.value }}
+        </div>
+      </div>
     </div>
 
-
-    <div class="flex flex-col w-3/6 p-5 h-full" *ngIf="isEdit">
-        <app-new-issue-form [issue]="issue" (updateIssueEvent)="closeEdit($event)"></app-new-issue-form>
+    <div
+      class="flex flex-col p-5 pt-5 pr-5 pb-0 pl-5 h-full"
+      *ngIf="showComments"
+    >
+      <app-item-comments-view
+        [itemId1]="issue?.id"
+        (noComments)="onNoComments($event)"
+      ></app-item-comments-view>
     </div>
 
-    <div class="flex flex-col w-2/6 p-5 ml-5">
-        <app-issue-properties-side-view [issuePropertiesInput]="issueProperties" [issueId]="issue?.id"
-            (changeEvent)="handleIssuePropertiesChange($event)"></app-issue-properties-side-view>
+    <div class="flex flex-col p-5 pt-0 pr-5 pb-5 pl-5 h-full">
+      <app-item-add-comments [itemId1]="issue?.id"></app-item-add-comments>
     </div>
+  </div>
+
+  <div class="flex flex-col p-5 h-full" *ngIf="isEdit">
+    <app-new-issue-form
+      [issue]="issue"
+      (updateIssueEvent)="closeEdit($event)"
+    ></app-new-issue-form>
+  </div>
+
+  <div class="flex flex-col w-2/6 p-5 ml-5">
+    <app-issue-properties-side-view
+      [issuePropertiesInput]="issueProperties"
+      [issueId]="issue?.id"
+      (changeEvent)="handleIssuePropertiesChange($event)"
+    ></app-issue-properties-side-view>
+  </div>
 </div>

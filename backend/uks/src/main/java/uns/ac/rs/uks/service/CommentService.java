@@ -32,16 +32,16 @@ public class CommentService {
         return CommentMapper.toDTOs(comments);
     }
 
-    public CommentDTO createNewComment(CommentRequest commentRequest) throws NotFoundException {
-        User user = userService.getById(commentRequest.getAuthorId());
-        Item item = itemService.getById(commentRequest.getItemId());
+    public CommentDTO createNewComment(UUID itemId, UUID authorId, CommentRequest commentRequest) throws NotFoundException {
+        User user = userService.getById(authorId);
+        Item item = itemService.getById(itemId);
         Comment comment = CommentMapper.fromDTO(commentRequest, user, item);
         comment = commentRepository.save(comment);
         return CommentMapper.toDTO(comment);
     }
 
-    public CommentDTO editComment(CommentRequest commentRequest) throws NotFoundException {
-        Comment comment = getById(commentRequest.getId());
+    public CommentDTO editComment(Long commentId, CommentRequest commentRequest) throws NotFoundException {
+        Comment comment = getById(commentId);
         comment.setMessage(commentRequest.getMessage());
         comment = commentRepository.save(comment);
         return CommentMapper.toDTO(comment);
