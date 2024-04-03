@@ -22,10 +22,3 @@ export interface TargetBranchRequest {
   repoId: string;
   branchName: string;
 }
-
-export interface CommitsResponseDto {
-  hash: string;
-  message: string;
-  gitUser: string;
-  timeAgo: string;
-}

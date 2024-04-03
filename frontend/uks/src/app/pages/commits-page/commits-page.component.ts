@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommitsResponseDto } from 'src/models/branch/branch';
-import { FileDTO } from 'src/models/files/files';
-import { BranchService } from 'src/services/branch/branch.service';
 import { FileService } from 'src/services/file/file.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { CommitsResponseDto } from 'src/models/commit/commit';
 
 @Component({
   selector: 'app-commits-page',
@@ -62,7 +60,6 @@ export class CommitsPageComponent {
   }
 
   navigateToCommitOverview(commit: CommitsResponseDto) {
-    console.log(commit)
-    throw new Error('Method not implemented.');
+    this.navigationService.navigateToCommitDifferences(this.branchName, commit.hash)
   }
 }
