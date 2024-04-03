@@ -178,6 +178,9 @@ export class NavigationService {
     this.router.navigate([`repository/commits/${branchName}/${filePath}`])
   }
 
+  navigateToCommitDifferences(branchName: string, commitHash: string) {
+    this.router.navigate([`repository/commitDiff/${branchName}/${commitHash}`])
+  }
 
   private canEditCheck(repoId: string, functionRef: (a: boolean) => void) {
     this.authService.getLoggedUser().subscribe({

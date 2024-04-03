@@ -3,6 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableDataSourcePaginator } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { CommitsResponseDto } from 'src/models/commit/commit';
 import { FileDTO } from 'src/models/files/files';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 
@@ -72,6 +73,10 @@ export class FolderTableOverviewComponent implements OnInit, OnChanges {
     } else {
       this.navigationService.navigateToFile(this.branchName, file);
     }
+  }
+
+  navigateToCommitDiff(commit: CommitsResponseDto) {
+    this.navigationService.navigateToCommitDifferences(this.branchName, commit.hash)
   }
 
 }

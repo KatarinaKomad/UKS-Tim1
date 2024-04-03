@@ -28,6 +28,7 @@ import { UsersOverviewPageComponent } from './pages/users-overview-page/users-ov
 import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
 import { BranchPageComponent } from './pages/branch-page/branch-page.component';
 import { CommitsPageComponent } from './pages/commits-page/commits-page.component';
+import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-page.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'repository/branch/:branchName/:filePath', component: RepositoryPageComponent, canActivate: [authGuard] },
   { path: 'repository/commits/:branchName', component: CommitsPageComponent, canActivate: [authGuard] },
   { path: 'repository/commits/:branchName/:filePath', component: CommitsPageComponent, canActivate: [authGuard] },
+  { path: 'repository/commitDiff/:branchName/:commitHash', component: CommitDiffPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
