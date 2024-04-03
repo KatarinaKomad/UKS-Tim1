@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import uns.ac.rs.uks.dto.request.CommitDiffRequest;
 import uns.ac.rs.uks.dto.request.OriginTargetBranchRequest;
 import uns.ac.rs.uks.dto.request.TargetBranchRequest;
 import uns.ac.rs.uks.dto.response.BranchDTO;
+import uns.ac.rs.uks.dto.response.CommitDiffResponseDTO;
 import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.service.BranchService;
@@ -34,9 +36,9 @@ public class BranchController {
         return branchService.getRepoBranchesCount(repoId);
     }
 
-    @GetMapping("/difference")
-    public String getBranchDifferences(@Valid @RequestBody OriginTargetBranchRequest request){
-        return branchService.getDifferences(request.getRepoId(), request.getOriginName(), request.getTargetName());
+    @PostMapping("/commitDiff")
+    public CommitDiffResponseDTO getCommitDiff(@Valid @RequestBody CommitDiffRequest request){
+        return branchService.getCommitDiff(request.getRepoId(), request.getBranchName(), request.getCommit());
     }
 
     @PutMapping("/mergeBranches")

@@ -9,14 +9,12 @@ import uns.ac.rs.uks.util.DateUtil;
 import uns.ac.rs.uks.util.FileUtil;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -190,62 +188,75 @@ public class GitoliteService {
         }
     }
 
-    public String getDifferences(String repo, String originBranch, String destinationBranch) {
+    public CommitDiffResponseDTO getCommitDiff(String repo, String branchName, String commit) {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, getDifferencesScript, repo, destinationBranch, originBranch);
+            ProcessBuilder processBuilder = new ProcessBuilder(bashLocation, getDifferencesScript, repo, branchName, commit);
             processBuilder.directory(new File(scriptWorkingDirectory));
             processBuilder.redirectErrorStream(true);
 
             Process process = processBuilder.start();
 
-            StringBuilder changes = parseGitDiff(process);
+            CommitDiffResponseDTO changes = parseGitDiff(process);
 
             int exitCode = process.waitFor();
-
             if (exitCode == 0) {
                 logger.info(String.format("Script %s executed successfully", getDifferencesScript));
             } else {
                 logger.error("Script execution failed with exit code: " + exitCode);
             }
-            return changes.toString();
+            return changes;
         } catch (IOException | InterruptedException e) {
             logger.error(e.getMessage());
         }
-        return "";
+        return null;
     }
 
-    private StringBuilder parseGitDiff(Process process) throws IOException {
+    private CommitDiffResponseDTO parseGitDiff(Process process) throws IOException {
+        CommitDiffResponseDTO dto = new CommitDiffResponseDTO();
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
-        StringBuilder changes = new StringBuilder();
-        var differencesStarted = false;
         while ((line = reader.readLine()) != null) {
-            if (differencesStarted) {
-                changes.append(parseGitDiffOutput(line));
-            } else {
-                differencesStarted = line.equals(differencesDelimiter);
+            if(line.contains("changed") || line.contains("insertion(+)") || line.contains("deletion(-)")) {
+                dto.setStats(line);
+                break;
             }
         }
-        return changes;
+        List<FileChangeResponseDTO> files = parseGitDiffOutput(reader);
+        dto.setFileChanges(files);
+        return dto;
     }
 
-    private String parseGitDiffOutput(String line) {
-        line = line.replaceAll("\u001B\\[[;\\d]*m", "");
+    private List<FileChangeResponseDTO> parseGitDiffOutput(BufferedReader reader) throws IOException {
+        String line;
+        List<FileChangeResponseDTO> dtoList = new ArrayList<>();
+        FileChangeResponseDTO fileDTO = null;
+        StringBuilder stringBuilder = new StringBuilder();
 
-        if (line.startsWith("diff --git")) {
-            return "";
+        while ((line = reader.readLine()) != null) {
+            // new file changes start
+            if(line.startsWith("+++")){
+                // set accumulated difference from previous file
+                if(fileDTO != null){
+                    fileDTO.setChanges(stringBuilder.toString());
+                    dtoList.add(fileDTO);
+                }
+                // create new file dto
+                fileDTO = new FileChangeResponseDTO();
+                fileDTO.setFileName(line.substring(6));
+                stringBuilder = new StringBuilder();
+            } else if (line.startsWith("@@") && fileDTO != null) {
+                fileDTO.setStats(line);
+            } else if ((line.startsWith("+") || line.startsWith("-")) && !line.startsWith("---")) {
+                // accumulate file changes
+                stringBuilder.append(line).append("\n");
+            }
         }
-
-        String substring = line.substring(2, line.length() - 2);
-        if (line.startsWith("{+")) {
-            return ("+ " + substring) + "\n";
-        } else if (line.startsWith("{-")) {
-            return "- " + substring + "\n";
-        }else if (line.startsWith("+++")){
-            return "File " + line.substring(6) + "\n";
+        if(fileDTO != null){
+            fileDTO.setChanges(stringBuilder.toString());
+            dtoList.add(fileDTO);
         }
-        return "";
-    }
+        return dtoList;
+   }
 
     private void commitGitoliteAdmin(String message) {
         String script = commitAndPushScript;
