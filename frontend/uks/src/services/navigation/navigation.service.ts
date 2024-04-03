@@ -6,8 +6,8 @@ import { EditRepoRequest, RepoBasicInfoDTO } from 'src/models/repo/repo';
 import { UserBasicInfo } from 'src/models/user/user';
 import { RepoService } from '../repo/repo.service';
 import { AuthService } from '../auth/auth.service';
-import { Observable, of } from 'rxjs';
 import { TAB_VIEW } from 'src/models/navigation';
+import { FileDTO } from 'src/models/files/files';
 
 @Injectable({
   providedIn: 'root'
@@ -34,14 +34,19 @@ export class NavigationService {
   }
 
   navigateToIssueOverview(issue: IssueDTO) {
-    this.router.navigate(
-      [
-        `repository/${issue.repo.name}/issues`,
-        { outlets: { 'issues-tab': [issue.id], 'pr-tab': null } }
-      ],
-      { queryParams: { tab: 1 } },
-    );
+    this.canEditCheck(issue.repo.id, (canEdit: boolean) => {
+
+      this.setRepoToLocalStorage(issue.repo, canEdit)
+      this.router.navigate(
+        [
+          `repository/${issue.repo.name}/issues`,
+          { outlets: { 'issues-tab': [issue.id], 'pr-tab': null } }
+        ],
+        { queryParams: { tab: 1 } },
+      );
+    })
   }
+
 
 
   navigateToProjectViewFromIssueView(viewName: TAB_VIEW) {
@@ -118,38 +123,17 @@ export class NavigationService {
 
   navigateToRepo(repo: RepoBasicInfoDTO) {
     const oldRepoName = localStorage.getItem("repoName") as string;
+    this.canEditCheck(repo.id, (canEdit: boolean) => {
 
-    this.authService.getLoggedUser().subscribe({
-      next: (user: UserBasicInfo | undefined) => {
+      this.setRepoToLocalStorage(repo, canEdit)
 
-        const repoRequest = this.createEditRepoRequest(user, repo.id);
-
-        if (repoRequest) {
-          this.repoService.canEditRepoItems(repoRequest).subscribe({
-            next: (canEdit: boolean) => {
-              this.execNavigateToRepo(repo, oldRepoName, canEdit);
-            },
-            error: (e: any) => { console.log(e); },
-          })
-        } else {
-          this.execNavigateToRepo(repo, oldRepoName, false);
+      this.router.navigate([`/repository/${repo?.name}`], { state: { repo } }).then(() => {
+        if (oldRepoName === repo.name && oldRepoName) {
+          window.location.reload();
         }
-      }, error: (e: any) => { console.log(e); },
-    });
-  }
+      });
 
-  private execNavigateToRepo(repo: RepoBasicInfoDTO, oldRepoName: string, canEdit: boolean) {
-    this.setRepoToLocalStorage(repo, canEdit)
-
-    this.router.navigate(
-      [`/repository/${repo?.name}`],
-      { state: { repo } }
-    ).then(() => {
-      if (oldRepoName === repo.name && oldRepoName) {
-        window.location.reload();
-      }
-    });
-
+    })
   }
 
   navigateToNewFork() {
@@ -174,6 +158,51 @@ export class NavigationService {
   navigateToUser(userId: string) {
     this.router.navigate([`/profile/${userId}`])
   }
+
+  navigateToBranchesPage() {
+    this.router.navigate([`repository/branches`]);
+  }
+
+  navigateToBranchCodeOverview(branchName: string) {
+    this.router.navigate([`repository/branch/${branchName}`])
+  }
+  navigateToFile(branchName: string, file: FileDTO) {
+    if (file.isFolder) {
+      this.router.navigate([`repository/branch/${branchName}/${file.path}`])
+    }
+    else {
+      this.router.navigate([`repository/branch/${branchName}/${file.path}`], { queryParams: { isFile: true } })
+    }
+  }
+  navigateToCommitHistory(branchName: string, filePath: string) {
+    this.router.navigate([`repository/commits/${branchName}/${filePath}`])
+  }
+
+  navigateToCommitDifferences(branchName: string, commitHash: string) {
+    this.router.navigate([`repository/commitDiff/${branchName}/${commitHash}`])
+  }
+
+  private canEditCheck(repoId: string, functionRef: (a: boolean) => void) {
+    this.authService.getLoggedUser().subscribe({
+      next: (user: UserBasicInfo | undefined) => {
+
+        const repoRequest = this.createEditRepoRequest(user, repoId);
+
+        if (repoRequest) {
+          this.repoService.canEditRepoItems(repoRequest).subscribe({
+            next: (canEdit: boolean) => {
+              functionRef(canEdit)
+            },
+            error: (e: any) => { console.log(e); },
+          })
+        } else {
+          functionRef(false)
+        }
+      }, error: (e: any) => { console.log(e); },
+    });
+  }
+
+
 
   private setRepoToLocalStorage(repo: RepoBasicInfoDTO, canEdit: boolean) {
     localStorage.setItem("repoId", repo.id);

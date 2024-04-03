@@ -21,6 +21,7 @@ class Repository {
     description: String
     isPublic: Boolean
     createdAt: DateTime
+    cloneUri: String
 }
 
 class Review {

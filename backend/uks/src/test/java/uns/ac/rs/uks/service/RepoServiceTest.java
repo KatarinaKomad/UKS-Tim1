@@ -15,7 +15,6 @@ import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
 import uns.ac.rs.uks.dto.request.RepoUserRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
-import uns.ac.rs.uks.dto.response.RepoMemberDTO;
 import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
@@ -198,7 +197,7 @@ public class RepoServiceTest {
         User user = new User();
         user.setId(Constants.MIKA_USER_ID);
 
-        when(branchService.createDefaultBranch(any(Repo.class))).thenReturn(defaultBranch);
+        when(branchService.createDefaultBranch(any(Repo.class), any(User.class))).thenReturn(defaultBranch);
         when(userService.getById(Constants.MIKA_USER_ID)).thenReturn(user);
         when(repoRepository.save(any(Repo.class))).thenReturn(repo);
         when(gitoliteService.createRepo(any(String.class), any(String.class))).thenReturn(testName);

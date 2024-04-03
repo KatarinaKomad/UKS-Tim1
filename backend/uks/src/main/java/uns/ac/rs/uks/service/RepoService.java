@@ -2,7 +2,6 @@ package uns.ac.rs.uks.service;
 
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -10,13 +9,16 @@ import uns.ac.rs.uks.dto.request.*;
 import uns.ac.rs.uks.dto.response.*;
 import uns.ac.rs.uks.exception.NotAllowedException;
 import uns.ac.rs.uks.exception.NotFoundException;
-import uns.ac.rs.uks.mapper.MemberMapper;
+import uns.ac.rs.uks.mapper.BranchMapper;
 import uns.ac.rs.uks.mapper.RepoMapper;
 import uns.ac.rs.uks.mapper.UserMapper;
 import uns.ac.rs.uks.model.*;
 import uns.ac.rs.uks.repository.repo.RepoRepository;
-import uns.ac.rs.uks.util.EncryptionUtil;
+import uns.ac.rs.uks.util.FileUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,12 +53,12 @@ public class RepoService {
     public RepoBasicInfoDTO createNewRepo(RepoRequest repoRequest) throws NotFoundException {
         User user = userService.getById(repoRequest.getOwnerId());
         Repo repo = RepoMapper.toRepoFromRequest(repoRequest, user);
-        repo.setDefaultBranch(branchService.createDefaultBranch(repo));
-        repoRepository.save(repo);
+        repo.setDefaultBranch(branchService.createDefaultBranch(repo, user));
+
+        repo.setCloneUri(gitoliteService.createRepo(repo.getName(), user.getUsername()));
         memberService.addNewMember(user, repo, RepositoryRole.OWNER, MemberInviteStatus.ACCEPTED);
-        var repoDto = RepoMapper.toDTO(repo);
-        repoDto.setCloneUri(gitoliteService.createRepo(repoDto.getName(), user.getUsername()));
-        return repoDto;
+
+        return RepoMapper.toDTO(repoRepository.save(repo));
     }
 
     public Repo getById(UUID repoId) {
@@ -101,12 +103,16 @@ public class RepoService {
     @CacheEvict(value = "repos", allEntries = true)
     public RepoBasicInfoDTO forkRepo(RepoForkRequest forkRequest) {
         checkForkValidity(forkRequest);
+        User owner = entityManager.getReference(User.class, forkRequest.getOwnerId());
         Repo repo = getById(forkRequest.getOriginalRepoId());
+
         Repo newRepo = RepoMapper.map(repo);
-        newRepo.setOwner(entityManager.getReference(User.class, forkRequest.getOwnerId()));
+        newRepo.setOwner(owner);
         newRepo.setName(forkRequest.getName());
         newRepo.setDescription(forkRequest.getDescription());
         newRepo.setForkParent(repo);
+        newRepo.setCloneUri(gitoliteService.createRepo(newRepo.getName(), owner.getUsername()));
+
         return RepoMapper.toDTO(repoRepository.save(newRepo));
     }
 
@@ -175,4 +181,10 @@ public class RepoService {
         memberService.removeAllMembersFromRepo(repoId);
         repoRepository.deleteById(repoId);
     }
+
+    public BranchDTO getDefaultBranch(UUID repoId) {
+        Repo repo = getById(repoId);
+        return BranchMapper.toDTO(repo.getDefaultBranch());
+    }
+
 }

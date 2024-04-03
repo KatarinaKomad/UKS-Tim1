@@ -10,11 +10,14 @@ import { UserBasicInfo } from 'src/models/user/user';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
 import { Injectable } from '@angular/core';
+import { BranchDTO } from 'src/models/branch/branch';
+import { FileDTO, FileRequest } from 'src/models/files/files';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RepoService {
+
 
   constructor(
     private httpRequestService: HttpRequestService,
@@ -127,5 +130,10 @@ export class RepoService {
   deleteRepo(repoId: string) {
     const url = environment.API_BASE_URL + `/repo/delete/${repoId}`;
     return this.httpRequestService.delete(url) as Observable<void>;
+  }
+
+  getDefaultBranch(repoId: string): Observable<BranchDTO> {
+    const url = environment.API_BASE_URL + `/repo/getDefaultBranch/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<BranchDTO>;
   }
 }

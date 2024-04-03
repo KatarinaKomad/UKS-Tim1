@@ -12,17 +12,17 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MergeBranchesRequest {
+public class OriginTargetBranchRequest {
 
-    private UUID id;
-
-    @NotBlank
-    @NotEmpty
-    @NotNull
-    private String originBranch;
+    private UUID repoId;
 
     @NotBlank
     @NotEmpty
     @NotNull
-    private String destinationBranch;
+    private String originName;
+
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    private String targetName;
 }

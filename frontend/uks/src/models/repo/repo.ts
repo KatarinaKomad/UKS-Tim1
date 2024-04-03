@@ -13,6 +13,7 @@ export interface RepoBasicInfoDTO extends SearchResult {
   defaultBranch: number;
   forkParent?: ForkParentDTO;
   createdAt?: Date;
+  cloneUri?: string;
 }
 
 export interface RepoUpdateRequest {

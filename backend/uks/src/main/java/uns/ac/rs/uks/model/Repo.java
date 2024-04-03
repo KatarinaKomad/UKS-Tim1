@@ -54,5 +54,6 @@ public class Repo implements Serializable {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+    private String cloneUri;
 
 }

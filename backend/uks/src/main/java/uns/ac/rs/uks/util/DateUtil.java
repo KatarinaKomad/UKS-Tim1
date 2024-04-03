@@ -1,8 +1,10 @@
 package uns.ac.rs.uks.util;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 public class DateUtil {
@@ -30,5 +32,13 @@ public class DateUtil {
 
     public static LocalDateTime parseDate(String dateString) {
         return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    public static LocalDateTime parseGitoliteDate(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
+
+        OffsetDateTime offsetDateTime = OffsetDateTime.parse(dateString, formatter);
+        return offsetDateTime.toLocalDateTime();
+
     }
 }

@@ -12,12 +12,16 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReadCommitsRequest {
+public class CommitDiffRequest {
 
-    private UUID id;
-
+    @NotNull
+    private UUID repoId;
     @NotBlank
     @NotEmpty
     @NotNull
-    private String branch;
+    private String branchName;
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    private String commit;
 }
