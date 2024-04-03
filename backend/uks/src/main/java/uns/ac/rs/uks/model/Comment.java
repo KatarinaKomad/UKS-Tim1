@@ -28,9 +28,9 @@ public class Comment implements Serializable {
     @OneToOne
     private User author;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
 
-    //@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@ManyToOne(fetch = FetchType.LAZY)
     //private Commit commit;
 }

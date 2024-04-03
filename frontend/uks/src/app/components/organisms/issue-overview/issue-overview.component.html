@@ -112,13 +112,20 @@
       *ngIf="showComments"
     >
       <app-item-comments-view
-        [itemId1]="issue?.id"
+        #itemCommentsViewComponent
+        [itemId]="issue?.id"
         (noComments)="onNoComments($event)"
+        (commentDeleted)="handleCommentDeleted()"
+        (editComment)="onEditComment($event)"
       ></app-item-comments-view>
     </div>
 
     <div class="flex flex-col p-5 pt-0 pr-5 pb-5 pl-5 h-full">
-      <app-item-add-comments [itemId1]="issue?.id"></app-item-add-comments>
+      <app-item-add-comments
+        [itemId]="issue?.id"
+        (commentAdded)="handleCommentAdded()"
+        [commentToEdit]="commentToEdit"
+      ></app-item-add-comments>
     </div>
   </div>
 

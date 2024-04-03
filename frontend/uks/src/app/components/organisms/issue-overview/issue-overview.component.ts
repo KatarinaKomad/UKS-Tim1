@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   ISSUE_EVENT_TYPE,
@@ -13,13 +13,18 @@ import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 import { IssueService } from 'src/services/issue/issue.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
+import { ItemCommentsViewComponent } from '../../molecules/item-comments-view/item-comments-view.component';
+import { Comment } from 'src/models/comment/comment';
 
 @Component({
   selector: 'app-issue-overview',
   templateUrl: './issue-overview.component.html',
   styleUrl: './issue-overview.component.scss',
 })
-export class IssueOverviewComponent {
+export class IssueOverviewComponent implements AfterViewInit {
+  @ViewChild(ItemCommentsViewComponent)
+  itemCommentsViewComponent!: ItemCommentsViewComponent;
+
   repoId: string;
   issueId: string = '';
   loggedUser?: UserBasicInfo;
@@ -37,6 +42,7 @@ export class IssueOverviewComponent {
   stateColor: string = STATE_COLORS.OPEN;
 
   showComments: boolean = true;
+  commentToEdit?: Comment;
 
   constructor(
     private navigationService: NavigationService,
@@ -56,6 +62,10 @@ export class IssueOverviewComponent {
   ngOnInit(): void {
     this.getIssueFromRoute();
     this.getIssueEvents();
+  }
+
+  ngAfterViewInit() {
+    this.handleCommentAdded();
   }
 
   edit() {
@@ -152,6 +162,18 @@ export class IssueOverviewComponent {
   }
 
   onNoComments(hasNoComments: boolean) {
-    this.showComments = !hasNoComments; // Sakrijte div ako nema komentara
+    this.showComments = !hasNoComments;
+  }
+
+  handleCommentAdded() {
+    this.itemCommentsViewComponent.getComments(this.issueId);
+  }
+
+  handleCommentDeleted() {
+    this.itemCommentsViewComponent.getComments(this.issueId);
+  }
+
+  onEditComment(comment: Comment) {
+    this.commentToEdit = comment;
   }
 }
