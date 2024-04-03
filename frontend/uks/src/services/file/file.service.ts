@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { CommitsResponseDto } from 'src/models/branch/branch';
+import { CommitsResponseDto } from 'src/models/commit/commit';
 import { FileDTO, FileRequest } from 'src/models/files/files';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
@@ -27,4 +27,5 @@ export class FileService {
 
     return this.httpRequestService.post(url, body) as Observable<CommitsResponseDto[]>;
   }
+
 }

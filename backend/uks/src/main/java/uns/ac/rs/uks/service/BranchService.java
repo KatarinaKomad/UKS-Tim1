@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.OriginTargetBranchRequest;
 import uns.ac.rs.uks.dto.response.BranchDTO;
+import uns.ac.rs.uks.dto.response.CommitDiffResponseDTO;
 import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.exception.NotFoundException;
 import uns.ac.rs.uks.mapper.BranchMapper;
@@ -67,9 +68,9 @@ public class BranchService {
         return branchRepository.countAllByRepositoryId(repoId);
     }
 
-    public String getDifferences(UUID repoId, String originBranch, String destinationBranch) {
+    public CommitDiffResponseDTO getCommitDiff(UUID repoId, String branch, String commit) {
         var repo = getRepoById(repoId);
-        return gitoliteService.getDifferences(formatRepoName(repo.getName()), originBranch, destinationBranch);
+        return gitoliteService.getCommitDiff(formatRepoName(repo.getName()), branch, commit);
     }
 
     public void mergeBranches(OriginTargetBranchRequest request, User user) {

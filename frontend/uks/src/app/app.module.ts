@@ -109,6 +109,7 @@ import { CloneRepoOverlayComponent } from './components/molecules/filter-overlay
 import { BranchFilterOverlayComponent } from './components/molecules/filter-overlays/branch-filter-overlay/branch-filter-overlay.component';
 import { FolderTableOverviewComponent } from './components/molecules/folder-table-overview/folder-table-overview.component';
 import { CommitsPageComponent } from './pages/commits-page/commits-page.component';
+import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-page.component';
 
 
 
@@ -187,7 +188,8 @@ import { CommitsPageComponent } from './pages/commits-page/commits-page.componen
     BranchFilterOverlayComponent,
 
     FolderTableOverviewComponent,
-    CommitsPageComponent
+    CommitsPageComponent,
+    CommitDiffPageComponent
   ],
   exports: [],
   imports: [

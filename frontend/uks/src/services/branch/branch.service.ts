@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BranchBasicInfoDTO, BranchDTO, CommitsResponseDto, OriginTargetBranchRequest, TargetBranchRequest } from 'src/models/branch/branch';
+import { BranchBasicInfoDTO, BranchDTO, OriginTargetBranchRequest, TargetBranchRequest } from 'src/models/branch/branch';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
 import { Injectable } from '@angular/core';
-import { FileRequest } from 'src/models/files/files';
+import { CommitDiffRequest, CommitDiffResponseDTO } from 'src/models/commit/commit';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +42,13 @@ export class BranchService {
     const body = JSON.stringify(request);
 
     return this.httpRequestService.post(url, body) as Observable<BranchDTO>;
+  }
+
+  getFileDiffs(request: CommitDiffRequest): Observable<CommitDiffResponseDTO> {
+    const url = environment.API_BASE_URL + `/branch/commitDiff`;
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.post(url, body) as Observable<CommitDiffResponseDTO>;
   }
 
 }

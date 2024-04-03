@@ -1,4 +1,4 @@
-import { CommitsResponseDto } from "../branch/branch";
+import { CommitsResponseDto } from "../commit/commit";
 
 export interface FileRequest {
     repoName: string;
