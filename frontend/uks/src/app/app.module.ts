@@ -45,7 +45,6 @@ import { MilestoneFilterComponent } from './components/molecules/filter-overlays
 import { MyReposSideListComponent } from './components/organisms/repo-lists/my-repos-side-list/my-repos-side-list.component';
 import { PublicRepoListComponent } from './components/organisms/repo-lists/public-repo-list/public-repo-list.component';
 
-
 import { ButtonComponent } from './components/atoms/button/button.component';
 import { InputComponent } from './components/atoms/input/input.component';
 import { NavbarComponent } from './components/atoms/navbar/navbar.component';
@@ -62,6 +61,8 @@ import { NewIssueComponent } from './components/organisms/new-issue/new-issue.co
 import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
 import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
+import { ItemCommentsViewComponent } from './components/molecules/item-comments-view/item-comments-view.component';
+import { ItemAddCommentsComponent } from './components/molecules/item-add-comments/item-add-comments.component';
 import { RepoSettingsComponent } from './components/organisms/repo-settings/repo-settings.component';
 import { ForgotPasswordPageComponent } from './pages/authentication/forgot-password-page/forgot-password-page.component';
 import { LoginPageComponent } from './pages/authentication/login-page/login-page.component';
@@ -71,7 +72,6 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 
 import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
 import { CodeOverviewComponent } from './components/organisms/code-overview/code-overview.component';
@@ -137,7 +137,9 @@ import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-pa
     ProjectLabelsComponent,
     IssuesButtonGroupComponent,
     NewLabelDialogComponent,
-    ProjectMilestonesComponent,
+    ProjectMilestonesComponent,    
+    ItemCommentsViewComponent,
+    ItemAddCommentsComponent,
     NewMilestoneDialogComponent,
     MilestoneItemComponent,
     IssueItemComponent,
