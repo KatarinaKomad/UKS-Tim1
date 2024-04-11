@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { ISSUE_PROPERTIES, IssueProperties, ISSUE_EVENT_TYPE, IssueEventRequest, IssueDTO } from 'src/models/issue/issue';
 import { LabelDTO } from 'src/models/label/label';
 import { MilestoneDTO } from 'src/models/milestone/milestone';
-import { PullRequestDTO, PullRequestProperties } from 'src/models/pull-request/pull-request';
+import { PullRequestDTO, PullRequestEventRequest, PullRequestProperties } from 'src/models/pull-request/pull-request';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
 import { IssueService } from 'src/services/issue/issue.service';
@@ -19,13 +19,13 @@ export class PrPropertiesSideViewComponent implements OnChanges {
 
   loggedUser?: UserBasicInfo;
 
-  ISSUE_PROPERTIES = ISSUE_PROPERTIES;
+  PR_PROPERTIES = ISSUE_PROPERTIES;
   openedProperty: ISSUE_PROPERTIES | null = null;
 
-  @Input() issuePropertiesInput: PullRequestProperties = {};
-  issueProperties: PullRequestProperties = {};
+  @Input() prPropertiesInput: PullRequestProperties = {};
+  prProperties: PullRequestProperties = {};
 
-  @Input() issueId?: string;
+  @Input() prId?: string;
   @Output() changeEvent: EventEmitter<PullRequestProperties> = new EventEmitter<PullRequestProperties>();
 
   constructor(
@@ -40,17 +40,17 @@ export class PrPropertiesSideViewComponent implements OnChanges {
       }
     })
 
-    this.updateIssueProperties(this.issuePropertiesInput);
+    this.updatePrProperties(this.prPropertiesInput);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['issuePropertiesInput']?.currentValue) {
-      this.updateIssueProperties(changes['issuePropertiesInput'].currentValue);
+    if (changes['prPropertiesInput']?.currentValue) {
+      this.updatePrProperties(changes['prPropertiesInput'].currentValue);
     }
   }
 
-  deleteIssue() {
-    this.prService.delete(String(this.issueId)).subscribe({
+  deletePr() {
+    this.prService.delete(String(this.prId)).subscribe({
       next: () => {
         this.toastr.success(`PullRequest deleted!`, 'Success');
         this.navigationService.navigateToProjectPRs();
@@ -62,15 +62,15 @@ export class PrPropertiesSideViewComponent implements OnChanges {
     })
   }
 
-  closeAssigneeFilter(list: string[] | null) {
+  closeAssigneeFilter(list: UserBasicInfo[] | null) {
     this.openedProperty = null;
     if (list) {
-      this.issueProperties.assignees = [...list]
+      this.prProperties.assignees = [...list]
       // if edit
-      if (this.issueId) {
-        let eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.ASSIGNEE);
-        // eventRequest.assigneeIds = list;
-        // this.sendNewIssueEventRequest(eventRequest)
+      if (this.prId) {
+        let eventRequest = this.createPrEventRequest(ISSUE_EVENT_TYPE.ASSIGNEE);
+        eventRequest.assigneeIds = list.map(u => u.id);
+        this.sendNewPrEventRequest(eventRequest)
       }
       // if new 
       else {
@@ -82,12 +82,12 @@ export class PrPropertiesSideViewComponent implements OnChanges {
   closeLabelFilter(list: LabelDTO[] | null) {
     this.openedProperty = null;
     if (list) {
-      this.issueProperties.labels = [...list]
+      this.prProperties.labels = [...list]
       // if edit
-      if (this.issueId) {
-        let eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.LABEL);
+      if (this.prId) {
+        let eventRequest = this.createPrEventRequest(ISSUE_EVENT_TYPE.LABEL);
         eventRequest.labelIds = list.map(u => u.id);
-        this.sendNewIssueEventRequest(eventRequest)
+        this.sendNewPrEventRequest(eventRequest)
       }
       // if new 
       else {
@@ -96,15 +96,15 @@ export class PrPropertiesSideViewComponent implements OnChanges {
     }
   }
 
-  closeMilestoneFilter(milestone: string | null | undefined) {
+  closeMilestoneFilter(milestone: MilestoneDTO | null | undefined) {
     this.openedProperty = null;
     if (milestone !== null) {
-      this.issueProperties.milestone = milestone;
+      this.prProperties.milestone = milestone;
       // if edit
-      if (this.issueId) {
-        let eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.MILESTONE);
-        // eventRequest.milestoneId = milestone
-        // this.sendNewIssueEventRequest(eventRequest)
+      if (this.prId) {
+        let eventRequest = this.createPrEventRequest(ISSUE_EVENT_TYPE.MILESTONE);
+        eventRequest.milestoneId = milestone?.id
+        this.sendNewPrEventRequest(eventRequest)
       }
       // if new 
       else {
@@ -114,15 +114,15 @@ export class PrPropertiesSideViewComponent implements OnChanges {
   }
 
 
-  private createIssueEventRequest(type: ISSUE_EVENT_TYPE): IssueEventRequest {
+  private createPrEventRequest(type: ISSUE_EVENT_TYPE): PullRequestEventRequest {
     return {
-      issueId: this.issueId as string,
+      prId: this.prId as string,
       authorId: this.loggedUser?.id as string,
       type
     }
   }
 
-  private sendNewIssueEventRequest(eventRequest: IssueEventRequest) {
+  private sendNewPrEventRequest(eventRequest: PullRequestEventRequest) {
     this.prService.update(eventRequest).subscribe({
       next: (res: PullRequestDTO | null) => {
         console.log(res);
@@ -132,16 +132,16 @@ export class PrPropertiesSideViewComponent implements OnChanges {
     })
   }
 
-  private updateIssueProperties(newProperties: PullRequestProperties) {
+  private updatePrProperties(newProperties: PullRequestProperties) {
     if (newProperties.assignees) {
-      this.issueProperties.assignees = [...newProperties.assignees];
+      this.prProperties.assignees = [...newProperties.assignees];
     }
     if (newProperties.labels) {
-      this.issueProperties.labels = [...newProperties.labels];
+      this.prProperties.labels = [...newProperties.labels];
     }
-    // if (newProperties.milestone) {
-    //   this.issueProperties.milestone = { ...newProperties.milestone };
-    // }
+    if (newProperties.milestone) {
+      this.prProperties.milestone = { ...newProperties.milestone };
+    }
   }
 
   openFilter(property: ISSUE_PROPERTIES) {

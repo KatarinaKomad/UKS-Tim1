@@ -3,10 +3,7 @@ package uns.ac.rs.uks.service;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uns.ac.rs.uks.dto.request.IssueEventRequest;
-import uns.ac.rs.uks.dto.request.IssueItem;
-import uns.ac.rs.uks.dto.request.IssueRequest;
-import uns.ac.rs.uks.dto.request.PullRequestRequest;
+import uns.ac.rs.uks.dto.request.*;
 import uns.ac.rs.uks.dto.response.PullRequestDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
@@ -102,8 +99,8 @@ public class PullRequestService {
         return dto;
     }
 
-    public PullRequestDTO updatePullRequest(IssueEventRequest request) throws NotFoundException {
-        PullRequest pr = getById(request.getIssueId());
+    public PullRequestDTO updatePullRequest(PullRequestEventRequest request) throws NotFoundException {
+        PullRequest pr = getById(request.getPrId());
         // TODO: add necessary participants in issue
         IssueItemsDTO items = getPRItemsByIds(request);
         switch (request.getType()) {

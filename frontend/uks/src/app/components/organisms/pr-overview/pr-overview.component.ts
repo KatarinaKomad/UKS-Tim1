@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ISSUE_EVENT_TYPE, IssueDTO, IssueProperties, IssueEventDTO, IssueEventRequest } from 'src/models/issue/issue';
-import { PullRequestDTO, PullRequestEventDTO, PullRequestProperties } from 'src/models/pull-request/pull-request';
+import { PullRequestDTO, PullRequestEventDTO, PullRequestEventRequest, PullRequestProperties } from 'src/models/pull-request/pull-request';
 import { STATE_COLORS, STATE } from 'src/models/state/state';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
@@ -88,9 +88,9 @@ export class PrOverviewComponent {
   }
 
 
-  private createIssueEventRequest(type: ISSUE_EVENT_TYPE): IssueEventRequest {
+  private createIssueEventRequest(type: ISSUE_EVENT_TYPE): PullRequestEventRequest {
     return {
-      issueId: this.prId,
+      prId: this.prId,
       authorId: this.loggedUser?.id as string,
       type
     }

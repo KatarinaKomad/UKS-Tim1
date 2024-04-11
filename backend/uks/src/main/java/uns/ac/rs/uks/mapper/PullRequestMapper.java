@@ -4,6 +4,7 @@ import uns.ac.rs.uks.dto.request.PullRequestRequest;
 import uns.ac.rs.uks.dto.response.PullRequestDTO;
 import uns.ac.rs.uks.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,23 +12,20 @@ import java.util.UUID;
 public class PullRequestMapper {
 
     public static PullRequestDTO toDTO(PullRequest pr) {
-        List<String> assignees = pr.getAssignees().stream().map(User::getEmail).toList();
-        List<Map<String, String>> labels = pr.getLabels().stream()
-                .map(label -> Map.of("id", label.getId().toString(),"name", label.getName(), "color", label.getColor())).toList();
         return PullRequestDTO.builder()
                 .id(pr.getId())
                 .name(pr.getName())
-                .author(pr.getAuthor().getEmail())
+                .author(pr.getAuthor() != null ? UserMapper.toDTO(pr.getAuthor()) : null)
                 .counter(pr.getCounter())
                 .createdAt(pr.getCreatedAt())
-                .assignees(assignees)
-                .labels(labels)
-                .state(pr.getState().name())
-                .milestone(pr.getMilestone().getName())
+                .assignees(pr.getAssignees() != null ? UserMapper.toDTOs(pr.getAssignees()) : new ArrayList<>())
+                .labels(pr.getLabels() != null ? LabelMapper.toDTOs(pr.getLabels()) : new ArrayList<>())
+                .state(pr.getState())
+                .milestone(pr.getMilestone() != null ? MilestoneMapper.toDTO(pr.getMilestone()) : null)
                 .description(pr.getDescription())
                 .origin(pr.getOrigin())
                 .target(pr.getTarget())
-                .repo(pr.getRepository().getName())
+                .repo(pr.getRepository() != null ? RepoMapper.toDTO(pr.getRepository()) : null)
                 .build();
     }
 

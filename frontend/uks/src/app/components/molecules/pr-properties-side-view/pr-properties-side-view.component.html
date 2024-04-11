@@ -1,20 +1,20 @@
 <div class="segment">
     <div class="flex flex-row header">
         <div class="title">Assignees</div>
-        <button (click)="openFilter(ISSUE_PROPERTIES.ASSIGNEE)">
+        <button (click)="openFilter(PR_PROPERTIES.ASSIGNEE)">
             <i class="icon fa-solid fa-gear fa-lg"></i>
         </button>
     </div>
-    <!-- <app-assignee-filter *ngIf="openedProperty === ISSUE_PROPERTIES.ASSIGNEE" [isInput]="true"
-        [preSelected]="this.issueProperties.assignees" (closeEvent)="closeAssigneeFilter($event)">
-    </app-assignee-filter> -->
+    <app-assignee-filter *ngIf="openedProperty === PR_PROPERTIES.ASSIGNEE" [isInput]="true"
+        [preSelected]="this.prProperties.assignees" (closeEvent)="closeAssigneeFilter($event)">
+    </app-assignee-filter>
     <div class="elements">
-        <span *ngIf="!this.issueProperties?.assignees || this.issueProperties?.assignees?.length === 0">
+        <span *ngIf="!this.prProperties?.assignees || this.prProperties?.assignees?.length === 0">
             No one
         </span>
-        <span *ngIf="this.issueProperties?.assignees">
-            <span *ngFor="let elem of this.issueProperties?.assignees ; let last = last">
-                {{elem}}<span *ngIf="!last">,</span>
+        <span *ngIf="this.prProperties?.assignees">
+            <span *ngFor="let elem of this.prProperties?.assignees ; let last = last">
+                {{elem.firstName}} {{elem.lastName}}<span *ngIf="!last">,</span>
             </span>
         </span>
     </div>
@@ -24,19 +24,19 @@
 <div class="segment">
     <div class="flex flex-row header">
         <div class="title">Labels</div>
-        <button (click)="openFilter(ISSUE_PROPERTIES.LABEL)">
+        <button (click)="openFilter(PR_PROPERTIES.LABEL)">
             <i class="icon fa-solid fa-gear fa-lg"></i>
         </button>
     </div>
-    <app-label-filter *ngIf="openedProperty === ISSUE_PROPERTIES.LABEL" [isInput]="true"
-        [preSelected]="this.issueProperties.labels" (closeEvent)="closeLabelFilter($event)">
+    <app-label-filter *ngIf="openedProperty === PR_PROPERTIES.LABEL" [isInput]="true"
+        [preSelected]="this.prProperties.labels" (closeEvent)="closeLabelFilter($event)">
     </app-label-filter>
     <div class="elements">
-        <span *ngIf="!this.issueProperties?.labels || this.issueProperties?.labels?.length === 0">
+        <span *ngIf="!this.prProperties?.labels || this.prProperties?.labels?.length === 0">
             None yet
         </span>
-        <span *ngIf="this.issueProperties?.labels">
-            <span *ngFor="let elem of this.issueProperties?.labels ; let last = last">
+        <span *ngIf="this.prProperties?.labels">
+            <span *ngFor="let elem of this.prProperties?.labels ; let last = last">
                 <span [style.background]="elem?.color" class="rounded-2xl px-2 mx-auto text-base">{{elem.name}}
                 </span>
             </span>
@@ -47,26 +47,26 @@
 <div class="segment">
     <div class="flex flex-row header">
         <div class="title">Milestone</div>
-        <button (click)="openFilter(ISSUE_PROPERTIES.MILESTONE)">
+        <button (click)="openFilter(PR_PROPERTIES.MILESTONE)">
             <i class="icon fa-solid fa-gear fa-lg"></i>
         </button>
     </div>
-    <!-- <app-milestone-filter *ngIf="openedProperty === ISSUE_PROPERTIES.MILESTONE" [isInput]="true"
-        [preSelected]="this.issueProperties.milestone" (closeEvent)="closeMilestoneFilter($event)">
-    </app-milestone-filter> -->
+    <app-milestone-filter *ngIf="openedProperty === PR_PROPERTIES.MILESTONE" [isInput]="true"
+        [preSelected]="this.prProperties.milestone" (closeEvent)="closeMilestoneFilter($event)">
+    </app-milestone-filter>
     <div class="elements">
-        <span *ngIf="!this.issueProperties?.milestone">
+        <span *ngIf="!this.prProperties?.milestone">
             No milestone
         </span>
-        <span *ngIf="this.issueProperties?.milestone">
-            {{this.issueProperties.milestone}}
+        <span *ngIf="this.prProperties?.milestone">
+            {{this.prProperties.milestone?.name}}
         </span>
     </div>
 </div>
 
-<div class="flex flex-row delete-button">
-    <button (click)="deleteIssue()" *ngIf="this.issueId">
+<!-- <div class="flex flex-row delete-button">
+    <button (click)="deletePr()" *ngIf="this.issueId">
         Delete Issue
         <i class="icon fa-solid fa-trash fa-lg"></i>
     </button>
-</div>
+</div> -->
