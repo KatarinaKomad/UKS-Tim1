@@ -50,22 +50,22 @@ export class PrOverviewComponent {
 
   ngOnInit(): void {
     this.getPRFromRoute();
-    this.getIssueEvents();
+    this.getPREvents();
   }
 
   edit() {
     this.isEdit = true;
   }
-  closeEdit(editedIssue: IssueDTO | null) {
+  closeEdit(editedPR: PullRequestDTO | null) {
     this.isEdit = false;
-    if (this.pr && editedIssue) {
-      this.pr.name = editedIssue.name;
-      this.pr.description = editedIssue.description;
+    if (this.pr && editedPR) {
+      this.pr.name = editedPR.name;
+      this.pr.description = editedPR.description;
     }
   }
 
   changeStatus(state: STATE) {
-    let eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.STATE);
+    let eventRequest = this.createPREventRequest(ISSUE_EVENT_TYPE.STATE);
     eventRequest.state = state;
     this.prService.update(eventRequest).subscribe({
       next: (res: PullRequestDTO | null) => {
@@ -79,7 +79,7 @@ export class PrOverviewComponent {
     })
   }
 
-  handleIssuePropertiesChange(prProperties: PullRequestProperties) {
+  handlePRPropertiesChange(prProperties: PullRequestProperties) {
     this.prProperties = { ...prProperties };
   }
 
@@ -88,7 +88,7 @@ export class PrOverviewComponent {
   }
 
 
-  private createIssueEventRequest(type: ISSUE_EVENT_TYPE): PullRequestEventRequest {
+  private createPREventRequest(type: ISSUE_EVENT_TYPE): PullRequestEventRequest {
     return {
       prId: this.prId,
       authorId: this.loggedUser?.id as string,
@@ -128,7 +128,7 @@ export class PrOverviewComponent {
     }
   }
 
-  private getIssueEvents() {
+  private getPREvents() {
     this.prService.getPREventHistory(this.prId).subscribe({
       next: (res: PullRequestEventDTO[]) => {
         this.events = res;

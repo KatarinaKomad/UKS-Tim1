@@ -31,8 +31,8 @@ public class PullRequestDTO implements Serializable {
     private List<UserDTO> assignees;
     private State state;
     private String description;
-    private String origin;
-    private String target;
+    private BranchDTO origin;
+    private BranchDTO target;
     private RepoBasicInfoDTO repo;
     private List<Comment> comments;
     private List<Review> reviews;

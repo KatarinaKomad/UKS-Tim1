@@ -1,3 +1,4 @@
+import { BranchBasicInfoDTO } from "../branch/branch";
 import { ISSUE_EVENT_TYPE } from "../issue/issue";
 import { LabelDTO } from "../label/label";
 import { MilestoneDTO } from "../milestone/milestone";
@@ -16,8 +17,8 @@ export interface PullRequestDTO {
     assignees: UserBasicInfo[];
     state: STATE;
     description: string;
-    origin: string;
-    target: string;
+    origin: BranchBasicInfoDTO;
+    target: BranchBasicInfoDTO;
     repo: RepoBasicInfoDTO;
 }
 
@@ -30,6 +31,7 @@ export interface PullRequestProperties {
     assignees?: UserBasicInfo[];
     labels?: LabelDTO[];
     milestone?: MilestoneDTO;
+    [key: string]: any;
 }
 
 export interface PullRequestEventDTO {
@@ -48,6 +50,10 @@ export interface PullRequestBasicInfoDTO {
     state: STATE;
 }
 
+export interface PullRequestRequest extends PullRequestItem {
+    repoId: string;
+}
+
 export interface PullRequestEventRequest extends PullRequestItem {
     prId: string;
     type: ISSUE_EVENT_TYPE;
@@ -61,4 +67,6 @@ interface PullRequestItem {
     assigneeIds?: string[];
     milestoneId?: number;
     labelIds?: number[];
+    originId?: number;
+    targetId?: number;
 }

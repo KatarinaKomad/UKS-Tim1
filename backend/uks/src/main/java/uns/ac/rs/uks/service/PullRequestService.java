@@ -38,6 +38,8 @@ public class PullRequestService {
 
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private BranchService branchService;
 
     public PullRequest getById(UUID id) {
         return prRepository.findById(id).orElseThrow(() -> new NotFoundException("Pull request not found."));
@@ -69,12 +71,18 @@ public class PullRequestService {
     public PullRequestDTO createNewPR(PullRequestRequest dto) {
         Repo repo = repoService.getById(dto.getRepoId());
         List<Label> labels = new ArrayList<>();
-        dto.getLabels().forEach(labelId -> labels.add(labelService.getById(labelId)));
-        User author = userService.getUserByEmail(dto.getAuthor());
+        if (dto.getLabelIds() != null) {
+            dto.getLabelIds().forEach(labelId -> labels.add(labelService.getById(labelId)));
+        }
+        User author = userService.getById(dto.getAuthorId());
         List<User> assignees = new ArrayList<>();
-        dto.getAssignees().forEach(email -> assignees.add(userService.getUserByEmail(email)));
-        Milestone milestone = milestoneService.getById(dto.getMilestone());
-        PullRequest pullRequest = PullRequestMapper.fromDTO(dto, repo, labels, author, assignees, milestone);
+        if (dto.getAssigneeIds() != null) {
+            dto.getAssigneeIds().forEach(id -> assignees.add(userService.getById(id)));
+        }
+        Milestone milestone = dto.getMilestoneId() != null ? milestoneService.getById(dto.getMilestoneId()) : null;
+        Branch origin = branchService.getById(dto.getOriginId());
+        Branch target = branchService.getById(dto.getTargetId());
+        PullRequest pullRequest = PullRequestMapper.fromDTO(dto, repo, labels, author, assignees, milestone, origin, target);
         pullRequest = prRepository.save(pullRequest);
         return PullRequestMapper.toDTO(pullRequest);
     }

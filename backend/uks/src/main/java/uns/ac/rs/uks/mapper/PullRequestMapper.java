@@ -23,8 +23,8 @@ public class PullRequestMapper {
                 .state(pr.getState())
                 .milestone(pr.getMilestone() != null ? MilestoneMapper.toDTO(pr.getMilestone()) : null)
                 .description(pr.getDescription())
-                .origin(pr.getOrigin())
-                .target(pr.getTarget())
+                .origin(pr.getOrigin() != null ? BranchMapper.toDTO(pr.getOrigin()) : null)
+                .target(pr.getTarget() != null ? BranchMapper.toDTO(pr.getTarget()) : null)
                 .repo(pr.getRepository() != null ? RepoMapper.toDTO(pr.getRepository()) : null)
                 .build();
     }
@@ -33,7 +33,7 @@ public class PullRequestMapper {
         return pullRequests.stream().map(PullRequestMapper::toDTO).toList();
     }
 
-    public static PullRequest fromDTO(PullRequestRequest pr, Repo repo, List<Label> labels, User author, List<User> assignees, Milestone milestone) {
+    public static PullRequest fromDTO(PullRequestRequest pr, Repo repo, List<Label> labels, User author, List<User> assignees, Milestone milestone, Branch origin, Branch target) {
         PullRequest pullRequest = new PullRequest();
         pullRequest.setId(UUID.randomUUID());
         pullRequest.setName(pr.getName());
@@ -44,8 +44,8 @@ public class PullRequestMapper {
         pullRequest.setAssignees(assignees);
         pullRequest.setMilestone(milestone);
         pullRequest.setState(State.OPEN);
-        pullRequest.setOrigin(pr.getOrigin());
-        pullRequest.setTarget(pr.getTarget());
+        pullRequest.setOrigin(origin);
+        pullRequest.setTarget(target);
         return pullRequest;
     }
 }

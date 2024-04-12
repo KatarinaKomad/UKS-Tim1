@@ -29,6 +29,7 @@ import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-i
 import { BranchPageComponent } from './pages/branch-page/branch-page.component';
 import { CommitsPageComponent } from './pages/commits-page/commits-page.component';
 import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-page.component';
+import { NewPrComponent } from './components/organisms/new-pr/new-pr.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -70,7 +71,7 @@ const routes: Routes = [
           { path: 'pr-view', component: ProjectPrsComponent, outlet: 'pr-tab' },
           { path: 'milestones-view', component: ProjectMilestonesComponent, outlet: 'pr-tab' },
           { path: 'labels-view', component: ProjectLabelsComponent, outlet: 'pr-tab' },
-          { path: 'new', component: NewPrFormComponent, outlet: 'pr-tab' },
+          { path: 'new', component: NewPrComponent, outlet: 'pr-tab' },
           { path: ':prId', component: PrOverviewComponent, outlet: 'pr-tab' },
         ]
       },

@@ -12,14 +12,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class PullRequestRequest {
 
-    private String origin;
-    private String target;
-    private String author;
-    private List<Long> labels;
+    private Long originId;
+    private Long targetId;
+    private UUID authorId;
+    private List<Long> labelIds;
     private String name;
     private String description;
     private UUID repoId;
-    private Long milestone;
-    private List<String> assignees;
+    private Long milestoneId;
+    private List<UUID> assigneeIds;
 
 }

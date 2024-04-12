@@ -23,16 +23,18 @@
                 </button>
             </div>
             <div class="flex flex-row space-x-4">
+                <h4 class=" text-bold pb-2">{{pr?.description}}</h4>
+            </div>
+            <div class="flex flex-row space-x-4">
                 <div [style.background]="stateColor" class="state-tag rounded-2xl text-base text-white">
                     <i class="icon fa-regular fa-circle-dot" *ngIf="pr?.state == STATE.OPEN"></i>
                     <i class="icon fa-regular fa-circle-check" *ngIf="pr?.state == STATE.CLOSE"></i>
                     <i class="icon fa-solid fa-code-merge" *ngIf="pr?.state == STATE.MERGED"></i>
                     {{pr?.state | titlecase}}
                 </div>
-                <h4 class=" text-bold pb-2">{{pr?.description}}</h4><br>
-                <h4 class=" text-bold pb-2"><span class="rounded"
-                        style="background-color: #00ffc8;">{{pr?.origin}}</span> into
-                    <span class="rounded" style="background-color: #00ffc8;">{{pr?.target}}</span>
+                <h4 class=" text-bold pb-2">Merge <span class="rounded"
+                        style="background-color: #00ffc8;">{{pr?.origin?.name}}</span> into
+                    <span class="rounded" style="background-color: #00ffc8;">{{pr?.target?.name}}</span>
                 </h4>
             </div>
         </div>
@@ -62,12 +64,12 @@
     </div>
 
 
-    <!-- <div class="flex flex-col w-3/6 p-5 h-full" *ngIf="isEdit">
-        <app-new-pr-form [pr]="pr" (updateIssueEvent)="closeEdit($event)"></app-new-pr-form>
-    </div> -->
+    <div class="flex flex-col w-3/6 p-5 h-full" *ngIf="isEdit">
+        <app-new-pr-form [pr]="pr" (updatePREvent)="closeEdit($event)"></app-new-pr-form>
+    </div>
 
     <div class="flex flex-col w-2/6 p-5 ml-5">
         <app-pr-properties-side-view [prPropertiesInput]="prProperties" [prId]="pr?.id"
-            (changeEvent)="handleIssuePropertiesChange($event)"></app-pr-properties-side-view>
+            (changeEvent)="handlePRPropertiesChange($event)"></app-pr-properties-side-view>
     </div>
 </div>

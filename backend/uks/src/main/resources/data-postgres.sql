@@ -27,6 +27,8 @@ INSERT INTO REPO(id, name, description, owner_iD, is_public, created_at) VALUES
 INSERT INTO BRANCH(name, repository_id, updated_by) VALUES
 ('master', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'PeraPeric123'),
 ('master', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'PeraPeric123'),
+('develop', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'PeraPeric123'),
+('feature/new', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'PeraPeric123'),
 ('master', 'b6677751-cc42-4fb7-a662-31dda9c4482b', 'MikaMikic1234'),
 ('master', 'f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e', 'MikaMikic1234');
 
