@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IssueDTO } from 'src/models/issue/issue';
 import { PullRequestDTO } from 'src/models/pull-request/pull-request';
 import { STATE } from 'src/models/state/state';
 import { NavigationService } from 'src/services/navigation/navigation.service';
@@ -11,7 +10,7 @@ import { RepoService } from 'src/services/repo/repo.service';
   templateUrl: './pr-item.component.html',
   styleUrl: './pr-item.component.scss'
 })
-export class PrItemComponent implements OnChanges, AfterViewInit {
+export class PrItemComponent implements OnInit, OnChanges, AfterViewInit {
 
   STATE = STATE;
 
@@ -38,6 +37,7 @@ export class PrItemComponent implements OnChanges, AfterViewInit {
     if (changes['pr'].currentValue) {
       this.pr = changes['pr'].currentValue;
     }
+    console.log(this.pr)
   }
 
   ngAfterViewInit(): void {

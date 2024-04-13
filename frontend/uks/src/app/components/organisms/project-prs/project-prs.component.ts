@@ -29,21 +29,20 @@ export class ProjectPrsComponent implements OnInit {
   ISSUE_PROPERTIES = ISSUE_PROPERTIES;
   openedProperty: ISSUE_PROPERTIES | null = null;
 
-  selectedAssignees: string[] = []
+  selectedAssignees: UserBasicInfo[] = []
   assigneesFilters: string = "";
 
   selectedLabels: LabelDTO[] = []
   labelsFilters: string = "";
 
-  selectedMilestone?: string
+  selectedMilestone?: MilestoneDTO
   milestoneFilter: string = "";
 
-  selectedAuthor?: string
+  selectedAuthor?: UserBasicInfo
   authorFilter: string = "";
 
   constructor(
     private navigationService: NavigationService,
-    private issueService: IssueService,
     private prService: PullRequestService
   ) {
     this.repoName = localStorage.getItem("repoName") as string;
@@ -68,7 +67,7 @@ export class ProjectPrsComponent implements OnInit {
   }
 
 
-  addNewIssue() {
+  addNewPr() {
     this.navigationService.navigateToNewPR();
   }
 
@@ -78,7 +77,7 @@ export class ProjectPrsComponent implements OnInit {
       this.shownOpen ? (elem.state === STATE.OPEN) : (elem.state === STATE.CLOSE));
   }
 
-  changeShownIssues(shownOpen: boolean) {
+  changeShownPRs(shownOpen: boolean) {
     this.shownOpen = shownOpen;
     this.clearAllFilters();
   }
@@ -87,7 +86,7 @@ export class ProjectPrsComponent implements OnInit {
     this.openedProperty = property;
   }
 
-  closeAssigneeFilter(list: string[] | null) {
+  closeAssigneeFilter(list: UserBasicInfo[] | null) {
     this.openedProperty = null;
     if (list) {
       this.selectedAssignees = list;
@@ -112,7 +111,7 @@ export class ProjectPrsComponent implements OnInit {
     }
   }
 
-  closeMilestoneFilter(milestone: string | null) {
+  closeMilestoneFilter(milestone: MilestoneDTO | null) {
     this.openedProperty = null;
     if (milestone) {
       this.selectedMilestone = milestone
@@ -124,7 +123,7 @@ export class ProjectPrsComponent implements OnInit {
     this.filterBySelectedItems();
   }
 
-  closeAuthorFilter(author: string | null) {
+  closeAuthorFilter(author: UserBasicInfo | null) {
     this.openedProperty = null;
     if (author) {
       this.selectedAuthor = author

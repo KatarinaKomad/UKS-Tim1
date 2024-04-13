@@ -110,6 +110,7 @@ import { BranchFilterOverlayComponent } from './components/molecules/filter-over
 import { FolderTableOverviewComponent } from './components/molecules/folder-table-overview/folder-table-overview.component';
 import { CommitsPageComponent } from './pages/commits-page/commits-page.component';
 import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-page.component';
+import { NewPrComponent } from './components/organisms/new-pr/new-pr.component';
 
 
 
@@ -191,7 +192,8 @@ import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-pa
 
     FolderTableOverviewComponent,
     CommitsPageComponent,
-    CommitDiffPageComponent
+    CommitDiffPageComponent,
+    NewPrComponent
   ],
   exports: [],
   imports: [

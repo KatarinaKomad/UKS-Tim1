@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uns.ac.rs.uks.model.Comment;
 import uns.ac.rs.uks.model.Review;
+import uns.ac.rs.uks.model.State;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,18 +22,18 @@ import java.util.UUID;
 public class PullRequestDTO implements Serializable {
     private UUID id;
     private String name;
-    private String author;
-    private String milestone;
+    private UserDTO author;
+    private MilestoneDTO milestone;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     private Long counter;
-    private List<Map<String, String>> labels;
-    private List<String> assignees;
-    private String state;
+    private List<LabelDTO> labels;
+    private List<UserDTO> assignees;
+    private State state;
     private String description;
-    private String origin;
-    private String target;
-    private String repo;
+    private BranchDTO origin;
+    private BranchDTO target;
+    private RepoBasicInfoDTO repo;
     private List<Comment> comments;
     private List<Review> reviews;
 }

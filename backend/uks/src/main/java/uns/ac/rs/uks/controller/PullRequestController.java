@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uns.ac.rs.uks.dto.request.IssueEventRequest;
+import uns.ac.rs.uks.dto.request.PullRequestEventRequest;
 import uns.ac.rs.uks.dto.request.PullRequestRequest;
 import uns.ac.rs.uks.dto.response.IssueDTO;
 import uns.ac.rs.uks.dto.response.IssueEventDTO;
@@ -69,8 +70,8 @@ public class PullRequestController {
 
     @PutMapping("/update")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public PullRequestDTO updateIssue(@RequestBody IssueEventRequest issueEventRequest) {
-        return prService.updatePullRequest(issueEventRequest);
+    public PullRequestDTO updateIssue(@RequestBody PullRequestEventRequest pullRequestEventRequest) {
+        return prService.updatePullRequest(pullRequestEventRequest);
     }
 
 }

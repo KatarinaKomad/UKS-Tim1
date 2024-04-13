@@ -1,0 +1,11 @@
+<div class="flex flex-row">
+    <div class="flex flex-col w-1/6 p-5"></div>
+    <div class="flex flex-col w-3/6 p-5">
+        <app-new-pr-form (newPREvent)="handleSubmitForm($event)"></app-new-pr-form>
+    </div>
+
+    <div class="flex flex-col w-2/6 p-5 ml-5">
+        <app-pr-properties-side-view [prPropertiesInput]="prProperties"
+            (changeEvent)="handlePRPropertiesChange($event)"></app-pr-properties-side-view>
+    </div>
+</div>

@@ -3,6 +3,9 @@ package uns.ac.rs.uks.controller;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +14,6 @@ import uns.ac.rs.uks.dto.request.OriginTargetBranchRequest;
 import uns.ac.rs.uks.dto.request.TargetBranchRequest;
 import uns.ac.rs.uks.dto.response.BranchDTO;
 import uns.ac.rs.uks.dto.response.CommitDiffResponseDTO;
-import uns.ac.rs.uks.dto.response.CommitsResponseDto;
 import uns.ac.rs.uks.model.User;
 import uns.ac.rs.uks.service.BranchService;
 
@@ -42,9 +44,10 @@ public class BranchController {
     }
 
     @PutMapping("/mergeBranches")
-    public void mergeBranches(@Valid @RequestBody OriginTargetBranchRequest request, Authentication authentication){
+    public ResponseEntity<?> mergeBranches(@Valid @RequestBody OriginTargetBranchRequest request, Authentication authentication){
         User user = (User) authentication.getPrincipal();
         branchService.mergeBranches(request, user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/delete")
