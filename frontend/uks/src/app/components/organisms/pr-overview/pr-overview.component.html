@@ -13,7 +13,7 @@
                     <i class="fa-solid fa-pen-to-square"></i>
                     Edit
                 </button>
-                <button class="show-button !py-1 " (click)="changeStatus(STATE.CLOSE)" *ngIf="pr?.state === STATE.OPEN">
+                <button class="show-button !py-1 " (click)="mergeBranches(STATE.CLOSE)" *ngIf="pr?.state === STATE.OPEN">
                     <i class="fa-regular fa-circle-check"></i>
                     Close
                 </button>

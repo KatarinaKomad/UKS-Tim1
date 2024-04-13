@@ -51,4 +51,11 @@ export class BranchService {
     return this.httpRequestService.post(url, body) as Observable<CommitDiffResponseDTO>;
   }
 
+  mergeBranches(request: OriginTargetBranchRequest): Observable<any> {
+    const url = environment.API_BASE_URL + '/branch/mergeBranches';
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.put(url, body) as Observable<any>;
+  }
+
 }

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ISSUE_EVENT_TYPE, IssueDTO, IssueProperties, IssueEventDTO, IssueEventRequest } from 'src/models/issue/issue';
+import { ToastrService } from 'ngx-toastr';
+import { OriginTargetBranchRequest } from 'src/models/branch/branch';
+import { ISSUE_EVENT_TYPE, IssueEventDTO } from 'src/models/issue/issue';
 import { PullRequestDTO, PullRequestEventDTO, PullRequestEventRequest, PullRequestProperties } from 'src/models/pull-request/pull-request';
 import { STATE_COLORS, STATE } from 'src/models/state/state';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
-import { IssueService } from 'src/services/issue/issue.service';
+import { BranchService } from 'src/services/branch/branch.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { PullRequestService } from 'src/services/pull-request/pull-request.service';
 
@@ -35,9 +37,10 @@ export class PrOverviewComponent {
   constructor(
     private navigationService: NavigationService,
     private authService: AuthService,
-    private issueService: IssueService,
+    private branchService: BranchService,
     private route: ActivatedRoute,
-    private prService: PullRequestService
+    private prService: PullRequestService,
+    private toastr: ToastrService
   ) {
     this.repoId = localStorage.getItem("repoId") as string
 
@@ -64,6 +67,17 @@ export class PrOverviewComponent {
     }
   }
 
+  mergeBranches(state: STATE) {
+    let mr = this.createMergeRequest();
+    this.branchService.mergeBranches(mr).subscribe({
+      next: () => {
+        this.changeStatus(state);
+      }, error: () => {
+        this.toastr.error('Cannot merge these branches')
+      }
+    })
+  }
+
   changeStatus(state: STATE) {
     let eventRequest = this.createPREventRequest(ISSUE_EVENT_TYPE.STATE);
     eventRequest.state = state;
@@ -72,11 +86,20 @@ export class PrOverviewComponent {
         if (this.pr && res) {
           this.pr.state = state;
           this.setStateColor(state);
+          this.toastr.success('Brances are merged successfully')
         }
       }, error: (e: any) => {
-        console.log(e);
+        this.toastr.error('Branches are merged but status is not changed')
       }
     })
+  }
+
+  createMergeRequest(): OriginTargetBranchRequest {
+    return {
+      repoId: this.repoId,
+      originName: this.pr!.origin.name,
+      targetName: this.pr!.target.name
+    }
   }
 
   handlePRPropertiesChange(prProperties: PullRequestProperties) {
