@@ -12,7 +12,7 @@ public class BranchMapper {
                         .id(branch.getId())
                         .name(branch.getName())
                         .updatedAt(branch.getUpdatedAt())
-                        .updatedBy(branch.getUpdatedBy())
+                        .updatedBy(branch.getUpdatedBy().getCustomUsername())
                         .repoId(branch.getRepository() != null ? branch.getRepository().getId(): null)
                         .build();
     }

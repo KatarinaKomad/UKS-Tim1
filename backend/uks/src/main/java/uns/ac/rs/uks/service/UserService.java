@@ -31,6 +31,10 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(()->new NotFoundException("User not found."));
     }
 
+    public User getUserByCustomUsername(String username) throws NotFoundException {
+        return userRepository.findByCustomUsername(username).orElseThrow(()->new NotFoundException("User not found."));
+    }
+
     public UserDTO findByEmail(String email) throws NotFoundException{
         logger.info("Try to get user with email {}", email);
         User user = userRepository.findByEmail(email).orElseThrow(()->new NotFoundException("User not found."));

@@ -166,7 +166,7 @@ public class GitoliteService {
             if (exitCode == 0) {
                 logger.info(String.format("Script %s executed successfully", readBranchesScript));
             } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
+                logger.error(String.format("Script %s execution failed with exit code: " + exitCode, readBranchesScript));
             }
 
             return branches;
@@ -202,7 +202,7 @@ public class GitoliteService {
             if (exitCode == 0) {
                 logger.info(String.format("Script %s executed successfully", getDifferencesScript));
             } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
+                logger.error(String.format("Script %s execution failed with exit code: " + exitCode, getDifferencesScript));
             }
             return changes;
         } catch (IOException | InterruptedException e) {
@@ -324,7 +324,7 @@ public class GitoliteService {
             if (exitCode == 0) {
                 logger.info(String.format("Script %s executed successfully", script));
             } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
+                logger.error(String.format("Script %s execution failed with exit code: " + exitCode, script));
             }
         } catch (IOException | InterruptedException e) {
             logger.error(e.getMessage());
@@ -343,7 +343,7 @@ public class GitoliteService {
             if (exitCode == 0) {
                 logger.info(String.format("Script %s executed successfully", script));
             } else {
-                logger.error("Script execution failed with exit code: " + exitCode);
+                logger.error(String.format("Script %s execution failed with exit code: " + exitCode, script));
             }
             return commits;
         } catch (IOException | InterruptedException e) {
@@ -358,7 +358,7 @@ public class GitoliteService {
                 Paths.get(scriptWorkingDirectory, repoName) :
                 Paths.get(scriptWorkingDirectory, repoName, filePathWithoutRepo);
 
-       partialRepoClone(repoName, branchName, filePathWithoutRepo);
+        partialRepoClone(repoName, branchName, filePathWithoutRepo);
         try {
             List<FileDTO> files = Files.walk(fullPath, 1)
                     .filter(p -> shouldParse(p, filePathWithoutRepo, fullPath.toString()))

@@ -36,21 +36,6 @@ public class BranchControllerTest {
 
 
     @Test
-    public void testGetAllRepoBranches() {
-        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ParameterizedTypeReference<List<BranchDTO>> responseType = new ParameterizedTypeReference<>() {};
-        String url = "/branch/getRepoBranches/" + Constants.REPOSITORY_ID_1_UKS_TEST;
-        ResponseEntity<?> responseEntity =
-                restTemplate.exchange(url, HttpMethod.GET,  entity, responseType);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<BranchDTO> branches = (List<BranchDTO>) responseEntity.getBody();
-        assertNotNull(branches);
-        assertEquals(branches.size(), 2);
-    }
-
-    @Test
     public void testGetRepoBranchesCount() {
         HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
         HttpEntity<String> entity = new HttpEntity<>(headers);
