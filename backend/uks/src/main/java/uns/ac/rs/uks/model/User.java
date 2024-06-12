@@ -35,6 +35,7 @@ public class User implements UserDetails, Serializable {
     private String password;
     private String firstName;
     private String lastName;
+    @Column(length = 2048)
     private String sshKeyValue;
     @ManyToOne
     private Role role; // Admin / User

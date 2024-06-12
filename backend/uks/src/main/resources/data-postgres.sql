@@ -24,15 +24,15 @@ INSERT INTO REPO(id, name, description, owner_iD, is_public, created_at) VALUES
 ('f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e', 'myPrivateRepo', 'my private repo opis',
 '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08', false, '2024-01-25 00:00:00');
 
-INSERT INTO BRANCH(name, repository_id, updated_by) VALUES
-('master', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'PeraPeric123'),
-('master', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'PeraPeric123'),
-('master', 'b6677751-cc42-4fb7-a662-31dda9c4482b', 'MikaMikic1234'),
-('master', 'f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e', 'MikaMikic1234'),
-('develop', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'PeraPeric123'),
-('feature/new', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'PeraPeric123'),
-('develop', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'PeraPeric123'),
-('feature/new2', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'PeraPeric123');
+INSERT INTO BRANCH(name, repository_id, updated_by_id) VALUES
+('master', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27'),
+('master', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27'),
+('master', 'b6677751-cc42-4fb7-a662-31dda9c4482b', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08'),
+('master', 'f30c955c-1fef-4ec5-a6f1-4477b8ff7f9e', '0e7f2a1d-49d0-44cd-8a01-4d40186f6f08'),
+('develop', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27'),
+('feature/new', 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27'),
+('develop', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27'),
+('feature/new2', 'ba6dcc79-1444-4310-9e7d-9736def57f60', 'ff1d6606-e1f5-4e26-8a32-a14800b42a27');
 
 UPDATE REPO SET default_branch_id = 1 WHERE id = 'a3826e27-77d8-465c-9d9f-87ccbb04ecaf';
 UPDATE REPO SET default_branch_id = 2 WHERE id = 'ba6dcc79-1444-4310-9e7d-9736def57f60';

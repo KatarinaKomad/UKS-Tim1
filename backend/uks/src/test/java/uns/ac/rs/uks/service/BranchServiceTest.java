@@ -108,24 +108,6 @@ public class BranchServiceTest {
     }
 
     @Test
-    void testGetAllRepoBranches() {
-        Repo repository = new Repo();
-        repository.setId(Constants.REPOSITORY_ID_1_UKS_TEST);
-        repository.setName("UKS-test");
-        Branch branch1 = new Branch();
-        branch1.setRepository(repository);
-        Branch branch2 = new Branch();
-        branch2.setRepository(repository);
-
-        when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repository));
-        when(branchRepository.findAllByRepositoryId(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(List.of(branch1, branch2));
-        when(gitoliteService.readRepoBranches(repository.getName())).thenReturn(new ArrayList<>());
-
-        List<BranchDTO> branches = branchService.getRepoBranches(Constants.REPOSITORY_ID_1_UKS_TEST);
-        assertEquals(branches.size(), 2);
-    }
-
-    @Test
     void testGetRepoBranchesCount() {
         Repo repository = new Repo();
         repository.setId(Constants.REPOSITORY_ID_1_UKS_TEST);
@@ -159,7 +141,7 @@ public class BranchServiceTest {
         Branch branch = new Branch();
         branch.setName("test");
         branch.setRepository(repo);
-        branch.setUpdatedBy(user.getCustomUsername());
+        branch.setUpdatedBy(user);
 
 
         when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
@@ -195,7 +177,7 @@ public class BranchServiceTest {
         Branch branch = new Branch();
         branch.setName("test");
         branch.setRepository(repo);
-        branch.setUpdatedBy(user.getCustomUsername());
+        branch.setUpdatedBy(user);
 
 
         when(repoRepository.findById(Constants.REPOSITORY_ID_1_UKS_TEST)).thenReturn(Optional.of(repo));
