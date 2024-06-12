@@ -31,12 +31,14 @@ public class BranchService {
     private GitoliteService gitoliteService;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private UserService userService;
 
     public Branch createDefaultBranch(Repo repo, User creator) {
         Branch branch = new Branch();
         branch.setName("master");
         branch.setRepository(repo);
-        branch.setUpdatedBy(creator.getCustomUsername());
+        branch.setUpdatedBy(creator);
         branchRepository.save(branch);
         return branch;
     }
@@ -53,10 +55,12 @@ public class BranchService {
 
         for (BranchDTO b : gitoliteBranches) {
             if(branches.stream().noneMatch(x-> x.getName().equals(b.getName()))){
+                User user = userService.getUserByCustomUsername(b.getUpdatedBy());
+                System.out.println(user.getCustomUsername());
                 Branch newGitoliteBranch = Branch.builder()
                         .name(b.getName())
                         .repository(repo)
-                        .updatedBy(b.getUpdatedBy())
+                        .updatedBy(user)
                         .updatedAt(b.getUpdatedAt())
                         .build();
                 DTOs.add(BranchMapper.toDTO(branchRepository.save(newGitoliteBranch)));
@@ -93,13 +97,13 @@ public class BranchService {
         User repoUser = entityManager.getReference(User.class, user.getId());
         var repo = getRepoById(request.getRepoId());
         gitoliteService.newBranch(formatRepoName(repo.getName()), request.getOriginName(), request.getTargetName());
-        Branch newBranch = Branch.builder().name(request.getTargetName()).repository(repo).updatedBy(repoUser.getCustomUsername()).build();
+        Branch newBranch = Branch.builder().name(request.getTargetName()).repository(repo).updatedBy(repoUser).build();
         return BranchMapper.toDTO(branchRepository.save(newBranch));
     }
 
     private Branch updateBranch(UUID repoId, String branchName, User user) {
         Branch branch = branchRepository.findByRepositoryIdAndName(repoId, branchName);
-        branch.setUpdatedBy(user.getCustomUsername());
+        branch.setUpdatedBy(user);
         return branchRepository.save(branch);
     }
 

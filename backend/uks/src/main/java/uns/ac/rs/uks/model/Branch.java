@@ -25,8 +25,8 @@ public class Branch implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private String updatedBy;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private User updatedBy;
 //    @ManyToMany
 //    private List<Commit> commits;
 

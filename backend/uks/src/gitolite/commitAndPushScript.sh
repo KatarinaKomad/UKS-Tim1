@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -z "$1" ]; then
   echo "Error: Message parameter is missing."
@@ -7,15 +7,19 @@ fi
 
 message="$1"
 
-exec > >(tee -i logs/gitolite_admin_script.log)
-exec 2>&1
+# Ensure the logs directory exists
+mkdir -p logs
+
+# Open the log file for writing
+LOGFILE="logs/gitolite_admin_script.log"
+exec >"$LOGFILE" 2>&1
 
 echo "Committing to gitolite-admin with message: $message"
 
 cd gitolite-admin || exit 1
 
-GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git add .
+GIT_SSH_COMMAND="ssh -p 22 -i ../gitolite -o StrictHostKeyChecking=no" git add .
 
-GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git commit -m "$message"
+GIT_SSH_COMMAND="ssh -p 22 -i ../gitolite -o StrictHostKeyChecking=no" git commit -m "$message"
 
-GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git push
+GIT_SSH_COMMAND="ssh -p 22 -i ../gitolite -o StrictHostKeyChecking=no" git push

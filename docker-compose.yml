@@ -7,8 +7,15 @@ services:
       context: .
       dockerfile: backend/uks/src/gitolite/Dockerfile
     container_name: gitolite
+    networks:
+      - uks
     ports:
       - "2222:22"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "22"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - gitolite-sshkeys:/etc/ssh/keys
       - gitolite-git:/var/lib/git
@@ -16,7 +23,7 @@ services:
   # Postgres as a main storage
   db:
     restart: always
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     container_name: db
     ports:
       - "5432:5432"
@@ -44,8 +51,12 @@ services:
     build:
       context: ./backend/uks
     depends_on:
-      - db
-      - redis
+      gitolite:
+        condition: service_healthy
+      db:
+        condition: service_started
+      redis:
+        condition: service_started
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/uks
       - SPRING_DATASOURCE_USERNAME=postgres
