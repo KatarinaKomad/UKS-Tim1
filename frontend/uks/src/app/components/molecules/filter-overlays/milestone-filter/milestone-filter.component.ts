@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FILTER_MILESTONE_OVERLAY, INPUT_MILESTONE_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
+import { FILTER_MILESTONE_OVERLAY, INPUT_MILESTONE_OVERLAY, OverlayPosition } from 'src/models/forms/position';
 import { MilestoneDTO } from 'src/models/milestone/milestone';
 import { MilestoneService } from 'src/services/milestone/milestone.service';
 

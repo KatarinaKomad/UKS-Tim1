@@ -37,12 +37,14 @@ INSERT INTO REPO(id, name, description, owner_iD, is_public, created_at) VALUES
 (REPOSITORY_ID_3_UKS_TEST, 'myPublicRepo', 'my public repo opis', MIKA_USER_ID, true, '2024-01-24 00:00:00'),
 (REPOSITORY_ID_4_UKS_TEST, 'myPrivateRepo', 'my private repo opis', MIKA_USER_ID, false, '2024-01-25 00:00:00');
 
-INSERT INTO MEMBER(repository_id, user_id, repository_role) VALUES
-(REPOSITORY_ID_1_UKS_TEST, PERA_USER_ID, 'OWNER'),
-(REPOSITORY_ID_1_UKS_TEST, MIKA_USER_ID, 'COLLABORATOR'),
-(REPOSITORY_ID_2_UKS_TEST, PERA_USER_ID, 'OWNER'),
-(REPOSITORY_ID_3_UKS_TEST, MIKA_USER_ID, 'OWNER'),
-(REPOSITORY_ID_4_UKS_TEST, MIKA_USER_ID, 'OWNER');
+INSERT INTO MEMBER(repository_id, user_id, repository_role, invite_status) VALUES
+(REPOSITORY_ID_1_UKS_TEST, PERA_USER_ID, 'OWNER', 'ACCEPTED'),
+(REPOSITORY_ID_1_UKS_TEST, MIKA_USER_ID, 'COLLABORATOR', 'ACCEPTED'),
+(REPOSITORY_ID_2_UKS_TEST, PERA_USER_ID, 'OWNER', 'ACCEPTED'),
+(REPOSITORY_ID_3_UKS_TEST, MIKA_USER_ID, 'OWNER', 'ACCEPTED'),
+(REPOSITORY_ID_4_UKS_TEST, MIKA_USER_ID, 'OWNER', 'ACCEPTED'),
+
+(REPOSITORY_ID_2_UKS_TEST, MIKA_USER_ID, 'COLLABORATOR', 'PENDING');
 
 INSERT INTO LABEL(repository_id, name, description, color) VALUES
 (REPOSITORY_ID_1_UKS_TEST, 'test name', 'test description','#6bbf26'),
@@ -84,7 +86,7 @@ INSERT INTO ISSUE_EVENT (issue_id, author_id, new_value, type, created_at) VALUE
 (ISSUE_ID_2, PERA_USER_ID, 'mile stone', 'MILESTONE', '2024-01-25 15:00:00'),
 (ISSUE_ID_2, MIKA_USER_ID, 'milestone2', 'MILESTONE', '2024-01-25 15:01:00');
 
-INSERT INTO BRANCH (name, repository_id) VALUES ('main', REPOSITORY_ID_1_UKS_TEST);
+INSERT INTO BRANCH (name, repository_id) VALUES ('master', REPOSITORY_ID_1_UKS_TEST);
 INSERT INTO BRANCH (name, repository_id) VALUES ('dev', REPOSITORY_ID_1_UKS_TEST);
 
 ------------------------------------------------------------------------------------------------------------------------

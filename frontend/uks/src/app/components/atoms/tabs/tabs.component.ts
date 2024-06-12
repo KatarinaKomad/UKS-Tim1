@@ -22,13 +22,7 @@ export class TabsComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-    // this.repoService.getCanEditRepoItems().subscribe({
-    //   next: (canEdit: boolean) => {
-    //     this.canEdit = canEdit;
-    //   }, error: (e: any) => {
-    //     console.log(e);
-    //   }
-    // })
+    this.canEdit = this.repoService.getCanEditRepoItems();
   }
 
   ngOnInit(): void {

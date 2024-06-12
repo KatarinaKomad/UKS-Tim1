@@ -44,7 +44,7 @@ public class LabelControllerTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         List<LabelDTO> repos = (List<LabelDTO>) responseEntity.getBody();
         assertNotNull(repos);
-        assertEquals(4, repos.size());
+        assertEquals(repos.size(), 4);
     }
 
     @Test

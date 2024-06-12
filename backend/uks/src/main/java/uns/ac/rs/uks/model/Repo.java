@@ -47,12 +47,13 @@ public class Repo implements Serializable {
     @OneToMany(mappedBy = "forkParent", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Repo> forkChildren;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> staredBy;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<User> watchers;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+    private String cloneUri;
 
 }

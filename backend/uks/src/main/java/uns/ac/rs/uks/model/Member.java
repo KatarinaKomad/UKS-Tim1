@@ -21,4 +21,7 @@ public class Member implements Serializable {
     private Repo repository;
     @Enumerated(EnumType.STRING)
     private RepositoryRole repositoryRole;
+
+    @Enumerated(EnumType.STRING)
+    private MemberInviteStatus inviteStatus;
 }

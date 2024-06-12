@@ -11,19 +11,28 @@
     </div>
 
     <div class="button-group">
-        <button class="show-button !py-1" (click)="showView('issues')"
-            [ngStyle]="{'background-color':openView === 'issues' ? '#3a87e1' : 'white', 'color': openView === 'issues' ? 'white' : 'black'}">
+        <button *ngIf="activeTab === 1" class="show-button !py-1" (click)="showView(ISSUE_VIEW.ISSUES)" [ngStyle]="{
+                'background-color': openView === ISSUE_VIEW.ISSUES ? '#3a87e1' : 'white', 
+                'color': openView === ISSUE_VIEW.ISSUES ? 'white' : 'black'}">
             <i class="icon fa-regular fa-circle-dot"></i>
             Issues
         </button>
-        <button class="show-button !py-1 " (click)="showView('labels')" [ngStyle]="{'background-color':openView === 'labels' ? '#3a87e1' : 'white', 
-                            'color': openView === 'labels' ? 'white' : 'black'}">
+        <button *ngIf="activeTab === 2" class="show-button !py-1" (click)="showView(ISSUE_VIEW.PRS)" [ngStyle]="{
+            'background-color': openView === ISSUE_VIEW.PRS ? '#3a87e1' : 'white', 
+            'color': openView === ISSUE_VIEW.PRS ? 'white' : 'black'}">
+            <i class="icon fa-solid fa-code-pull-request"></i>
+            PRs
+        </button>
+        <button class="show-button !py-1 " (click)="showView(ISSUE_VIEW.LABELS)" [ngStyle]="{
+                'background-color':openView === ISSUE_VIEW.LABELS ? '#3a87e1' : 'white', 
+                'color': openView === ISSUE_VIEW.LABELS ? 'white' : 'black'}">
             <i class="fa-solid fa-tag"></i>
             Labels
         </button>
 
-        <button class="show-button !py-1" (click)="showView('milestones')"
-            [ngStyle]="{'background-color':openView === 'milestones' ? '#3a87e1' : 'white', 'color': openView === 'milestones' ? 'white' : 'black'}">
+        <button class="show-button !py-1" (click)="showView(ISSUE_VIEW.MILESTONES)" [ngStyle]="{
+                'background-color': openView === ISSUE_VIEW.MILESTONES ? '#3a87e1' : 'white', 
+                'color': openView === ISSUE_VIEW.MILESTONES ? 'white' : 'black'}">
             <i class="fa-regular fa-flag"></i>
             Milestones
         </button>

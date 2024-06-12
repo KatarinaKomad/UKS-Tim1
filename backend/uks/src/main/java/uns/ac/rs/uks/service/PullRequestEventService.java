@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uns.ac.rs.uks.dto.request.IssueEventRequest;
+import uns.ac.rs.uks.dto.request.PullRequestEventRequest;
 import uns.ac.rs.uks.dto.response.PullRequestEventDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.mapper.PullRequestEventMapper;
@@ -44,7 +45,7 @@ public class PullRequestEventService {
         return events;
     }
 
-    public PullRequestEvent createEventFromEventRequest(IssueEventRequest request, IssueItemsDTO items, PullRequest pr) {
+    public PullRequestEvent createEventFromEventRequest(PullRequestEventRequest request, IssueItemsDTO items, PullRequest pr) {
         User author = entityManager.getReference(User.class, request.getAuthorId());
         PullRequestEvent event = new PullRequestEvent();
         event.setType(request.getType());

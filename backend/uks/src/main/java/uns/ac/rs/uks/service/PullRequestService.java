@@ -3,10 +3,7 @@ package uns.ac.rs.uks.service;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uns.ac.rs.uks.dto.request.IssueEventRequest;
-import uns.ac.rs.uks.dto.request.IssueItem;
-import uns.ac.rs.uks.dto.request.IssueRequest;
-import uns.ac.rs.uks.dto.request.PullRequestRequest;
+import uns.ac.rs.uks.dto.request.*;
 import uns.ac.rs.uks.dto.response.PullRequestDTO;
 import uns.ac.rs.uks.dto.transport.IssueItemsDTO;
 import uns.ac.rs.uks.exception.NotFoundException;
@@ -41,6 +38,8 @@ public class PullRequestService {
 
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private BranchService branchService;
 
     public PullRequest getById(UUID id) {
         return prRepository.findById(id).orElseThrow(() -> new NotFoundException("Pull request not found."));
@@ -72,12 +71,18 @@ public class PullRequestService {
     public PullRequestDTO createNewPR(PullRequestRequest dto) {
         Repo repo = repoService.getById(dto.getRepoId());
         List<Label> labels = new ArrayList<>();
-        dto.getLabels().forEach(labelId -> labels.add(labelService.getById(labelId)));
-        User author = userService.getUserByEmail(dto.getAuthor());
+        if (dto.getLabelIds() != null) {
+            dto.getLabelIds().forEach(labelId -> labels.add(labelService.getById(labelId)));
+        }
+        User author = userService.getById(dto.getAuthorId());
         List<User> assignees = new ArrayList<>();
-        dto.getAssignees().forEach(email -> assignees.add(userService.getUserByEmail(email)));
-        Milestone milestone = milestoneService.getById(dto.getMilestone());
-        PullRequest pullRequest = PullRequestMapper.fromDTO(dto, repo, labels, author, assignees, milestone);
+        if (dto.getAssigneeIds() != null) {
+            dto.getAssigneeIds().forEach(id -> assignees.add(userService.getById(id)));
+        }
+        Milestone milestone = dto.getMilestoneId() != null ? milestoneService.getById(dto.getMilestoneId()) : null;
+        Branch origin = branchService.getById(dto.getOriginId());
+        Branch target = branchService.getById(dto.getTargetId());
+        PullRequest pullRequest = PullRequestMapper.fromDTO(dto, repo, labels, author, assignees, milestone, origin, target);
         pullRequest = prRepository.save(pullRequest);
         return PullRequestMapper.toDTO(pullRequest);
     }
@@ -102,8 +107,8 @@ public class PullRequestService {
         return dto;
     }
 
-    public PullRequestDTO updatePullRequest(IssueEventRequest request) throws NotFoundException {
-        PullRequest pr = getById(request.getIssueId());
+    public PullRequestDTO updatePullRequest(PullRequestEventRequest request) throws NotFoundException {
+        PullRequest pr = getById(request.getPrId());
         // TODO: add necessary participants in issue
         IssueItemsDTO items = getPRItemsByIds(request);
         switch (request.getType()) {

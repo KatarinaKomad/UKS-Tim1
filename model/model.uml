@@ -13,6 +13,7 @@ class Role {
 
 class Member {
     role: RepositoryRole
+    inviteStatus: MemberInviteStatus
 }
 
 class Repository {
@@ -20,6 +21,7 @@ class Repository {
     description: String
     isPublic: Boolean
     createdAt: DateTime
+    cloneUri: String
 }
 
 class Review {
@@ -106,6 +108,12 @@ enum IssueEventType {
     PR_REF
     PR_REVIEW
     COMMIT_REF
+}
+
+enum MemberInviteStatus {
+    PENDING
+    ACCEPTED
+    REJECTED
 }
 
 Member *-- User

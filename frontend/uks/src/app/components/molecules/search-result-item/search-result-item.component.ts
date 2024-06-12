@@ -59,7 +59,7 @@ export class SearchResultItemComponent implements OnChanges {
     if (this.repoItem) {
       this.navigationService.navigateToRepo(this.repoItem);
     } else if (this.userItem) {
-      //this.navigationService.navigateToUser(this.userItem);
+      this.navigationService.navigateToUser(this.userItem.id);
     } else if (this.issueItem) {
       this.navigationService.navigateToIssueOverview(this.issueItem);
     } else if (this.prItem) {

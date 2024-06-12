@@ -24,6 +24,12 @@ import { ProjectPrsComponent } from './components/organisms/project-prs/project-
 import { NewPrFormComponent } from './components/molecules/new-pr-form/new-pr-form.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
+import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
+import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
+import { BranchPageComponent } from './pages/branch-page/branch-page.component';
+import { CommitsPageComponent } from './pages/commits-page/commits-page.component';
+import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-page.component';
+import { NewPrComponent } from './components/organisms/new-pr/new-pr.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -34,42 +40,51 @@ const routes: Routes = [
   { path: 'issues', component: MyIssuesPageComponent, canActivate: [authGuard] },
   { path: 'repository/fork', component: NewForkPageComponent },
   { path: 'repository/forks-overview', component: ForksOverviewPageComponent, canActivate: [authGuard] },
+  { path: 'repository/watchers-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
+  { path: 'repository/stars-overview', component: UsersOverviewPageComponent, canActivate: [authGuard] },
+  { path: 'repository/branches', component: BranchPageComponent, canActivate: [authGuard] },
+
+  { path: 'repository/branch/:branchName', component: RepositoryPageComponent, canActivate: [authGuard] },
+  { path: 'repository/branch/:branchName/:filePath', component: RepositoryPageComponent, canActivate: [authGuard] },
+  { path: 'repository/commits/:branchName', component: CommitsPageComponent, canActivate: [authGuard] },
+  { path: 'repository/commits/:branchName/:filePath', component: CommitsPageComponent, canActivate: [authGuard] },
+  { path: 'repository/commitDiff/:branchName/:commitHash', component: CommitDiffPageComponent, canActivate: [authGuard] },
   {
     path: 'repository/:repoName',
     component: RepositoryPageComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'issues', component: ProjectIssuesComponent, outlet: 'project-view' },
-      { path: 'pull-requests', component: ProjectPrsComponent, outlet: 'project-view' },
-      { path: 'milestones', component: ProjectMilestonesComponent, outlet: 'project-view' },
-      { path: 'labels', component: ProjectLabelsComponent, outlet: 'project-view' },
-      { path: 'issue/new', component: NewIssueComponent, outlet: 'issue-view' },
-      { path: 'issue/:issueId', component: IssueOverviewComponent, outlet: 'issue-view' },
-      { path: 'pull-request/:prId', component: PrOverviewComponent, outlet: 'pull-request-view' },
-      { path: 'pull-request/new', component: NewPrFormComponent, outlet: 'pull-request-view' }
+      {
+        path: 'issues',
+        children: [
+          { path: 'issues-view', component: ProjectIssuesComponent, outlet: 'issues-tab' },
+          { path: 'milestones-view', component: ProjectMilestonesComponent, outlet: 'issues-tab' },
+          { path: 'labels-view', component: ProjectLabelsComponent, outlet: 'issues-tab' },
+          { path: 'new', component: NewIssueComponent, outlet: 'issues-tab' },
+          { path: ':issueId', component: IssueOverviewComponent, outlet: 'issues-tab' },
+        ]
+      },
+
+      {
+        path: 'pull-requests',
+        children: [
+          { path: 'pr-view', component: ProjectPrsComponent, outlet: 'pr-tab' },
+          { path: 'milestones-view', component: ProjectMilestonesComponent, outlet: 'pr-tab' },
+          { path: 'labels-view', component: ProjectLabelsComponent, outlet: 'pr-tab' },
+          { path: 'new', component: NewPrComponent, outlet: 'pr-tab' },
+          { path: ':prId', component: PrOverviewComponent, outlet: 'pr-tab' },
+        ]
+      },
     ]
   },
+
+  { path: 'profile', component: ProfilePageComponent, canMatch: [authGuard] },
+  { path: 'profile/:userId', component: ProfilePageComponent, canMatch: [authGuard] },
+  { path: 'sshkey', component: AddSshKeyPageComponent, canMatch: [authGuard] },
   { path: 'pull-requests', component: PrPageComponent, canActivate: [authGuard] },
   { path: 'search', component: SearchPageComponent },
-  { path: 'not-found', component: PageNotFoundComponent },
-  { path: '**', component: PageNotFoundComponent },
-  {
-    path: 'profile',
-    component: ProfilePageComponent,
-    canMatch: [authGuard],
-    data: {},
-  },
-  {
-    path: 'sshkey',
-    component: AddSshKeyPageComponent,
-    canMatch: [authGuard],
-    data: {},
-  },
-  {
-    path: 'search',
-    component: SearchPageComponent,
-    canMatch: [],
-  },
+  { path: 'invite-verification/:link', component: RepoInvitationPageComponent },
+
 
 
 

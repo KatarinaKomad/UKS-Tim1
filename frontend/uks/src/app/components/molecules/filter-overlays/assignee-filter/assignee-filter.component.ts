@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FILTER_ASSIGNEE_OVERLAY, INPUT_ASSIGNEE_OVERLAY, OverlayPosition } from 'src/models/issue/issue';
+import { FILTER_ASSIGNEE_OVERLAY, INPUT_ASSIGNEE_OVERLAY, OverlayPosition } from 'src/models/forms/position';
 import { UserBasicInfo } from 'src/models/user/user';
+import { MemberService } from 'src/services/member/member.service';
 import { RepoService } from 'src/services/repo/repo.service';
 import { areArraysEqual } from 'src/utils/custom-filters';
 
@@ -26,12 +27,12 @@ export class AssigneeFilterComponent implements OnChanges, AfterViewInit {
   filter = new FormControl<string>("");
 
   constructor(
-    private repoService: RepoService,
+    private memberService: MemberService,
   ) {
 
     this.repoId = localStorage.getItem('repoId') as string;
 
-    this.repoService.getRepoMembers(this.repoId).subscribe({
+    this.memberService.getRepoMembers(this.repoId).subscribe({
       next: (list: UserBasicInfo[]) => {
         this.fullList = list;
         this.shownList = list;

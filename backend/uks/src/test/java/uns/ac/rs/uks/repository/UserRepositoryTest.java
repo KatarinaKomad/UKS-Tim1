@@ -102,14 +102,14 @@ public class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Test deleting user by admin")
-    public void updateDeletedByAdminToTrue() {
+    @DisplayName("Test deleting user")
+    public void updateDeletedToTrue() {
         UUID userId = Constants.DELETED_USER_ID;
         boolean deleted = true;
 
         Optional<User> optionalUserBefore = userRepository.findById(userId);
         assertTrue(optionalUserBefore.isPresent());
-        userRepository.updateDeletedByAdmin(userId, deleted);
+        userRepository.updateDelete(userId, deleted);
 
         entityManager.flush();
         entityManager.clear();

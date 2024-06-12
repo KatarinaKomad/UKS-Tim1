@@ -7,21 +7,36 @@ fi
 repo="$1"
 branch="$2"
 
-exec > >(tee -i gitolite_admin_read_commits_script.log)
+exec > >(tee -i logs/gitolite_admin_read_commits_script.log)
 exec 2>&1
 
 if [ -d "$repo" ]; then
-  echo "Repository '$repo' already exists. Skipping cloning."
-else
-  GIT_SSH_COMMAND="ssh -p 2222 -i gitolite" git clone -b "$branch" git@localhost:"$repo"
+  echo "Repository '$repo' already exists. Remove clone"
+  rm -rf "$repo"
+#  if [ "$4" = "true" ]; then
+#    GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git pull --unshallow
+#  fi
+#else
 fi
 
-cd "$repo"
+  GIT_SSH_COMMAND="ssh -p 2222 -i gitolite" git clone -b "$branch" git@localhost:"$repo"
+  if [ $? -ne 0 ]; then
+    echo "Error: Cloning failed. Exiting."
+    exit 1
+  fi
+#fi
+
+cd "$repo" || exit 1
+
+
+file_path="."
+if [ -n "$3" ]; then
+  file_path="$3"
+fi
+
+echo "File path: '$file_path', Branch: '$branch'"
+
 
 echo "Commits"
 
-git log --pretty=format:'%h %s (%cr) [%an]' --abbrev-commit --date=short "$branch"
-
-cd ..
-
-rm -rf "$repo"
+GIT_SSH_COMMAND="ssh -p 2222 -i ../gitolite" git log --pretty=format:'%h %s (%cr) [%an]' --abbrev-commit --date=short "$file_path"

@@ -1,4 +1,4 @@
-<app-issues-button-group (buttonClick)="addNewIssue()" [showSearch]="false"></app-issues-button-group>
+<app-issues-button-group (buttonClick)="addNewPr()" [showSearch]="false"></app-issues-button-group>
 
 <div class="flex flex-col pt-4 w-5/6 mx-auto issue-container">
 
@@ -17,13 +17,13 @@
     <div class="flex flex-row space-x-4 issues-header">
         <div class="flex flex-col  w-1/2">
             <div class="issue-left-container">
-                <button class="header-button !py-1 " (click)="changeShownIssues(true)" [ngStyle]="{'background-color': shownOpen  ? '#d1d5da' : '#f6f8fa', 
+                <button class="header-button !py-1 " (click)="changeShownPRs(true)" [ngStyle]="{'background-color': shownOpen  ? '#d1d5da' : '#f6f8fa', 
             'color': shownOpen ? 'white' : 'black'}">
                     <i class="icon fa-regular fa-circle-dot"></i>
                     Open
                 </button>
 
-                <button class="header-button !py-1" (click)="changeShownIssues(false)"
+                <button class="header-button !py-1" (click)="changeShownPRs(false)"
                     [ngStyle]="{'background-color': !shownOpen ? '#d1d5da' : '#f6f8fa', 'color': !shownOpen ? 'white' : 'black'}">
                     <i class="fa-solid fa-check"></i>
                     Closed

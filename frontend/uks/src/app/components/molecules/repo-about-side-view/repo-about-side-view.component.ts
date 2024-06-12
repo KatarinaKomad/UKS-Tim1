@@ -1,8 +1,8 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { RepoBasicInfoDTO } from 'src/models/repo/repo';
-import { UserBasicInfo } from 'src/models/user/user';
+import { RepoMemberDTO } from 'src/models/user/member';
+import { MemberService } from 'src/services/member/member.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
-import { RepoService } from 'src/services/repo/repo.service';
 
 @Component({
   selector: 'app-repo-about-side-view',
@@ -13,15 +13,15 @@ export class RepoAboutSideViewComponent {
 
   @Input() repo?: RepoBasicInfoDTO;
 
-  members: UserBasicInfo[] = [];
+  members: RepoMemberDTO[] = [];
 
   constructor(
     private navigationService: NavigationService,
-    private repoService: RepoService,
+    private memberService: MemberService,
   ) {
     const repoId = localStorage.getItem("repoId") as string
-    this.repoService.getRepoMembers(repoId).subscribe({
-      next: (res: UserBasicInfo[]) => {
+    this.memberService.getRepoMembers(repoId).subscribe({
+      next: (res: RepoMemberDTO[]) => {
         this.members = res;
       }, error: (e: any) => {
         console.log(e);
@@ -36,15 +36,15 @@ export class RepoAboutSideViewComponent {
   }
 
   onStarClick() {
-    throw new Error('Method not implemented.');
+    this.navigationService.navigateToStarsOverview();
   }
   onForkClick() {
     this.navigationService.navigateToForksOverview();
   }
   onWatchClick() {
-    throw new Error('Method not implemented.');
+    this.navigationService.navigateToWatchersOverview();
   }
-  showUserProfile(user: UserBasicInfo) {
-    throw new Error('Method not implemented.');
+  showUserProfile(user: RepoMemberDTO) {
+    this.navigationService.navigateToUser(user.id);
   }
 }

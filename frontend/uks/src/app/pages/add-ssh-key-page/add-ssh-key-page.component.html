@@ -6,23 +6,14 @@
   <mat-drawer-content>
     <app-navbar [drawer]="drawer"></app-navbar>
 
-    <div
-      class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200"
-    >
+    <div class="mx-auto h-full w-[50%] flex flex-col items-start my-10 rounded-l gap-y-4 px-20 py-10 bg-gray-200">
       <div class="text-xl font-semibold mx-auto mb-5">Add new SSH Key</div>
-      <app-input
-        [label]="'SSH Key'"
-        [id]="'sshKey'"
-        [control]="sshKeyControl"
-        [placeholder]="'SSH Key'"
-        [required]="true"
-        [invalid]="sshKeyControl.invalid && sshKeyControl.dirty"
-        [errorMessage]="'SSH Key is required'"
-        [type]="'text'"
-        defaultClass="flex items-center gap-x-4"
-      ></app-input>
+      <app-input [label]="'SSH Key'" [id]="'sshKey'" [control]="sshKeyControl" [placeholder]="'SSH Key'"
+        [required]="true" [invalid]="sshKeyControl.invalid && sshKeyControl.dirty"
+        [errorMessage]="'SSH Key is required'" [type]="'text'" defaultClass="flex items-center gap-x-4"
+        [inputClass]="'w-[70%]'"></app-input>
       <div class="w-fit mx-auto mt-10">
-        <app-button text="Save" (buttonClick)="handleSave()"/>
+        <app-button text="Save" (buttonClick)="handleSave()" />
       </div>
     </div>
   </mat-drawer-content>

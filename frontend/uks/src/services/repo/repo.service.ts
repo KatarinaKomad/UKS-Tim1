@@ -1,4 +1,4 @@
-import { RepoForkRequest, RepoUpdateRequest } from 'src/models/repo/repo';
+import { RepoForkRequest, RepoUserRequest, RepoUpdateRequest, WatchStarResponseDTO } from 'src/models/repo/repo';
 import {
   EditRepoRequest,
   RepoBasicInfoDTO,
@@ -10,27 +10,22 @@ import { UserBasicInfo } from 'src/models/user/user';
 import { HttpRequestService } from 'src/utils/http-request.service';
 
 import { Injectable } from '@angular/core';
-
-import { AuthService } from '../auth/auth.service';
+import { BranchDTO } from 'src/models/branch/branch';
+import { FileDTO, FileRequest } from 'src/models/files/files';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RepoService {
 
+
   constructor(
     private httpRequestService: HttpRequestService,
-    private authService: AuthService
   ) { }
 
   getAllPublic(): Observable<RepoBasicInfoDTO[]> {
     const url = environment.API_BASE_URL + '/repo/getAllPublic';
     return this.httpRequestService.get(url) as Observable<RepoBasicInfoDTO[]>;
-  }
-
-  getRepoMembers(repoId: string): Observable<UserBasicInfo[]> {
-    const url = environment.API_BASE_URL + `/repo/getMembers/${repoId}`;
-    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
   }
 
   getMyRepos(userId: string): Observable<RepoBasicInfoDTO[]> {
@@ -85,23 +80,9 @@ export class RepoService {
     return this.httpRequestService.post(url, body) as Observable<boolean>;
   }
 
-  getCanEditRepoItems(): Observable<boolean> {
-    let repoRequest;
-    this.authService.getLoggedUser().subscribe({
-      next: (user: UserBasicInfo | undefined) => {
-        repoRequest = this.createEditRepoRequest(user);
-      },
-      error: (e: any) => {
-        console.log(e);
-        return of(false);
-      },
-    });
-    return repoRequest ? this.canEditRepoItems(repoRequest) : of(false);
-  }
-  private createEditRepoRequest(user: UserBasicInfo | undefined): EditRepoRequest | null {
-    const repoId = localStorage.getItem('repoId');
-    if (!repoId || !user?.id) return null;
-    return { repoId, userId: user.id };
+  getCanEditRepoItems(): boolean {
+    var storedBoolean = localStorage.getItem('canEditRepoItems');
+    return storedBoolean === 'true' ? true : false;
   }
 
   getAllForked(repoId: string) {
@@ -114,5 +95,45 @@ export class RepoService {
     const body = JSON.stringify(forkRequest);
 
     return this.httpRequestService.post(url, body) as Observable<RepoBasicInfoDTO | null>;
+  }
+
+
+  star(starRequest: RepoUserRequest) {
+    const url = environment.API_BASE_URL + '/repo/star';
+    const body = JSON.stringify(starRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<void>;
+  }
+  getAllStargazers(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/getAllStargazers/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
+  }
+
+  watch(watchRequest: RepoUserRequest) {
+    const url = environment.API_BASE_URL + '/repo/watch';
+    const body = JSON.stringify(watchRequest);
+
+    return this.httpRequestService.post(url, body) as Observable<void>;
+  }
+  getAllWatchers(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/getAllWatchers/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<UserBasicInfo[]>;
+  }
+
+  amIWatchingStargazing(request: RepoUserRequest) {
+    const url = environment.API_BASE_URL + `/repo/amIWatchingStargazing`;
+    const body = JSON.stringify(request);
+
+    return this.httpRequestService.post(url, body) as Observable<WatchStarResponseDTO>;
+  }
+
+  deleteRepo(repoId: string) {
+    const url = environment.API_BASE_URL + `/repo/delete/${repoId}`;
+    return this.httpRequestService.delete(url) as Observable<void>;
+  }
+
+  getDefaultBranch(repoId: string): Observable<BranchDTO> {
+    const url = environment.API_BASE_URL + `/repo/getDefaultBranch/${repoId}`;
+    return this.httpRequestService.get(url) as Observable<BranchDTO>;
   }
 }

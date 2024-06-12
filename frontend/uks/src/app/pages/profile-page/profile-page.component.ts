@@ -1,13 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { PasswordUpdateDialogComponent } from 'src/app/components/molecules/dialogs/password-update-dialog/password-update-dialog.component';
+import { YesNoDialogComponent } from 'src/app/components/molecules/dialogs/yes-no-dialog/yes-no-dialog.component';
 import {
   UserBasicInfo,
   UserDTO,
   UserUpdateRequest,
 } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
+import { NavigationService } from 'src/services/navigation/navigation.service';
 import { UserService } from 'src/services/user/user.service';
 
 @Component({
@@ -16,6 +21,7 @@ import { UserService } from 'src/services/user/user.service';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
+
   profileInfo!: UserDTO | null;
   loggedUser!: UserBasicInfo | undefined;
   request!: UserUpdateRequest;
@@ -25,12 +31,18 @@ export class ProfilePageComponent implements OnInit {
   userEmailControl = new FormControl('', [Validators.required]);
   userUsernameControl = new FormControl('', [Validators.required]);
 
+  isReadonly: boolean = true;
+  userId: string = '';
+
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    public dialog: MatDialog,
+    private navigationService: NavigationService,
   ) {
-    this.setLoggedUser();
+
     this.request = {
       firstName: '',
       lastName: '',
@@ -39,22 +51,29 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
-  setLoggedUser() {
-    return this.authService.getLoggedUser().subscribe({
+  ngOnInit(): void {
+
+    this.authService.getLoggedUser().subscribe({
       next: (response: UserBasicInfo | undefined) => {
-        if (response) {
-          this.loggedUser = response;
-          this.setMyProfile();
-        }
-      },
-      error: (e: HttpErrorResponse) => {
-        console.log(e);
-      },
+        this.loggedUser = response;
+
+        this.route.params.subscribe(params => {
+          this.userId = params['userId'];
+
+          const profileId = this.userId ? this.userId : this.loggedUser?.id as string
+          this.setMyProfile(profileId);
+
+          if (this.loggedUser?.id == this.userId || !this.userId) {
+            this.isReadonly = false;
+          }
+        })
+      }
     });
   }
 
-  setMyProfile() {
-    this.userService.getProfileInfo(this.loggedUser?.id as string).subscribe({
+
+  setMyProfile(userId: string) {
+    this.userService.getProfileInfo(userId).subscribe({
       next: (response: UserDTO) => {
         this.profileInfo = response;
         this.setControls();
@@ -72,7 +91,6 @@ export class ProfilePageComponent implements OnInit {
     this.userUsernameControl.setValue(this.profileInfo?.username || '');
   }
 
-  ngOnInit(): void {}
 
   handleSave(): void {
     this.request.firstName = this.userFirstNameControl.value!;
@@ -96,5 +114,45 @@ export class ProfilePageComponent implements OnInit {
           console.log(e);
         },
       });
+  }
+
+
+
+  deleteAccountPrompt() {
+
+    const dialogRef = this.dialog.open(YesNoDialogComponent, {
+      height: '35%',
+      width: '40%',
+      data: { title: 'Delete account', prompt: 'Are you sure you want to delete your account?' },
+    });
+    dialogRef.afterClosed().subscribe((shouldDelete: boolean) => {
+      if (shouldDelete) {
+        this.deleteAccount();
+      }
+    });
+  }
+
+  private deleteAccount() {
+    this.userService.deleteAccount(this.loggedUser?.id as string).subscribe({
+      next: () => {
+        this.toastr.success('Account successfully deleted');
+        this.navigationService.navigateToLogin();
+      },
+      error: (e: HttpErrorResponse) => {
+        console.log(e);
+      },
+    })
+  }
+
+  openUpdatePasswordDialog() {
+    const dialogRef = this.dialog.open(PasswordUpdateDialogComponent, {
+      height: '75%',
+      width: '60%',
+    });
+    dialogRef.afterClosed().subscribe((success: boolean) => {
+      if (success) {
+        this.authService.logout()
+      }
+    });
   }
 }

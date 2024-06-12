@@ -1,20 +1,31 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ISSUE_EVENT_TYPE, IssueDTO, IssueProperties, IssueEventDTO, IssueEventRequest } from 'src/models/issue/issue';
-import { PullRequestDTO, PullRequestEventDTO, PullRequestProperties } from 'src/models/pull-request/pull-request';
+import { ToastrService } from 'ngx-toastr';
+import { OriginTargetBranchRequest } from 'src/models/branch/branch';
+import { ISSUE_EVENT_TYPE, IssueEventDTO } from 'src/models/issue/issue';
+import {
+  PullRequestDTO,
+  PullRequestEventDTO,
+  PullRequestEventRequest,
+  PullRequestProperties,
+} from 'src/models/pull-request/pull-request';
 import { STATE_COLORS, STATE } from 'src/models/state/state';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
-import { IssueService } from 'src/services/issue/issue.service';
+import { BranchService } from 'src/services/branch/branch.service';
 import { NavigationService } from 'src/services/navigation/navigation.service';
 import { PullRequestService } from 'src/services/pull-request/pull-request.service';
+import { ItemCommentsViewComponent } from '../../molecules/item-comments-view/item-comments-view.component';
+import { Comment } from 'src/models/comment/comment';
 
 @Component({
   selector: 'app-pr-overview',
   templateUrl: './pr-overview.component.html',
-  styleUrl: './pr-overview.component.scss'
+  styleUrl: './pr-overview.component.scss',
 })
-export class PrOverviewComponent {
+export class PrOverviewComponent implements AfterViewInit {
+  @ViewChild(ItemCommentsViewComponent)
+  itemCommentsViewComponent!: ItemCommentsViewComponent;
 
   repoId: string;
   prId: string = '';
@@ -32,54 +43,84 @@ export class PrOverviewComponent {
 
   stateColor: string = STATE_COLORS.OPEN;
 
+  showComments: boolean = true;
+  commentToEdit?: Comment;
+
   constructor(
     private navigationService: NavigationService,
     private authService: AuthService,
-    private issueService: IssueService,
+    private branchService: BranchService,
     private route: ActivatedRoute,
-    private prService: PullRequestService
+    private prService: PullRequestService,
+    private toastr: ToastrService
   ) {
-    this.repoId = localStorage.getItem("repoId") as string
+    this.repoId = localStorage.getItem('repoId') as string;
 
     this.authService.getLoggedUser().subscribe({
       next: (logged?: UserBasicInfo) => {
         this.loggedUser = logged;
-      }
-    })
+      },
+    });
   }
 
   ngOnInit(): void {
     this.getPRFromRoute();
-    this.getIssueEvents();
+    this.getPREvents();
+  }
+
+  ngAfterViewInit() {
+    this.handleCommentAdded();
   }
 
   edit() {
     this.isEdit = true;
   }
-  closeEdit(editedIssue: IssueDTO | null) {
+  closeEdit(editedPR: PullRequestDTO | null) {
     this.isEdit = false;
-    if (this.pr && editedIssue) {
-      this.pr.name = editedIssue.name;
-      this.pr.description = editedIssue.description;
+    if (this.pr && editedPR) {
+      this.pr.name = editedPR.name;
+      this.pr.description = editedPR.description;
     }
   }
 
+  mergeBranches(state: STATE) {
+    let mr = this.createMergeRequest();
+    this.branchService.mergeBranches(mr).subscribe({
+      next: () => {
+        this.changeStatus(state);
+      },
+      error: () => {
+        this.toastr.error('Cannot merge these branches');
+      },
+    });
+  }
+
   changeStatus(state: STATE) {
-    let eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.STATE);
+    let eventRequest = this.createPREventRequest(ISSUE_EVENT_TYPE.STATE);
     eventRequest.state = state;
     this.prService.update(eventRequest).subscribe({
       next: (res: PullRequestDTO | null) => {
         if (this.pr && res) {
           this.pr.state = state;
           this.setStateColor(state);
+          this.toastr.success('Brances are merged successfully');
         }
-      }, error: (e: any) => {
-        console.log(e);
-      }
-    })
+      },
+      error: (e: any) => {
+        this.toastr.error('Branches are merged but status is not changed');
+      },
+    });
   }
 
-  handleIssuePropertiesChange(prProperties: PullRequestProperties) {
+  createMergeRequest(): OriginTargetBranchRequest {
+    return {
+      repoId: this.repoId,
+      originName: this.pr!.origin.name,
+      targetName: this.pr!.target.name,
+    };
+  }
+
+  handlePRPropertiesChange(prProperties: PullRequestProperties) {
     this.prProperties = { ...prProperties };
   }
 
@@ -87,18 +128,19 @@ export class PrOverviewComponent {
     this.navigationService.navigateToProjectPRs();
   }
 
-
-  private createIssueEventRequest(type: ISSUE_EVENT_TYPE): IssueEventRequest {
+  private createPREventRequest(
+    type: ISSUE_EVENT_TYPE
+  ): PullRequestEventRequest {
     return {
-      issueId: this.prId,
+      prId: this.prId,
       authorId: this.loggedUser?.id as string,
-      type
-    }
+      type,
+    };
   }
 
   private getPRFromRoute() {
     if (this.route.params) {
-      this.route.params.subscribe(params => {
+      this.route.params.subscribe((params) => {
         this.prId = params['prId'];
         this.prService.getById(this.prId).subscribe({
           next: (res: PullRequestDTO) => {
@@ -106,36 +148,59 @@ export class PrOverviewComponent {
             const stateColor = STATE[res.state as keyof typeof STATE];
             this.setStateColor(stateColor);
 
-            this.prProperties.assignees = this.pr?.assignees
-            this.prProperties.labels = this.pr?.labels
-            this.prProperties.milestone = this.pr?.milestone
+            this.prProperties.assignees = this.pr?.assignees;
+            this.prProperties.labels = this.pr?.labels;
+            this.prProperties.milestone = this.pr?.milestone;
 
-            this.prProperties = { ...this.prProperties }
-          }, error: (e: any) => {
+            this.prProperties = { ...this.prProperties };
+          },
+          error: (e: any) => {
             console.log(e);
-          }
-        })
+          },
+        });
       });
     }
-
   }
   private setStateColor(state: STATE) {
     switch (state) {
-      case STATE.OPEN: this.stateColor = STATE_COLORS.OPEN.toString(); break;
-      case STATE.CLOSE: this.stateColor = STATE_COLORS.CLOSE.toString(); break;
-      case STATE.MERGED: this.stateColor = STATE_COLORS.MERGED.toString(); break;
-      default: this.stateColor = STATE_COLORS.OPEN;
+      case STATE.OPEN:
+        this.stateColor = STATE_COLORS.OPEN.toString();
+        break;
+      case STATE.CLOSE:
+        this.stateColor = STATE_COLORS.CLOSE.toString();
+        break;
+      case STATE.MERGED:
+        this.stateColor = STATE_COLORS.MERGED.toString();
+        break;
+      default:
+        this.stateColor = STATE_COLORS.OPEN;
     }
   }
 
-  private getIssueEvents() {
+  private getPREvents() {
     this.prService.getPREventHistory(this.prId).subscribe({
       next: (res: PullRequestEventDTO[]) => {
         this.events = res;
-      }, error: (e: any) => {
+      },
+      error: (e: any) => {
         console.log(e);
-      }
-    })
+      },
+    });
   }
 
+  onNoComments(hasNoComments: boolean) {
+    this.showComments = !hasNoComments;
+  }
+
+  handleCommentAdded() {
+    this.itemCommentsViewComponent.getComments(this.prId);
+  }
+
+  handleCommentDeleted() {
+    this.itemCommentsViewComponent.getComments(this.prId);
+  }
+
+  onEditComment(comment: Comment) {
+    this.commentToEdit = comment;
+  }
 }

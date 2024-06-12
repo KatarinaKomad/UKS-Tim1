@@ -1,0 +1,15 @@
+<div class="card-container" (click)="navigateToUser()">
+    <div class="repo-header">
+        <h4 class="repo-title">
+            <span>{{user?.username}} - {{user?.firstName}} {{user?.lastName}}</span>
+        </h4>
+    </div>
+    <div class="repo-stats">
+
+        <span class="repo-stat">
+            <i class="fa-solid fa-clock fa-sm"></i>
+            <p>{{user?.createdAt ? ' Joined us on ' + (user?.createdAt | date: 'dd.MM.yyyy.'):''}}</p>
+        </span>
+
+    </div>
+</div>

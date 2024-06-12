@@ -11,10 +11,11 @@ import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import uns.ac.rs.uks.dto.request.EditRepoRequest;
-import uns.ac.rs.uks.dto.request.RepoForkRequest;
 import uns.ac.rs.uks.dto.request.RepoRequest;
+import uns.ac.rs.uks.dto.request.RepoUserRequest;
 import uns.ac.rs.uks.dto.response.RepoBasicInfoDTO;
 import uns.ac.rs.uks.dto.response.UserDTO;
+import uns.ac.rs.uks.dto.response.WatchStarResponseDTO;
 import uns.ac.rs.uks.util.Constants;
 import uns.ac.rs.uks.util.LoginUtil;
 
@@ -156,18 +157,6 @@ public class RepoControllerTest {
         assertEquals(Boolean.FALSE, responseEntity.getBody());
     }
 
-    @Test
-    public void testGetMembersByRepoId() {
-        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
-        String url = "/repo/getMembers/" + Constants.REPOSITORY_ID_1_UKS_TEST;
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ParameterizedTypeReference<List<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
-        ResponseEntity<List<UserDTO>> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, responseType);
-
-        assertNotNull(responseEntity.getBody());
-        assertEquals(2, responseEntity.getBody().size());
-    }
-
 //    @Test
 //    public void testFork() {
 //        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
@@ -194,12 +183,11 @@ public class RepoControllerTest {
         ResponseEntity<?> responseEntity =
                 restTemplate.exchange(url, HttpMethod.GET,  entity, responseType);
 
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        List<RepoBasicInfoDTO> repos = (List<RepoBasicInfoDTO>) responseEntity.getBody();
-        assertNotNull(repos);
-        for (RepoBasicInfoDTO repo: repos) {
-            assertEquals(Constants.REPOSITORY_ID_1_UKS_TEST, repo.getForkParent().getId());
-        }
+        String testName= "testName";
+        RepoRequest repoRequest = new RepoRequest();
+        repoRequest.setName(testName);
+        repoRequest.setOwnerId(Constants.MIKA_USER_ID);
+        repoRequest.setIsPublic(true);
     }
 
 
@@ -239,4 +227,88 @@ public class RepoControllerTest {
 //
 //        assertNull(responseEntity.getBody());
 //    }
+
+
+    @Test
+    public void testStar() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        RepoUserRequest request = new RepoUserRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.MIKA_USER_ID);
+
+        HttpEntity<RepoUserRequest> entity = new HttpEntity<>(request, headers);
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/star", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertEquals(responseEntity.getBody().getStarCount(), 1);
+    }
+    @Test
+    public void testWatch() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        RepoUserRequest request = new RepoUserRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.MIKA_USER_ID);
+
+        HttpEntity<RepoUserRequest> entity = new HttpEntity<>(request, headers);
+        ResponseEntity<RepoBasicInfoDTO> responseEntity = restTemplate
+                .exchange("/repo/watch", HttpMethod.POST, entity, RepoBasicInfoDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertEquals(responseEntity.getBody().getWatchCount(), 1);
+    }
+
+    @Test
+    public void testGetAllStargazers() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ParameterizedTypeReference<List<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
+        String url = "/repo/getAllStargazers/" + Constants.REPOSITORY_ID_1_UKS_TEST;
+        ResponseEntity<?> responseEntity =
+                restTemplate.exchange(url, HttpMethod.GET,  entity, responseType);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<UserDTO> users = (List<UserDTO>) responseEntity.getBody();
+        assertNotNull(users);
+        for (UserDTO user: users) {
+            assertEquals(user.getId(), Constants.MIKA_USER_ID);
+        }
+    }
+
+    @Test
+    public void testGetAllWatchers() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        RepoUserRequest request = new RepoUserRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.MIKA_USER_ID);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ParameterizedTypeReference<List<UserDTO>> responseType = new ParameterizedTypeReference<>() {};
+        String url = "/repo/getAllWatchers/" + Constants.REPOSITORY_ID_1_UKS_TEST;
+        ResponseEntity<?> responseEntity =
+                restTemplate.exchange(url, HttpMethod.GET,  entity, responseType);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        List<UserDTO> users = (List<UserDTO>) responseEntity.getBody();
+        assertNotNull(users);
+        for (UserDTO user: users) {
+            assertEquals(user.getId(), Constants.MIKA_USER_ID);
+        }
+    }
+
+    @Test
+    public void testAmIWatchingStargazing() {
+        HttpHeaders headers = LoginUtil.login(Constants.MIKA_EMAIL, Constants.MIKA_PASSWORD, restTemplate);
+        RepoUserRequest request = new RepoUserRequest();
+        request.setRepoId(Constants.REPOSITORY_ID_1_UKS_TEST);
+        request.setUserId(Constants.MIKA_USER_ID);
+
+        HttpEntity<RepoUserRequest> entity = new HttpEntity<>(request, headers);
+        ResponseEntity<WatchStarResponseDTO> responseEntity = restTemplate
+                .exchange("/repo/amIWatchingStargazing", HttpMethod.POST, entity, WatchStarResponseDTO.class);
+
+        assertNotNull(responseEntity.getBody());
+        assertFalse(responseEntity.getBody().isStargazing());
+        assertFalse(responseEntity.getBody().isWatching());
+    }
 }

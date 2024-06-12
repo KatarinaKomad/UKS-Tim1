@@ -59,18 +59,9 @@ export class MilestoneItemComponent implements OnInit {
 
 
   ngAfterViewInit(): void {
-    this.repoService.getCanEditRepoItems().subscribe({
-      next: (canEdit: boolean) => {
-        this.canEdit = canEdit;
-      }, error: (e: any) => {
-        console.log(e);
-      }
-    })
+    this.canEdit = this.repoService.getCanEditRepoItems()
   }
 
-  seeMilestoneIssues() {
-    throw new Error('Method not implemented.');
-  }
 
   editMilestone() {
     const dialogRef = this.dialog.open(NewMilestoneDialogComponent, {

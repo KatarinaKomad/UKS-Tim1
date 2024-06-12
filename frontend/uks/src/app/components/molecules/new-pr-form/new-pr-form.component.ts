@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormBuilder } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { BranchDTO } from 'src/models/branch/branch';
 import { ISSUE_EVENT_TYPE, IssueDTO, IssueRequest, IssueEventDTO, IssueEventRequest } from 'src/models/issue/issue';
-import { PullRequestDTO, PullRequestEventDTO } from 'src/models/pull-request/pull-request';
+import { PullRequestDTO, PullRequestEventDTO, PullRequestEventRequest, PullRequestRequest } from 'src/models/pull-request/pull-request';
 import { UserBasicInfo } from 'src/models/user/user';
 import { AuthService } from 'src/services/auth/auth.service';
+import { BranchService } from 'src/services/branch/branch.service';
 import { IssueService } from 'src/services/issue/issue.service';
+import { PullRequestService } from 'src/services/pull-request/pull-request.service';
 
 @Component({
   selector: 'app-new-pr-form',
@@ -19,19 +23,26 @@ export class NewPrFormComponent {
   ISSUE_EVENT_TYPE = ISSUE_EVENT_TYPE;
 
   @Input() pr?: PullRequestDTO;
-  @Output() updateIssueEvent: EventEmitter<PullRequestDTO | null> = new EventEmitter<PullRequestDTO | null>();
-  @Output() newIssueEvent: EventEmitter<IssueRequest | null> = new EventEmitter<IssueRequest | null>();
+  @Output() updatePREvent: EventEmitter<PullRequestDTO | null> = new EventEmitter<PullRequestDTO | null>();
+  @Output() newPREvent: EventEmitter<PullRequestRequest | null> = new EventEmitter<PullRequestRequest | null>();
   events: PullRequestEventDTO[] = [];
 
-  newIssueForm = this.formBuilder.group({
+  newPRForm = this.formBuilder.group({
     name: new FormControl(""),
     description: new FormControl(""),
+    origin: new FormControl(""),
+    target: new FormControl("")
   })
+
+  targetBranches?: BranchDTO[];
+  originBranches?: BranchDTO[];
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private issueService: IssueService
+    private prService: PullRequestService,
+    private branchService: BranchService,
+    private toastr: ToastrService
   ) {
     this.repoId = localStorage.getItem("repoId") as string
 
@@ -44,46 +55,69 @@ export class NewPrFormComponent {
   }
 
   ngOnInit(): void {
-    this.newIssueForm.controls.name.setValue(this.pr?.name ? this.pr?.name : "")
-    this.newIssueForm.controls.description.setValue(this.pr?.description ? this.pr?.description : "")
+    this.newPRForm.controls.name.setValue(this.pr?.name ? this.pr?.name : "")
+    this.newPRForm.controls.description.setValue(this.pr?.description ? this.pr?.description : "")
+    this.newPRForm.controls.origin.setValue(this.pr?.origin?.name ? this.pr?.origin?.name : "")
+    this.newPRForm.controls.target.setValue(this.pr?.target?.name ? this.pr?.target?.name : "")
+
+    if (!this.pr) {
+      this.branchService.getRepoBranches(this.repoId).subscribe({
+        next: (res: BranchDTO[]) => {
+          this.originBranches = res;
+          this.targetBranches = res;
+        }, 
+        error: (error) => {
+          console.log(error)
+        }
+      })
+    }
   }
 
   onCancelClick(): void {
-    this.pr ? this.emitUpdateIssueEvent(null) : this.emitNewIssueEvent(null);
+    this.pr ? this.emitUpdatePREvent(null) : this.emitNewPREvent(null);
   }
 
   onSubmitClick(): void {
-    this.pr ? this.updateIssue() : this.emitNewIssueEvent(this.createIssueRequest());
+    if (!this.pr) {
+      if (this.newPRForm.controls.origin.value === this.newPRForm.controls.target.value) {
+        this.toastr.error("Origin and target branch cannot be the same!");
+        return;
+      }
+      this.emitNewPREvent(this.createPRRequest());
+    }
+    else {
+      this.updatePR();
+    }
   }
 
-  private updateIssue() {
+  private updatePR() {
     let eventRequest;
-    const newName = this.newIssueForm.controls.name.value as string;
-    const newDescription = this.newIssueForm.controls.description.value as string;
+    const newName = this.newPRForm.controls.name.value as string;
+    const newDescription = this.newPRForm.controls.description.value as string;
     if (newName !== this.pr?.name) {
-      eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.NAME);
+      eventRequest = this.createPREventRequest(ISSUE_EVENT_TYPE.NAME);
       eventRequest.name = newName
-      this.sendNewIssueEventRequest(eventRequest)
+      this.sendNewPREventRequest(eventRequest)
       if (this.pr) {
         this.pr.name = newName
       }
     }
     if (newDescription !== this.pr?.description) {
-      eventRequest = this.createIssueEventRequest(ISSUE_EVENT_TYPE.DESCRIPTION);
+      eventRequest = this.createPREventRequest(ISSUE_EVENT_TYPE.DESCRIPTION);
       eventRequest.description = newDescription
-      this.sendNewIssueEventRequest(eventRequest)
+      this.sendNewPREventRequest(eventRequest)
       if (this.pr) {
         this.pr.description = newDescription
       }
     }
     if (this.pr) {
-      this.emitUpdateIssueEvent(this.pr);
+      this.emitUpdatePREvent(this.pr);
     }
   }
 
-  private sendNewIssueEventRequest(eventRequest: IssueEventRequest) {
-    this.issueService.updateIssue(eventRequest).subscribe({
-      next: (res: IssueDTO | null) => {
+  private sendNewPREventRequest(eventRequest: PullRequestEventRequest) {
+    this.prService.update(eventRequest).subscribe({
+      next: (res: PullRequestDTO | null) => {
         console.log(res);
       }, error: (e: any) => {
         console.log(e);
@@ -91,29 +125,31 @@ export class NewPrFormComponent {
     })
   }
 
-  private emitUpdateIssueEvent(changedIssue: PullRequestDTO | null) {
-    this.updateIssueEvent.emit(changedIssue);
+  private emitUpdatePREvent(changedPR: PullRequestDTO | null) {
+    this.updatePREvent.emit(changedPR);
   }
 
-  private emitNewIssueEvent(issueRequest: IssueRequest | null) {
-    this.newIssueEvent.emit(issueRequest);
+  private emitNewPREvent(prRequest: PullRequestRequest | null) {
+    this.newPREvent.emit(prRequest);
   }
 
 
-  private createIssueEventRequest(type: ISSUE_EVENT_TYPE): IssueEventRequest {
+  private createPREventRequest(type: ISSUE_EVENT_TYPE): PullRequestEventRequest {
     return {
-      issueId: this.pr?.id as string,
+      prId: this.pr?.id as string,
       authorId: this.loggedUser?.id as string,
       type
     }
   }
 
-  private createIssueRequest(): IssueRequest {
+  private createPRRequest(): PullRequestRequest {
     return {
-      name: this.newIssueForm.controls.name.value as string,
-      description: this.newIssueForm.controls.description.value as string,
+      name: this.newPRForm.controls.name.value as string,
+      description: this.newPRForm.controls.description.value as string,
       repoId: this.repoId,
       authorId: this.loggedUser?.id as string,
+      originId: this.originBranches?.filter((br) => br.name == this.newPRForm.controls.origin.value).at(0)?.id,
+      targetId: this.targetBranches?.filter((br) => br.name == this.newPRForm.controls.target.value).at(0)?.id
     }
   }
 

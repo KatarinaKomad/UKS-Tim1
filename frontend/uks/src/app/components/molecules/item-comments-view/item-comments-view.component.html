@@ -1,0 +1,23 @@
+<div class="card mb-3" *ngFor="let comment of comments">
+  <h5 class="card-header">
+    <b>{{ comment.author.username }}</b> commented on
+    {{ comment.createdAt | date : "mediumDate" }}
+    <div class="float-right" *ngIf="isCurrentUserAuthor(comment.author)">
+      <button
+        class="btn btn-sm btn-outline-primary"
+        (click)="editCommentClicked(comment)"
+      >
+        Edit
+      </button>
+      <button
+        class="btn btn-sm btn-outline-danger"
+        (click)="deleteComment(comment)"
+      >
+        Delete
+      </button>
+    </div>
+  </h5>
+  <div class="card-body">
+    <p>{{ comment.message }}</p>
+  </div>
+</div>

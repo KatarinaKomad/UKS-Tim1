@@ -7,10 +7,13 @@ import {
   DateAdapter,
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
+  MatCommonModule,
   MatNativeDateModule,
 } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { MY_DATE_FORMAT } from 'src/utils/dateUtil';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatTreeModule } from "@angular/material/tree";
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -42,7 +45,6 @@ import { MilestoneFilterComponent } from './components/molecules/filter-overlays
 import { MyReposSideListComponent } from './components/organisms/repo-lists/my-repos-side-list/my-repos-side-list.component';
 import { PublicRepoListComponent } from './components/organisms/repo-lists/public-repo-list/public-repo-list.component';
 
-
 import { ButtonComponent } from './components/atoms/button/button.component';
 import { InputComponent } from './components/atoms/input/input.component';
 import { NavbarComponent } from './components/atoms/navbar/navbar.component';
@@ -59,6 +61,8 @@ import { NewIssueComponent } from './components/organisms/new-issue/new-issue.co
 import { ProjectIssuesComponent } from './components/organisms/project-issues/project-issues.component';
 import { ProjectLabelsComponent } from './components/organisms/project-labels/project-labels.component';
 import { ProjectMilestonesComponent } from './components/organisms/project-milestones/project-milestones.component';
+import { ItemCommentsViewComponent } from './components/molecules/item-comments-view/item-comments-view.component';
+import { ItemAddCommentsComponent } from './components/molecules/item-add-comments/item-add-comments.component';
 import { RepoSettingsComponent } from './components/organisms/repo-settings/repo-settings.component';
 import { ForgotPasswordPageComponent } from './pages/authentication/forgot-password-page/forgot-password-page.component';
 import { LoginPageComponent } from './pages/authentication/login-page/login-page.component';
@@ -68,7 +72,6 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { RepositoryPageComponent } from './pages/repository-page/repository-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 
 import { MyIssuesPageComponent } from './pages/my-issues-page/my-issues-page.component';
 import { CodeOverviewComponent } from './components/organisms/code-overview/code-overview.component';
@@ -92,6 +95,22 @@ import { PrPropertiesSideViewComponent } from './components/molecules/pr-propert
 
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-page.component';
+import { UsersOverviewPageComponent } from './pages/users-overview-page/users-overview-page.component';
+import { UserItemComponent } from './components/molecules/user-item/user-item.component';
+import { YesNoDialogComponent } from './components/molecules/dialogs/yes-no-dialog/yes-no-dialog.component';
+import { RepoInvitationPageComponent } from './pages/repo-invitation-page/repo-invitation-page.component';
+import { UserSearchDialogComponent } from './components/molecules/dialogs/user-search-dialog/user-search-dialog.component';
+import { PasswordUpdateDialogComponent } from './components/molecules/dialogs/password-update-dialog/password-update-dialog.component';
+import { BranchPageComponent } from './pages/branch-page/branch-page.component';
+import { BranchButtonGroupComponent } from './components/molecules/branch-button-group/branch-button-group.component';
+import { BranchesOverviewComponent } from './components/organisms/branches-overview/branches-overview.component';
+import { NewBranchDialogComponent } from './components/molecules/dialogs/new-branch-dialog/new-branch-dialog.component';
+import { CloneRepoOverlayComponent } from './components/molecules/filter-overlays/clone-repo-overlay/clone-repo-overlay.component';
+import { BranchFilterOverlayComponent } from './components/molecules/filter-overlays/branch-filter-overlay/branch-filter-overlay.component';
+import { FolderTableOverviewComponent } from './components/molecules/folder-table-overview/folder-table-overview.component';
+import { CommitsPageComponent } from './pages/commits-page/commits-page.component';
+import { CommitDiffPageComponent } from './pages/commit-diff-page/commit-diff-page.component';
+import { NewPrComponent } from './components/organisms/new-pr/new-pr.component';
 
 
 
@@ -119,7 +138,9 @@ import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-pag
     ProjectLabelsComponent,
     IssuesButtonGroupComponent,
     NewLabelDialogComponent,
-    ProjectMilestonesComponent,
+    ProjectMilestonesComponent,    
+    ItemCommentsViewComponent,
+    ItemAddCommentsComponent,
     NewMilestoneDialogComponent,
     MilestoneItemComponent,
     IssueItemComponent,
@@ -153,6 +174,26 @@ import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-pag
     ProjectPrsComponent,
     NewPrFormComponent,
     PrPropertiesSideViewComponent,
+
+    UsersOverviewPageComponent,
+    UserItemComponent,
+    YesNoDialogComponent,
+
+    RepoInvitationPageComponent,
+    UserSearchDialogComponent,
+    PasswordUpdateDialogComponent,
+
+    BranchPageComponent,
+    BranchButtonGroupComponent,
+    BranchesOverviewComponent,
+    NewBranchDialogComponent,
+    CloneRepoOverlayComponent,
+    BranchFilterOverlayComponent,
+
+    FolderTableOverviewComponent,
+    CommitsPageComponent,
+    CommitDiffPageComponent,
+    NewPrComponent
   ],
   exports: [],
   imports: [
@@ -177,6 +218,8 @@ import { AddSshKeyPageComponent } from './pages/add-ssh-key-page/add-ssh-key-pag
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    ClipboardModule,
+
     ToastrModule.forRoot(),
   ],
   providers: [

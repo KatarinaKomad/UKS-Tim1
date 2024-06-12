@@ -35,3 +35,16 @@ export interface UserUpdateRequest {
     email: string;
     username: string;
 }
+
+export enum REPO_INTEREST {
+    STAR = 'Stargazers',
+    WATCH = 'Watchers'
+}
+
+
+export enum REPO_ROLE {
+    COLLABORATOR = "COLLABORATOR",
+    CONTRIBUTOR = "CONTRIBUTOR",
+    OWNER = "OWNER",
+    VIEWER = "VIEWER",
+}
